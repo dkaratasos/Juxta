@@ -11,7 +11,6 @@ import java.sql.Timestamp;
  */
 public class MainFrame extends javax.swing.JFrame {
 
-    String outputFileName = "";
     File rootInputFolder;
     File rootOutFolder = new File("Data"); // Name of the Audits folder
 
@@ -328,7 +327,6 @@ public class MainFrame extends javax.swing.JFrame {
      * Then calls createStructure to create the Data structure and copies input files
      */
     private void getPrintouts() {
-        outputFileName = "";
 
         fileChooser.setDialogTitle("Open Printouts Folder");
         fileChooser.setMultiSelectionEnabled(false);
