@@ -95,6 +95,16 @@ public class Command {
     }
     
     /**
+     * Method equalsSorted returns true if sorted printout is equal to sorted printout of command 
+     * given as parameter
+     * @param comm
+     * @return 
+     */
+    public boolean equalsSorted(Command comm){
+        return this.sortedPO.equals(comm.sortedPO);
+    }
+    
+    /**
      * Method sort will short command printout from a startSorting string to the endSorting string
      * @return 
      */
@@ -104,6 +114,7 @@ public class Command {
         StringBuilder sorted = new StringBuilder();
         sorted.append(this.printOut);
         
+        sortedPO = sorted.toString();
         return sorted.toString();
     }
     
@@ -215,6 +226,14 @@ public class Command {
         return this.bc;
     }
     
+    /**
+     * get the Sorted PrintOut
+     * @return 
+     */
+    public String getSortedPO() {
+        return this.sortedPO;
+    }
+    
     //     VARIABLES
     
     private String name;
@@ -224,5 +243,5 @@ public class Command {
     private String startSorting;
     private String endSorting;
     private nodeType type;
-    
+    private String sortedPO = "";
 }
