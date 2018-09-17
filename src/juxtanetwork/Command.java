@@ -15,7 +15,7 @@ public class Command {
     //    CONSTRUCTORS
     
     /**
-     * Command Constructor
+     * Command Constructor    
      * @param name 
      */
     public Command(String name) {
