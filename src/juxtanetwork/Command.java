@@ -88,7 +88,7 @@ public class Command {
     /**
      * Method equals returns true if printout is equal to printout of command given as parameter
      * @param comm
-     * @return 
+     * @return  boolean true if printouts are equal
      */
     public boolean equals(Command comm){
         return this.printOut.equals(comm.printOut);
@@ -98,7 +98,7 @@ public class Command {
      * Method equalsSorted returns true if sorted printout is equal to sorted printout of command 
      * given as parameter
      * @param comm
-     * @return 
+     * @return boolean true if sorted printouts are equal
      */
     public boolean equalsSorted(Command comm){
         return this.sortedPO.equals(comm.sortedPO);
