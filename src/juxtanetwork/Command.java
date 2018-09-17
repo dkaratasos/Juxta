@@ -217,12 +217,12 @@ public class Command {
     
     //     VARIABLES
     
-    String name;
-    String nodeName;
-    Byte bc;
-    String printOut;
-    String startSorting;
-    String endSorting;
-    nodeType type;
+    private String name;
+    private String nodeName;
+    private Byte bc;
+    private String printOut;
+    private String startSorting;
+    private String endSorting;
+    private nodeType type;
     
 }
