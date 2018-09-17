@@ -86,7 +86,7 @@ public class Command {
     //    METHODS
     
     /**
-     * Method equals returns true if printout is equal to printout given as parameter
+     * Method equals returns true if printout is equal to printout of command given as parameter
      * @param comm
      * @return 
      */
@@ -96,15 +96,15 @@ public class Command {
     
     /**
      * Method sort will short command printout from a startSorting string to the endSorting string
-     * @param comm
-     * @param startSorting
-     * @param endSorting
      * @return 
      */
-    public String sort(Command comm,String startSorting,String endSorting){
-        String sorted = comm.printOut;
+    public String sort(){
+        String start = this.startSorting;
+        String end = this.endSorting;
+        StringBuilder sorted = new StringBuilder();
+        sorted.append(this.printOut);
         
-        return sorted;
+        return sorted.toString();
     }
     
     //   SETTERS & GETTERS
@@ -118,7 +118,7 @@ public class Command {
     }
     
     /**
-     * set the Type
+     * set the Type of Node (MSC or HLR)
      * @param type 
      */
     public void setType(nodeType type) {
