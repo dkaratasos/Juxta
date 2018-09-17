@@ -20,7 +20,7 @@ public class Command {
      */
     public Command(String name) {
         this.name = name;
-        this.type = nodeType.MSC; // Default value set to MSC
+        this.type = nodeType.MSC; // Default value set to MSC 
     }
     
     /**
