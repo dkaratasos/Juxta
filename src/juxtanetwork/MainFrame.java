@@ -51,8 +51,23 @@ public class MainFrame extends javax.swing.JFrame {
         mainTabbedPane = new javax.swing.JTabbedPane();
         mainScrollTab1 = new javax.swing.JScrollPane();
         infoTextArea = new javax.swing.JTextArea();
-        mainScrollTab2 = new javax.swing.JScrollPane();
-        commList = new javax.swing.JList<>();
+        jPanel1 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jList1 = new javax.swing.JList<>();
+        clear1BTN = new javax.swing.JButton();
+        insertElem1BTN = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jList2 = new javax.swing.JList<>();
+        clear2BTN = new javax.swing.JButton();
+        insertElem2BTN = new javax.swing.JButton();
+        referenceBTN = new javax.swing.JButton();
+        mainScrollTab3 = new javax.swing.JScrollPane();
+        commList1 = new javax.swing.JList<>();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        removeElem1BTN = new javax.swing.JButton();
+        removeElem2BTN = new javax.swing.JButton();
         resultsPanel = new javax.swing.JPanel();
         diffSplitPane = new javax.swing.JSplitPane();
         po1ScrollPane = new javax.swing.JScrollPane();
@@ -251,16 +266,124 @@ public class MainFrame extends javax.swing.JFrame {
 
         mainTabbedPane.addTab("Information", mainScrollTab1);
 
-        commList.setModel(new javax.swing.AbstractListModel<String>() {
+        jList1.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane1.setViewportView(jList1);
+
+        clear1BTN.setText("X");
+        clear1BTN.setToolTipText("Clear Element from Compare");
+
+        insertElem1BTN.setText(">");
+        insertElem1BTN.setToolTipText("Insert Element to Compare");
+
+        jList2.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane2.setViewportView(jList2);
+
+        clear2BTN.setText("X");
+        clear2BTN.setToolTipText("Clear Element from Compare with");
+
+        insertElem2BTN.setText(">");
+        insertElem2BTN.setToolTipText("Insert Element to Compare with");
+
+        referenceBTN.setText("R");
+        referenceBTN.setToolTipText("Load a reference to Compare with");
+
+        commList1.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "PCORP", "MGNDP", "DBTSP", "MGEPP", "Comm1", "Comm2", "Comm3" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
-        mainScrollTab2.setViewportView(commList);
+        mainScrollTab3.setViewportView(commList1);
 
-        mainTabbedPane.addTab("Commands", mainScrollTab2);
+        jLabel1.setText("Compare Element");
 
-        diffSplitPane.setDividerLocation(140);
+        jLabel2.setText("With Element");
+
+        jLabel3.setText("Compare Commands");
+
+        removeElem1BTN.setText("<");
+        removeElem1BTN.setToolTipText("Remove Element from Compare");
+
+        removeElem2BTN.setText("<");
+        removeElem2BTN.setToolTipText("Remove Element from Compare with");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(insertElem1BTN)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(removeElem1BTN)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(clear1BTN))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(insertElem2BTN)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(removeElem2BTN)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(referenceBTN)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(clear2BTN))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(20, 20, 20)))
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 243, Short.MAX_VALUE))
+                    .addComponent(mainScrollTab3))
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(5, 5, 5)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(clear1BTN)
+                            .addComponent(insertElem1BTN)
+                            .addComponent(removeElem1BTN))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(2, 2, 2)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(clear2BTN)
+                            .addComponent(insertElem2BTN)
+                            .addComponent(referenceBTN)
+                            .addComponent(removeElem2BTN)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(mainScrollTab3)
+                        .addContainerGap())))
+        );
+
+        mainTabbedPane.addTab("Compare", jPanel1);
+
+        diffSplitPane.setDividerLocation(160);
         diffSplitPane.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
 
         po1TextArea.setColumns(20);
@@ -279,13 +402,13 @@ public class MainFrame extends javax.swing.JFrame {
         resultsPanel.setLayout(resultsPanelLayout);
         resultsPanelLayout.setHorizontalGroup(
             resultsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(diffSplitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 390, Short.MAX_VALUE)
+            .addComponent(diffSplitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 603, Short.MAX_VALUE)
         );
         resultsPanelLayout.setVerticalGroup(
             resultsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(resultsPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(diffSplitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 327, Short.MAX_VALUE))
+                .addComponent(diffSplitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 448, Short.MAX_VALUE))
         );
 
         mainTabbedPane.addTab("Results", resultsPanel);
@@ -435,7 +558,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     /**
      * Method managePrevNextBTN will manage the Next and Prev buttons of the
-     * tabs When on last tab, NextBTN will not be enabled. When on first tab,
+     * tabs. When on last tab, NextBTN will not be enabled. When on first tab,
      * prevBTN will not be enabled. In all other cases both buttons are enabled
      */
     private void managePrevNextBTN() {
@@ -552,7 +675,9 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton aboutTLB;
     private javax.swing.JTextArea aboutTextArea;
     private javax.swing.JButton applySettingsBTN;
-    private javax.swing.JList<String> commList;
+    private javax.swing.JButton clear1BTN;
+    private javax.swing.JButton clear2BTN;
+    private javax.swing.JList<String> commList1;
     private javax.swing.JSplitPane diffSplitPane;
     private javax.swing.JButton discardSettingsBTN;
     private javax.swing.JMenu editMN;
@@ -562,9 +687,19 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenu helpMN;
     private javax.swing.JLabel infoNameLBL;
     private javax.swing.JTextArea infoTextArea;
+    private javax.swing.JButton insertElem1BTN;
+    private javax.swing.JButton insertElem2BTN;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JList<String> jList1;
+    private javax.swing.JList<String> jList2;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JScrollPane mainScrollTab1;
-    private javax.swing.JScrollPane mainScrollTab2;
+    private javax.swing.JScrollPane mainScrollTab3;
     private javax.swing.JTabbedPane mainTabbedPane;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JButton nextBTN;
@@ -575,6 +710,9 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane po2ScrollPane;
     private javax.swing.JTextArea po2TextArea;
     private javax.swing.JButton prevBTN;
+    private javax.swing.JButton referenceBTN;
+    private javax.swing.JButton removeElem1BTN;
+    private javax.swing.JButton removeElem2BTN;
     private javax.swing.JPanel resultsPanel;
     private javax.swing.JButton saveTLB;
     private javax.swing.JDialog settingsDialog;
