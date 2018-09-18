@@ -9,7 +9,7 @@ import java.sql.Timestamp;
  * @author Java Project Team
  */
 public class MainFrame extends javax.swing.JFrame {
-    
+
     File rootInputFolder;
     File rootOutFolder = new File("Data"); // Name of the Audits folder
 
@@ -18,6 +18,8 @@ public class MainFrame extends javax.swing.JFrame {
      */
     public MainFrame() {
         initComponents();
+
+        managePrevNextBTN();
     }
 
     /**
@@ -289,6 +291,7 @@ public class MainFrame extends javax.swing.JFrame {
         mainTabbedPane.addTab("Results", resultsPanel);
 
         nextBTN.setText("Next");
+        nextBTN.setToolTipText("Next tab");
         nextBTN.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 nextBTNActionPerformed(evt);
@@ -397,11 +400,11 @@ public class MainFrame extends javax.swing.JFrame {
      * files
      */
     private void getPrintouts() {
-        
+
         fileChooser.setDialogTitle("Open Printouts Folder");
         fileChooser.setMultiSelectionEnabled(false);
         fileChooser.setFileSelectionMode(1);
-        
+
         fileChooser.showOpenDialog(this);
         try {
             rootInputFolder = fileChooser.getSelectedFile();
@@ -429,7 +432,29 @@ public class MainFrame extends javax.swing.JFrame {
 
         CopyUtil.copyDirectoryContent(new File(rootInputFolder.getCanonicalPath()), new File(path));
     }
-    
+
+    /**
+     * Method managePrevNextBTN will manage the Next and Prev buttons of the
+     * tabs When on last tab, NextBTN will not be enabled. When on first tab,
+     * prevBTN will not be enabled. In all other cases both buttons are enabled
+     */
+    private void managePrevNextBTN() {
+        int current = mainTabbedPane.getSelectedIndex();
+
+        switch (current) {
+            case 2:
+                nextBTN.setEnabled(false);
+                break;
+            case 0:
+                prevBTN.setEnabled(false);
+                break;
+            default:
+                nextBTN.setEnabled(true);
+                prevBTN.setEnabled(true);
+                break;
+        }
+    }
+
     private void openTLBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openTLBActionPerformed
         getPrintouts();
     }//GEN-LAST:event_openTLBActionPerformed
@@ -471,6 +496,7 @@ public class MainFrame extends javax.swing.JFrame {
         if (current < 2) {
             mainTabbedPane.setSelectedIndex(current + 1);
         }
+        managePrevNextBTN();
     }//GEN-LAST:event_nextBTNActionPerformed
 
     private void prevBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prevBTNActionPerformed
@@ -478,6 +504,7 @@ public class MainFrame extends javax.swing.JFrame {
         if (current > 0) {
             mainTabbedPane.setSelectedIndex(current - 1);
         }
+        managePrevNextBTN();
     }//GEN-LAST:event_prevBTNActionPerformed
 
     /**
