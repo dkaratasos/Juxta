@@ -6,7 +6,6 @@
 package juxtanetwork;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  *
