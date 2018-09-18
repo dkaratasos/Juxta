@@ -391,6 +391,9 @@
           </SubComponents>
         </Container>
         <Container class="javax.swing.JTabbedPane" name="mainTabbedPane">
+          <Events>
+            <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="mainTabbedPaneStateChanged"/>
+          </Events>
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout"/>
           <SubComponents>
@@ -517,7 +520,7 @@
 
                   <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                   <SubComponents>
-                    <Component class="javax.swing.JList" name="jList1">
+                    <Component class="javax.swing.JList" name="compList1">
                       <Properties>
                         <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
                           <StringArray count="5">
@@ -540,12 +543,18 @@
                     <Property name="text" type="java.lang.String" value="X"/>
                     <Property name="toolTipText" type="java.lang.String" value="Clear Element from Compare"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="clear1BTNActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JButton" name="insertElem1BTN">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="&gt;"/>
                     <Property name="toolTipText" type="java.lang.String" value="Insert Element to Compare"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="insertElem1BTNActionPerformed"/>
+                  </Events>
                 </Component>
                 <Container class="javax.swing.JScrollPane" name="jScrollPane2">
                   <AuxValues>
@@ -554,7 +563,7 @@
 
                   <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                   <SubComponents>
-                    <Component class="javax.swing.JList" name="jList2">
+                    <Component class="javax.swing.JList" name="compList2">
                       <Properties>
                         <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
                           <StringArray count="5">
@@ -577,12 +586,18 @@
                     <Property name="text" type="java.lang.String" value="X"/>
                     <Property name="toolTipText" type="java.lang.String" value="Clear Element from Compare with"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="clear2BTNActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JButton" name="insertElem2BTN">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="&gt;"/>
                     <Property name="toolTipText" type="java.lang.String" value="Insert Element to Compare with"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="insertElem2BTNActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JButton" name="referenceBTN">
                   <Properties>
@@ -597,7 +612,7 @@
 
                   <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                   <SubComponents>
-                    <Component class="javax.swing.JList" name="commList1">
+                    <Component class="javax.swing.JList" name="commList">
                       <Properties>
                         <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
                           <StringArray count="7">
@@ -637,12 +652,18 @@
                     <Property name="text" type="java.lang.String" value="&lt;"/>
                     <Property name="toolTipText" type="java.lang.String" value="Remove Element from Compare"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="removeElem1BTNActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JButton" name="removeElem2BTN">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="&lt;"/>
                     <Property name="toolTipText" type="java.lang.String" value="Remove Element from Compare with"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="removeElem2BTNActionPerformed"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>

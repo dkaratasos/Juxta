@@ -3,6 +3,10 @@ package juxtanetwork;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Timestamp;
+import javax.swing.DefaultListModel;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeModel;
 
 /**
  *
@@ -12,6 +16,9 @@ public class MainFrame extends javax.swing.JFrame {
 
     File rootInputFolder;
     File rootOutFolder = new File("Data"); // Name of the Audits folder
+    final DefaultListModel compList1Model = new DefaultListModel();
+    final DefaultListModel compList2Model = new DefaultListModel();
+    final DefaultListModel commListModel = new DefaultListModel();
 
     /**
      * Creates new form MainFrame
@@ -19,7 +26,7 @@ public class MainFrame extends javax.swing.JFrame {
     public MainFrame() {
         initComponents();
 
-        managePrevNextBTN();
+        initializations();
     }
 
     /**
@@ -53,16 +60,16 @@ public class MainFrame extends javax.swing.JFrame {
         infoTextArea = new javax.swing.JTextArea();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
+        compList1 = new javax.swing.JList<>();
         clear1BTN = new javax.swing.JButton();
         insertElem1BTN = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jList2 = new javax.swing.JList<>();
+        compList2 = new javax.swing.JList<>();
         clear2BTN = new javax.swing.JButton();
         insertElem2BTN = new javax.swing.JButton();
         referenceBTN = new javax.swing.JButton();
         mainScrollTab3 = new javax.swing.JScrollPane();
-        commList1 = new javax.swing.JList<>();
+        commList = new javax.swing.JList<>();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -260,47 +267,73 @@ public class MainFrame extends javax.swing.JFrame {
         NodesTree.setToggleClickCount(1);
         nodesScrollPane.setViewportView(NodesTree);
 
+        mainTabbedPane.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                mainTabbedPaneStateChanged(evt);
+            }
+        });
+
         infoTextArea.setColumns(20);
         infoTextArea.setRows(5);
         mainScrollTab1.setViewportView(infoTextArea);
 
         mainTabbedPane.addTab("Information", mainScrollTab1);
 
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
+        compList1.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
-        jScrollPane1.setViewportView(jList1);
+        jScrollPane1.setViewportView(compList1);
 
         clear1BTN.setText("X");
         clear1BTN.setToolTipText("Clear Element from Compare");
+        clear1BTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clear1BTNActionPerformed(evt);
+            }
+        });
 
         insertElem1BTN.setText(">");
         insertElem1BTN.setToolTipText("Insert Element to Compare");
+        insertElem1BTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                insertElem1BTNActionPerformed(evt);
+            }
+        });
 
-        jList2.setModel(new javax.swing.AbstractListModel<String>() {
+        compList2.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
-        jScrollPane2.setViewportView(jList2);
+        jScrollPane2.setViewportView(compList2);
 
         clear2BTN.setText("X");
         clear2BTN.setToolTipText("Clear Element from Compare with");
+        clear2BTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clear2BTNActionPerformed(evt);
+            }
+        });
 
         insertElem2BTN.setText(">");
         insertElem2BTN.setToolTipText("Insert Element to Compare with");
+        insertElem2BTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                insertElem2BTNActionPerformed(evt);
+            }
+        });
 
         referenceBTN.setText("R");
         referenceBTN.setToolTipText("Load a reference to Compare with");
 
-        commList1.setModel(new javax.swing.AbstractListModel<String>() {
+        commList.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "PCORP", "MGNDP", "DBTSP", "MGEPP", "Comm1", "Comm2", "Comm3" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
-        mainScrollTab3.setViewportView(commList1);
+        mainScrollTab3.setViewportView(commList);
 
         jLabel1.setText("Compare Element");
 
@@ -310,9 +343,19 @@ public class MainFrame extends javax.swing.JFrame {
 
         removeElem1BTN.setText("<");
         removeElem1BTN.setToolTipText("Remove Element from Compare");
+        removeElem1BTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeElem1BTNActionPerformed(evt);
+            }
+        });
 
         removeElem2BTN.setText("<");
         removeElem2BTN.setToolTipText("Remove Element from Compare with");
+        removeElem2BTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeElem2BTNActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -517,6 +560,13 @@ public class MainFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void initializations() {
+        compList1.setModel(compList1Model);
+        compList2.setModel(compList2Model);
+        //commList.setModel(commListModel);
+        managePrevNextBTN();
+    }
+
     /**
      * Method getPrintouts opens a file chooser to select the data input folder.
      * Then calls createStructure to create the Data structure and copies input
@@ -567,14 +617,31 @@ public class MainFrame extends javax.swing.JFrame {
         switch (current) {
             case 2:
                 nextBTN.setEnabled(false);
+                prevBTN.setEnabled(true);
                 break;
             case 0:
+                nextBTN.setEnabled(true);
                 prevBTN.setEnabled(false);
                 break;
             default:
                 nextBTN.setEnabled(true);
                 prevBTN.setEnabled(true);
                 break;
+        }
+    }
+    
+    /**
+     * Insert an element node from Nodes Tree to model of parameter if not already there
+     * @param model 
+     */
+    public void insertElem(DefaultListModel model){
+        DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) NodesTree
+                .getLastSelectedPathComponent();
+        String selectedNodeName = selectedNode.toString();
+        if (selectedNode.isLeaf()) {
+            if (!model.contains(selectedNodeName)) {
+                model.addElement(selectedNodeName);
+            }
         }
     }
 
@@ -630,6 +697,34 @@ public class MainFrame extends javax.swing.JFrame {
         managePrevNextBTN();
     }//GEN-LAST:event_prevBTNActionPerformed
 
+    private void clear1BTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clear1BTNActionPerformed
+        compList1Model.clear();
+    }//GEN-LAST:event_clear1BTNActionPerformed
+
+    private void clear2BTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clear2BTNActionPerformed
+        compList2Model.clear();
+    }//GEN-LAST:event_clear2BTNActionPerformed
+
+    private void insertElem1BTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertElem1BTNActionPerformed
+        insertElem(compList1Model);
+    }//GEN-LAST:event_insertElem1BTNActionPerformed
+
+    private void mainTabbedPaneStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_mainTabbedPaneStateChanged
+        managePrevNextBTN();
+    }//GEN-LAST:event_mainTabbedPaneStateChanged
+
+    private void insertElem2BTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertElem2BTNActionPerformed
+        insertElem(compList2Model);
+    }//GEN-LAST:event_insertElem2BTNActionPerformed
+
+    private void removeElem1BTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeElem1BTNActionPerformed
+        compList1Model.removeAllElements();
+    }//GEN-LAST:event_removeElem1BTNActionPerformed
+
+    private void removeElem2BTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeElem2BTNActionPerformed
+        compList2Model.removeAllElements();
+    }//GEN-LAST:event_removeElem2BTNActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -677,7 +772,9 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton applySettingsBTN;
     private javax.swing.JButton clear1BTN;
     private javax.swing.JButton clear2BTN;
-    private javax.swing.JList<String> commList1;
+    private javax.swing.JList<String> commList;
+    private javax.swing.JList<String> compList1;
+    private javax.swing.JList<String> compList2;
     private javax.swing.JSplitPane diffSplitPane;
     private javax.swing.JButton discardSettingsBTN;
     private javax.swing.JMenu editMN;
@@ -692,8 +789,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JList<String> jList1;
-    private javax.swing.JList<String> jList2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
