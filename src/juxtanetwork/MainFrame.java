@@ -52,6 +52,7 @@ public class MainFrame extends javax.swing.JFrame {
         jTextArea2 = new javax.swing.JTextArea();
         mainScrollTab2 = new javax.swing.JScrollPane();
         jList1 = new javax.swing.JList<>();
+        jButton1 = new javax.swing.JButton();
         menuBar = new javax.swing.JMenuBar();
         fileMN = new javax.swing.JMenu();
         OpenMN = new javax.swing.JMenuItem();
@@ -175,7 +176,7 @@ public class MainFrame extends javax.swing.JFrame {
         toolBar.setFloatable(false);
         toolBar.setRollover(true);
 
-        openTLB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/juxtanetwork/Open-folder-accept-icon16.png"))); // NOI18N
+        openTLB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/juxtanetwork/Open16.png"))); // NOI18N
         openTLB.setToolTipText("Open");
         openTLB.setFocusable(false);
         openTLB.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -251,29 +252,40 @@ public class MainFrame extends javax.swing.JFrame {
 
         mainTabbedPane.addTab("tab2", mainScrollTab2);
 
+        jButton1.setText("Next");
+
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mainPanelLayout.createSequentialGroup()
                 .addComponent(nodesScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(mainTabbedPane, javax.swing.GroupLayout.DEFAULT_SIZE, 395, Short.MAX_VALUE))
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(mainPanelLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(mainTabbedPane, javax.swing.GroupLayout.DEFAULT_SIZE, 395, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton1)
+                        .addGap(41, 41, 41))))
             .addComponent(toolBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
                 .addComponent(toolBar, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(nodesScrollPane)
-                    .addComponent(mainTabbedPane)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(nodesScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(mainPanelLayout.createSequentialGroup()
+                        .addComponent(mainTabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton1))))
         );
 
         fileMN.setText("File");
 
-        OpenMN.setIcon(new javax.swing.ImageIcon(getClass().getResource("/juxtanetwork/Open-folder-accept-icon16.png"))); // NOI18N
+        OpenMN.setIcon(new javax.swing.ImageIcon(getClass().getResource("/juxtanetwork/Open16.png"))); // NOI18N
         OpenMN.setText("Open");
         OpenMN.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -319,9 +331,7 @@ public class MainFrame extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -452,6 +462,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenu fileMN;
     private javax.swing.JMenu helpMN;
     private javax.swing.JLabel infoNameLBL;
+    private javax.swing.JButton jButton1;
     private javax.swing.JList<String> jList1;
     private javax.swing.JTextArea jTextArea2;
     private javax.swing.JPanel mainPanel;
