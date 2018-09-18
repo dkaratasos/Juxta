@@ -5,6 +5,9 @@
  */
 package juxtanetwork;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author dkar
@@ -105,7 +108,7 @@ public class Command {
     }
     
     /**
-     * Method sort will short command printout from a startSorting string to the endSorting string
+     * Method sort will sort command printout from a startSorting string to the endSorting string
      * @return 
      */
     public String sort(){
@@ -116,6 +119,33 @@ public class Command {
         
         sortedPO = sorted.toString();
         return sorted.toString();
+    }
+    
+    /**
+     * Method getPOtext gets the final printout to be checked for a command.
+     * @param comm
+     * @return The pure final printout of the command, sorted if necessary
+     */
+    public String getPOtext(Command comm){
+        return "";
+    }
+    
+    /**
+     * Method diff finds the differences between the current command and the input command comm
+     * @param comm
+     * @return An ArrayList of the differences. Each difference is defined as from a start index
+     * in the printout string of the current command to an end index.
+     */
+    public ArrayList<int[]> diff(Command comm){
+        ArrayList<int[]> differences = new ArrayList<int[]>();
+        
+        String po1 = getPOtext(comm);
+        String po2 = getPOtext(this);
+        
+        int startDiff = CommandUtils.getStartDiff(po1, po2, 0);
+        int endDiff = CommandUtils.getEndDiff(po1, po2, 0);
+        
+        return differences;
     }
     
     //   SETTERS & GETTERS
@@ -168,6 +198,15 @@ public class Command {
      */
     public void setBc(Byte bc) {
         this.bc = bc;
+    }
+    
+    /**
+     * set the Failed status in command if a comparison has failed
+     * reset to false if the difference is accepted by the user
+     * @param failed 
+     */
+    public void setFailed(boolean failed) {
+        this.failed = failed;
     }
     
     /**
@@ -228,20 +267,29 @@ public class Command {
     
     /**
      * get the Sorted PrintOut
-     * @return 
+     * @return String the sorted Printout
      */
     public String getSortedPO() {
         return this.sortedPO;
     }
     
+    /**
+     * get the status of this Printout, if a check has failed
+     * @return boolean failed
+     */
+    public boolean getFailed() {
+        return this.failed;
+    }
+    
     //     VARIABLES
     
-    private String name;
-    private String nodeName;
-    private Byte bc;
-    private String printOut;
-    private String startSorting;
-    private String endSorting;
-    private nodeType type;
-    private String sortedPO = "";
+    private String name;             // The name of the command
+    private String nodeName;         // The node the command is given
+    private Byte bc;                 // The blade number the command is given
+    private String printOut;         // The printout of command as read from the input file
+    private String startSorting;     // The start string for sorting the printout of command
+    private String endSorting;       // The end string for sorting the printout of command
+    private nodeType type;           // The type of the node the command is given (MSC or HLR)
+    private String sortedPO = "";    // The sorted printout of the command 
+    private boolean failed = false;  // Whether the command has failed in a comparison. Default false
 }
