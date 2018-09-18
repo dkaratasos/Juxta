@@ -4,13 +4,12 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.Timestamp;
 
-
 /**
- *  
+ *
  * @author Java Project Team
  */
 public class MainFrame extends javax.swing.JFrame {
-
+    
     File rootInputFolder;
     File rootOutFolder = new File("Data"); // Name of the Audits folder
 
@@ -49,10 +48,17 @@ public class MainFrame extends javax.swing.JFrame {
         NodesTree = new javax.swing.JTree();
         mainTabbedPane = new javax.swing.JTabbedPane();
         mainScrollTab1 = new javax.swing.JScrollPane();
-        jTextArea2 = new javax.swing.JTextArea();
+        infoTextArea = new javax.swing.JTextArea();
         mainScrollTab2 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
-        jButton1 = new javax.swing.JButton();
+        commList = new javax.swing.JList<>();
+        resultsPanel = new javax.swing.JPanel();
+        diffSplitPane = new javax.swing.JSplitPane();
+        po1ScrollPane = new javax.swing.JScrollPane();
+        po1TextArea = new javax.swing.JTextArea();
+        po2ScrollPane = new javax.swing.JScrollPane();
+        po2TextArea = new javax.swing.JTextArea();
+        nextBTN = new javax.swing.JButton();
+        prevBTN = new javax.swing.JButton();
         menuBar = new javax.swing.JMenuBar();
         fileMN = new javax.swing.JMenu();
         OpenMN = new javax.swing.JMenuItem();
@@ -237,50 +243,96 @@ public class MainFrame extends javax.swing.JFrame {
         NodesTree.setToggleClickCount(1);
         nodesScrollPane.setViewportView(NodesTree);
 
-        jTextArea2.setColumns(20);
-        jTextArea2.setRows(5);
-        mainScrollTab1.setViewportView(jTextArea2);
+        infoTextArea.setColumns(20);
+        infoTextArea.setRows(5);
+        mainScrollTab1.setViewportView(infoTextArea);
 
-        mainTabbedPane.addTab("tab1", mainScrollTab1);
+        mainTabbedPane.addTab("Information", mainScrollTab1);
 
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+        commList.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "PCORP", "MGNDP", "DBTSP", "MGEPP", "Comm1", "Comm2", "Comm3" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
-        mainScrollTab2.setViewportView(jList1);
+        mainScrollTab2.setViewportView(commList);
 
-        mainTabbedPane.addTab("tab2", mainScrollTab2);
+        mainTabbedPane.addTab("Commands", mainScrollTab2);
 
-        jButton1.setText("Next");
+        diffSplitPane.setDividerLocation(140);
+        diffSplitPane.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
+
+        po1TextArea.setColumns(20);
+        po1TextArea.setRows(5);
+        po1ScrollPane.setViewportView(po1TextArea);
+
+        diffSplitPane.setTopComponent(po1ScrollPane);
+
+        po2TextArea.setColumns(20);
+        po2TextArea.setRows(5);
+        po2ScrollPane.setViewportView(po2TextArea);
+
+        diffSplitPane.setRightComponent(po2ScrollPane);
+
+        javax.swing.GroupLayout resultsPanelLayout = new javax.swing.GroupLayout(resultsPanel);
+        resultsPanel.setLayout(resultsPanelLayout);
+        resultsPanelLayout.setHorizontalGroup(
+            resultsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(diffSplitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 390, Short.MAX_VALUE)
+        );
+        resultsPanelLayout.setVerticalGroup(
+            resultsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(resultsPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(diffSplitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 327, Short.MAX_VALUE))
+        );
+
+        mainTabbedPane.addTab("Results", resultsPanel);
+
+        nextBTN.setText("Next");
+        nextBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nextBTNActionPerformed(evt);
+            }
+        });
+
+        prevBTN.setText("Prev");
+        prevBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                prevBTNActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(toolBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(mainPanelLayout.createSequentialGroup()
                 .addComponent(nodesScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(mainTabbedPane)
                     .addGroup(mainPanelLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(mainTabbedPane, javax.swing.GroupLayout.DEFAULT_SIZE, 395, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1)
-                        .addGap(41, 41, 41))))
-            .addComponent(toolBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(prevBTN)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(nextBTN)
+                        .addContainerGap())))
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
                 .addComponent(toolBar, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(nodesScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(mainPanelLayout.createSequentialGroup()
-                        .addComponent(mainTabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1))))
+                        .addComponent(mainTabbedPane)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(nextBTN)
+                            .addComponent(prevBTN))
+                        .addGap(10, 10, 10))
+                    .addComponent(nodesScrollPane)))
         );
 
         fileMN.setText("File");
@@ -331,7 +383,9 @@ public class MainFrame extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(0, 0, 0)
+                .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -339,14 +393,15 @@ public class MainFrame extends javax.swing.JFrame {
 
     /**
      * Method getPrintouts opens a file chooser to select the data input folder.
-     * Then calls createStructure to create the Data structure and copies input files
+     * Then calls createStructure to create the Data structure and copies input
+     * files
      */
     private void getPrintouts() {
-
+        
         fileChooser.setDialogTitle("Open Printouts Folder");
         fileChooser.setMultiSelectionEnabled(false);
         fileChooser.setFileSelectionMode(1);
-
+        
         fileChooser.showOpenDialog(this);
         try {
             rootInputFolder = fileChooser.getSelectedFile();
@@ -359,9 +414,10 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     /**
-     * Method createStructure creates in Data a timestamp folder and copies all files and
-     * directories of input folder to that timestamp directory
-     * @throws IOException 
+     * Method createStructure creates in Data a timestamp folder and copies all
+     * files and directories of input folder to that timestamp directory
+     *
+     * @throws IOException
      */
     private void createStructure() throws IOException {
         if (!rootOutFolder.exists()) {
@@ -410,6 +466,20 @@ public class MainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_saveTLBActionPerformed
 
+    private void nextBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextBTNActionPerformed
+        int current = mainTabbedPane.getSelectedIndex();
+        if (current < 2) {
+            mainTabbedPane.setSelectedIndex(current + 1);
+        }
+    }//GEN-LAST:event_nextBTNActionPerformed
+
+    private void prevBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prevBTNActionPerformed
+        int current = mainTabbedPane.getSelectedIndex();
+        if (current > 0) {
+            mainTabbedPane.setSelectedIndex(current - 1);
+        }
+    }//GEN-LAST:event_prevBTNActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -455,6 +525,8 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton aboutTLB;
     private javax.swing.JTextArea aboutTextArea;
     private javax.swing.JButton applySettingsBTN;
+    private javax.swing.JList<String> commList;
+    private javax.swing.JSplitPane diffSplitPane;
     private javax.swing.JButton discardSettingsBTN;
     private javax.swing.JMenu editMN;
     private javax.swing.JMenuItem exitMN;
@@ -462,16 +534,21 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenu fileMN;
     private javax.swing.JMenu helpMN;
     private javax.swing.JLabel infoNameLBL;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JList<String> jList1;
-    private javax.swing.JTextArea jTextArea2;
+    private javax.swing.JTextArea infoTextArea;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JScrollPane mainScrollTab1;
     private javax.swing.JScrollPane mainScrollTab2;
     private javax.swing.JTabbedPane mainTabbedPane;
     private javax.swing.JMenuBar menuBar;
+    private javax.swing.JButton nextBTN;
     private javax.swing.JScrollPane nodesScrollPane;
     private javax.swing.JButton openTLB;
+    private javax.swing.JScrollPane po1ScrollPane;
+    private javax.swing.JTextArea po1TextArea;
+    private javax.swing.JScrollPane po2ScrollPane;
+    private javax.swing.JTextArea po2TextArea;
+    private javax.swing.JButton prevBTN;
+    private javax.swing.JPanel resultsPanel;
     private javax.swing.JButton saveTLB;
     private javax.swing.JDialog settingsDialog;
     private javax.swing.JMenuItem settingsMN;
