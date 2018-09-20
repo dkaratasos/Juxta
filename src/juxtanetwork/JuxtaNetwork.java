@@ -10,7 +10,10 @@ package juxtanetwork;
  * @author Amalia
  */
 public class JuxtaNetwork {
-
+    
+    
+// Test line for git
+    
     /**
      * @param args the command line arguments
      */
