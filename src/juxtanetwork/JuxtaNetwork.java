@@ -12,8 +12,7 @@ package juxtanetwork;
 public class JuxtaNetwork {
     
 // Test line for git
-    //
-    //
+
     
     
     /**
