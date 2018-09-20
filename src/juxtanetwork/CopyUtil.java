@@ -3,6 +3,7 @@ package juxtanetwork;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
+import java.sql.Timestamp;
 import java.util.EnumSet;
 import java.util.Objects;
 /**
@@ -38,9 +39,20 @@ public class CopyUtil {
     public static void copyDirectory (File fromFile, File toParentFile)
                         throws IOException {
         Path from = fromFile.toPath();
-        Path to = Paths.get(toParentFile.getAbsolutePath() + File.separatorChar + fromFile
-                            .getName());
+        String nodeFolderName = toParentFile.getAbsolutePath() + File.separatorChar + fromFile.getName();
 
+        File nodeFolder = new File(nodeFolderName);
+        if (!nodeFolder.exists()) {
+            nodeFolder.mkdir();
+        }
+        
+        File timeStampFolder = new File(nodeFolderName + File.separatorChar
+                + String.valueOf(new Timestamp(System.currentTimeMillis())).replace(':', '_').replace(' ', '_')
+                        .substring(0, 19)); // timestamp path in Node folder. Format: 2018-09-13_22_04_59
+        timeStampFolder.mkdir();
+        
+        Path to =  Paths.get(timeStampFolder.getAbsolutePath());
+                
         Files.walkFileTree(from, EnumSet.of(FileVisitOption.FOLLOW_LINKS),
                            Integer.MAX_VALUE, new MyCopyDirVisitor(from, to));
     }

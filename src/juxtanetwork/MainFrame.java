@@ -597,10 +597,11 @@ public class MainFrame extends javax.swing.JFrame {
         if (!rootOutFolder.exists()) {
             rootOutFolder.mkdir();
         }
-        String path = rootOutFolder.getCanonicalPath() + System.getProperty("file.separator")
+/*        String path = rootOutFolder.getCanonicalPath() + System.getProperty("file.separator")
                 + String.valueOf(new Timestamp(System.currentTimeMillis())).replace(':', '_').replace(' ', '_')
                         .substring(0, 19);    // timestamp path in Data folder. Format: 2018-09-13_22_04_59
-
+*/
+        String path = rootOutFolder.getCanonicalPath();    // path in Data folder
         CopyUtil.copyDirectoryContent(new File(rootInputFolder.getCanonicalPath()), new File(path));
     }
 
