@@ -17,6 +17,9 @@ public class MainFrame extends javax.swing.JFrame {
     final DefaultListModel compList2Model = new DefaultListModel();
     final DefaultListModel commListModel = new DefaultListModel();
 
+    DefaultMutableTreeNode nodeTreeModel = new DefaultMutableTreeNode("Nodes");
+    DefaultMutableTreeNode commsTreeModel = new DefaultMutableTreeNode("Commands");
+
     /**
      * Creates new form MainFrame
      */
@@ -46,16 +49,15 @@ public class MainFrame extends javax.swing.JFrame {
         discardSettingsBTN = new javax.swing.JButton();
         applySettingsBTN = new javax.swing.JButton();
         mainPanel = new javax.swing.JPanel();
-        toolBar = new javax.swing.JToolBar();
-        openTLB = new javax.swing.JButton();
-        saveTLB = new javax.swing.JButton();
-        aboutTLB = new javax.swing.JButton();
+        nextBTN = new javax.swing.JButton();
+        prevBTN = new javax.swing.JButton();
+        mainSplitPane = new javax.swing.JSplitPane();
         nodesScrollPane = new javax.swing.JScrollPane();
         NodesTree = new javax.swing.JTree();
         mainTabbedPane = new javax.swing.JTabbedPane();
-        mainScrollTab1 = new javax.swing.JScrollPane();
+        infoPanel = new javax.swing.JScrollPane();
         infoTextArea = new javax.swing.JTextArea();
-        jPanel1 = new javax.swing.JPanel();
+        comparePanel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         compList1 = new javax.swing.JList<>();
         clear1BTN = new javax.swing.JButton();
@@ -78,8 +80,10 @@ public class MainFrame extends javax.swing.JFrame {
         po1TextArea = new javax.swing.JTextArea();
         po2ScrollPane = new javax.swing.JScrollPane();
         po2TextArea = new javax.swing.JTextArea();
-        nextBTN = new javax.swing.JButton();
-        prevBTN = new javax.swing.JButton();
+        toolBar = new javax.swing.JToolBar();
+        openTLB = new javax.swing.JButton();
+        saveTLB = new javax.swing.JButton();
+        aboutTLB = new javax.swing.JButton();
         menuBar = new javax.swing.JMenuBar();
         fileMN = new javax.swing.JMenu();
         OpenMN = new javax.swing.JMenuItem();
@@ -199,45 +203,26 @@ public class MainFrame extends javax.swing.JFrame {
         setTitle("JuxtaNetwork");
         setIconImage(new javax.swing.ImageIcon(getClass().getResource("/juxtanetwork/dual-mobile.png")).getImage());
         setLocation(new java.awt.Point(500, 200));
+        setPreferredSize(new java.awt.Dimension(850, 650));
 
-        toolBar.setFloatable(false);
-        toolBar.setRollover(true);
+        mainPanel.setPreferredSize(new java.awt.Dimension(666, 821));
 
-        openTLB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/juxtanetwork/Open16.png"))); // NOI18N
-        openTLB.setToolTipText("Open");
-        openTLB.setFocusable(false);
-        openTLB.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        openTLB.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        openTLB.addActionListener(new java.awt.event.ActionListener() {
+        nextBTN.setText("Next");
+        nextBTN.setToolTipText("Next tab");
+        nextBTN.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                openTLBActionPerformed(evt);
+                nextBTNActionPerformed(evt);
             }
         });
-        toolBar.add(openTLB);
 
-        saveTLB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/juxtanetwork/Save16.png"))); // NOI18N
-        saveTLB.setToolTipText("Save");
-        saveTLB.setFocusable(false);
-        saveTLB.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        saveTLB.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        saveTLB.addActionListener(new java.awt.event.ActionListener() {
+        prevBTN.setText("Prev");
+        prevBTN.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                saveTLBActionPerformed(evt);
+                prevBTNActionPerformed(evt);
             }
         });
-        toolBar.add(saveTLB);
 
-        aboutTLB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/juxtanetwork/about16.png"))); // NOI18N
-        aboutTLB.setToolTipText("About");
-        aboutTLB.setFocusable(false);
-        aboutTLB.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        aboutTLB.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        aboutTLB.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                aboutTLBActionPerformed(evt);
-            }
-        });
-        toolBar.add(aboutTLB);
+        mainSplitPane.setDividerLocation(150);
 
         javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("Nodes");
         javax.swing.tree.DefaultMutableTreeNode treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("MSC");
@@ -264,6 +249,8 @@ public class MainFrame extends javax.swing.JFrame {
         NodesTree.setToggleClickCount(1);
         nodesScrollPane.setViewportView(NodesTree);
 
+        mainSplitPane.setLeftComponent(nodesScrollPane);
+
         mainTabbedPane.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 mainTabbedPaneStateChanged(evt);
@@ -272,9 +259,9 @@ public class MainFrame extends javax.swing.JFrame {
 
         infoTextArea.setColumns(20);
         infoTextArea.setRows(5);
-        mainScrollTab1.setViewportView(infoTextArea);
+        infoPanel.setViewportView(infoTextArea);
 
-        mainTabbedPane.addTab("Information", mainScrollTab1);
+        mainTabbedPane.addTab("Information", infoPanel);
 
         compList1.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -354,23 +341,23 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout comparePanelLayout = new javax.swing.GroupLayout(comparePanel);
+        comparePanel.setLayout(comparePanelLayout);
+        comparePanelLayout.setHorizontalGroup(
+            comparePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(comparePanelLayout.createSequentialGroup()
+                .addGroup(comparePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, comparePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(comparePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addGroup(comparePanelLayout.createSequentialGroup()
                                 .addComponent(insertElem1BTN)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(removeElem1BTN)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(clear1BTN))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addGroup(comparePanelLayout.createSequentialGroup()
                                 .addComponent(insertElem2BTN)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(removeElem2BTN)
@@ -378,31 +365,31 @@ public class MainFrame extends javax.swing.JFrame {
                                 .addComponent(referenceBTN)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(clear2BTN))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addGroup(comparePanelLayout.createSequentialGroup()
                                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(20, 20, 20)))
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(comparePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(comparePanelLayout.createSequentialGroup()
                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 243, Short.MAX_VALUE))
+                        .addGap(0, 299, Short.MAX_VALUE))
                     .addComponent(mainScrollTab3))
                 .addContainerGap())
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        comparePanelLayout.setVerticalGroup(
+            comparePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(comparePanelLayout.createSequentialGroup()
                 .addGap(5, 5, 5)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(comparePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(comparePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(comparePanelLayout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addGroup(comparePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(clear1BTN)
                             .addComponent(insertElem1BTN)
                             .addComponent(removeElem1BTN))
@@ -411,17 +398,17 @@ public class MainFrame extends javax.swing.JFrame {
                         .addGap(2, 2, 2)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addGroup(comparePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(clear2BTN)
                             .addComponent(insertElem2BTN)
                             .addComponent(referenceBTN)
                             .addComponent(removeElem2BTN)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGroup(comparePanelLayout.createSequentialGroup()
                         .addComponent(mainScrollTab3)
                         .addContainerGap())))
         );
 
-        mainTabbedPane.addTab("Compare", jPanel1);
+        mainTabbedPane.addTab("Compare", comparePanel);
 
         diffSplitPane.setDividerLocation(160);
         diffSplitPane.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
@@ -442,64 +429,82 @@ public class MainFrame extends javax.swing.JFrame {
         resultsPanel.setLayout(resultsPanelLayout);
         resultsPanelLayout.setHorizontalGroup(
             resultsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(diffSplitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 603, Short.MAX_VALUE)
+            .addComponent(diffSplitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 659, Short.MAX_VALUE)
         );
         resultsPanelLayout.setVerticalGroup(
             resultsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(resultsPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(diffSplitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 448, Short.MAX_VALUE))
+                .addComponent(diffSplitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 471, Short.MAX_VALUE))
         );
 
         mainTabbedPane.addTab("Results", resultsPanel);
 
-        nextBTN.setText("Next");
-        nextBTN.setToolTipText("Next tab");
-        nextBTN.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                nextBTNActionPerformed(evt);
-            }
-        });
-
-        prevBTN.setText("Prev");
-        prevBTN.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                prevBTNActionPerformed(evt);
-            }
-        });
+        mainSplitPane.setRightComponent(mainTabbedPane);
 
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(toolBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(mainPanelLayout.createSequentialGroup()
-                .addComponent(nodesScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(mainSplitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 820, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(prevBTN)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(mainTabbedPane)
-                    .addGroup(mainPanelLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(prevBTN)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(nextBTN)
-                        .addContainerGap())))
+                .addComponent(nextBTN))
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
-                .addComponent(toolBar, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap()
+                .addComponent(mainSplitPane, javax.swing.GroupLayout.PREFERRED_SIZE, 512, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(mainPanelLayout.createSequentialGroup()
-                        .addComponent(mainTabbedPane)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(nextBTN)
-                            .addComponent(prevBTN))
-                        .addGap(10, 10, 10))
-                    .addComponent(nodesScrollPane)))
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(nextBTN)
+                    .addComponent(prevBTN)))
         );
+
+        toolBar.setFloatable(false);
+        toolBar.setRollover(true);
+
+        openTLB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/juxtanetwork/Open16.png"))); // NOI18N
+        openTLB.setToolTipText("Open");
+        openTLB.setFocusable(false);
+        openTLB.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        openTLB.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        openTLB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                openTLBActionPerformed(evt);
+            }
+        });
+        toolBar.add(openTLB);
+
+        saveTLB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/juxtanetwork/Save16.png"))); // NOI18N
+        saveTLB.setToolTipText("Save");
+        saveTLB.setFocusable(false);
+        saveTLB.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        saveTLB.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        saveTLB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveTLBActionPerformed(evt);
+            }
+        });
+        toolBar.add(saveTLB);
+
+        aboutTLB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/juxtanetwork/about16.png"))); // NOI18N
+        aboutTLB.setToolTipText("About");
+        aboutTLB.setFocusable(false);
+        aboutTLB.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        aboutTLB.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        aboutTLB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                aboutTLBActionPerformed(evt);
+            }
+        });
+        toolBar.add(aboutTLB);
 
         fileMN.setText("File");
 
@@ -545,13 +550,18 @@ public class MainFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(toolBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 840, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(0, 0, 0)
-                .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addComponent(toolBar, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 552, Short.MAX_VALUE)
+                .addGap(46, 46, 46))
         );
 
         pack();
@@ -561,7 +571,52 @@ public class MainFrame extends javax.swing.JFrame {
         compList1.setModel(compList1Model);
         compList2.setModel(compList2Model);
         //commList.setModel(commListModel);
+        createNodesTree();
+        createCommTree();
+
         managePrevNextBTN();
+    }
+
+    private void createNodesTree() {
+
+        DefaultMutableTreeNode nodeTreeModelMSC = new DefaultMutableTreeNode("MSC");
+        DefaultMutableTreeNode nodeTreeModelHLR = new DefaultMutableTreeNode("HLR");
+        DefaultMutableTreeNode nodeTreeModelPool = new DefaultMutableTreeNode("Pool");
+        DefaultMutableTreeNode[] nodesTreeModel = new DefaultMutableTreeNode[20];
+        nodeTreeModel.add(nodeTreeModelMSC);
+        nodeTreeModel.add(nodeTreeModelHLR);
+        nodeTreeModel.add(nodeTreeModelPool);
+
+        for (int i = 0; i < 10; i++) {
+            nodesTreeModel[i] = new DefaultMutableTreeNode("MSCnode");
+            nodeTreeModelMSC.add(nodesTreeModel[i]);
+        }
+        for (int i = 10; i < 15; i++) {
+            nodesTreeModel[i] = new DefaultMutableTreeNode("HLRnode");
+            nodeTreeModelHLR.add(nodesTreeModel[i]);
+        }
+        for (int i = 15; i < 20; i++) {
+            nodesTreeModel[i] = new DefaultMutableTreeNode("Poolnode");
+            nodeTreeModelPool.add(nodesTreeModel[i]);
+        }
+    }
+
+    private void createCommTree() {
+        DefaultMutableTreeNode commsTreeModelId = new DefaultMutableTreeNode("Identical P/O");
+        DefaultMutableTreeNode commsTreeModelNotId = new DefaultMutableTreeNode("Differing P/O");
+        commsTreeModel.add(commsTreeModelId);
+        commsTreeModel.add(commsTreeModelNotId);
+
+        DefaultMutableTreeNode[] commandTreeModel = new DefaultMutableTreeNode[20];
+
+        for (int i = 0; i < 10; i++) {
+            commandTreeModel[i] = new DefaultMutableTreeNode("comm_" + i);
+            commsTreeModelId.add(commandTreeModel[i]);
+        }
+        for (int i = 10; i < 20; i++) {
+            commandTreeModel[i] = new DefaultMutableTreeNode("comm_" + i);
+            commsTreeModelNotId.add(commandTreeModel[i]);
+        }
     }
 
     /**
@@ -613,23 +668,28 @@ public class MainFrame extends javax.swing.JFrame {
             case 2:
                 nextBTN.setEnabled(false);
                 prevBTN.setEnabled(true);
+                NodesTree.setModel(new javax.swing.tree.DefaultTreeModel(commsTreeModel));
                 break;
             case 0:
                 nextBTN.setEnabled(true);
                 prevBTN.setEnabled(false);
+                NodesTree.setModel(new javax.swing.tree.DefaultTreeModel(nodeTreeModel));
                 break;
             default:
                 nextBTN.setEnabled(true);
                 prevBTN.setEnabled(true);
+                NodesTree.setModel(new javax.swing.tree.DefaultTreeModel(nodeTreeModel));
                 break;
         }
     }
-    
+
     /**
-     * Insert an element node from Nodes Tree to model of parameter if not already there
-     * @param model 
+     * Insert an element node from Nodes Tree to model of parameter if not
+     * already there
+     *
+     * @param model
      */
-    public void insertElem(DefaultListModel model){
+    public void insertElem(DefaultListModel model) {
         DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) NodesTree
                 .getLastSelectedPathComponent();
         String selectedNodeName = selectedNode.toString();
@@ -639,10 +699,6 @@ public class MainFrame extends javax.swing.JFrame {
             }
         }
     }
-
-    private void openTLBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openTLBActionPerformed
-        getPrintouts();
-    }//GEN-LAST:event_openTLBActionPerformed
 
     private void OpenMNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OpenMNActionPerformed
         getPrintouts();
@@ -656,10 +712,6 @@ public class MainFrame extends javax.swing.JFrame {
         settingsDialog.setVisible(true);
     }//GEN-LAST:event_settingsMNActionPerformed
 
-    private void aboutTLBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutTLBActionPerformed
-        aboutFrame.setVisible(true);
-    }//GEN-LAST:event_aboutTLBActionPerformed
-
     private void aboutOkBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutOkBTNActionPerformed
         aboutFrame.setVisible(false);
     }//GEN-LAST:event_aboutOkBTNActionPerformed
@@ -672,29 +724,21 @@ public class MainFrame extends javax.swing.JFrame {
         settingsDialog.setVisible(false);
     }//GEN-LAST:event_applySettingsBTNActionPerformed
 
-    private void saveTLBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveTLBActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_saveTLBActionPerformed
-
-    private void nextBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextBTNActionPerformed
-        int current = mainTabbedPane.getSelectedIndex();
-        if (current < 2) {
-            mainTabbedPane.setSelectedIndex(current + 1);
-        }
+    private void mainTabbedPaneStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_mainTabbedPaneStateChanged
         managePrevNextBTN();
-    }//GEN-LAST:event_nextBTNActionPerformed
+    }//GEN-LAST:event_mainTabbedPaneStateChanged
 
-    private void prevBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prevBTNActionPerformed
-        int current = mainTabbedPane.getSelectedIndex();
-        if (current > 0) {
-            mainTabbedPane.setSelectedIndex(current - 1);
-        }
-        managePrevNextBTN();
-    }//GEN-LAST:event_prevBTNActionPerformed
+    private void removeElem2BTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeElem2BTNActionPerformed
+        compList2Model.removeAllElements();
+    }//GEN-LAST:event_removeElem2BTNActionPerformed
 
-    private void clear1BTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clear1BTNActionPerformed
-        compList1Model.clear();
-    }//GEN-LAST:event_clear1BTNActionPerformed
+    private void removeElem1BTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeElem1BTNActionPerformed
+        compList1Model.removeAllElements();
+    }//GEN-LAST:event_removeElem1BTNActionPerformed
+
+    private void insertElem2BTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertElem2BTNActionPerformed
+        insertElem(compList2Model);
+    }//GEN-LAST:event_insertElem2BTNActionPerformed
 
     private void clear2BTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clear2BTNActionPerformed
         compList2Model.clear();
@@ -704,21 +748,37 @@ public class MainFrame extends javax.swing.JFrame {
         insertElem(compList1Model);
     }//GEN-LAST:event_insertElem1BTNActionPerformed
 
-    private void mainTabbedPaneStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_mainTabbedPaneStateChanged
+    private void clear1BTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clear1BTNActionPerformed
+        compList1Model.clear();
+    }//GEN-LAST:event_clear1BTNActionPerformed
+
+    private void prevBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prevBTNActionPerformed
+        int current = mainTabbedPane.getSelectedIndex();
+        if (current > 0) {
+            mainTabbedPane.setSelectedIndex(current - 1);
+        }
         managePrevNextBTN();
-    }//GEN-LAST:event_mainTabbedPaneStateChanged
+    }//GEN-LAST:event_prevBTNActionPerformed
 
-    private void insertElem2BTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertElem2BTNActionPerformed
-        insertElem(compList2Model);
-    }//GEN-LAST:event_insertElem2BTNActionPerformed
+    private void nextBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextBTNActionPerformed
+        int current = mainTabbedPane.getSelectedIndex();
+        if (current < 2) {
+            mainTabbedPane.setSelectedIndex(current + 1);
+        }
+        managePrevNextBTN();
+    }//GEN-LAST:event_nextBTNActionPerformed
 
-    private void removeElem1BTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeElem1BTNActionPerformed
-        compList1Model.removeAllElements();
-    }//GEN-LAST:event_removeElem1BTNActionPerformed
+    private void aboutTLBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutTLBActionPerformed
+        aboutFrame.setVisible(true);
+    }//GEN-LAST:event_aboutTLBActionPerformed
 
-    private void removeElem2BTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeElem2BTNActionPerformed
-        compList2Model.removeAllElements();
-    }//GEN-LAST:event_removeElem2BTNActionPerformed
+    private void saveTLBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveTLBActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_saveTLBActionPerformed
+
+    private void openTLBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openTLBActionPerformed
+        getPrintouts();
+    }//GEN-LAST:event_openTLBActionPerformed
 
     /**
      * @param args the command line arguments
@@ -770,6 +830,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JList<String> commList;
     private javax.swing.JList<String> compList1;
     private javax.swing.JList<String> compList2;
+    private javax.swing.JPanel comparePanel;
     private javax.swing.JSplitPane diffSplitPane;
     private javax.swing.JButton discardSettingsBTN;
     private javax.swing.JMenu editMN;
@@ -778,18 +839,18 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenu fileMN;
     private javax.swing.JMenu helpMN;
     private javax.swing.JLabel infoNameLBL;
+    private javax.swing.JScrollPane infoPanel;
     private javax.swing.JTextArea infoTextArea;
     private javax.swing.JButton insertElem1BTN;
     private javax.swing.JButton insertElem2BTN;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JPanel mainPanel;
-    private javax.swing.JScrollPane mainScrollTab1;
     private javax.swing.JScrollPane mainScrollTab3;
+    private javax.swing.JSplitPane mainSplitPane;
     private javax.swing.JTabbedPane mainTabbedPane;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JButton nextBTN;
