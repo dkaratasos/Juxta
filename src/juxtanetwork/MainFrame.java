@@ -641,11 +641,6 @@ public class MainFrame extends javax.swing.JFrame {
             commandTreeModel[i] = new DefaultMutableTreeNode("comm_" + i);
             commsTreeModelNotId.add(commandTreeModel[i]);
         }
-        for (int i = 0; i < NodesTree.getRowCount(); i++) {
-            NodesTree.expandRow(i);
-        }
-        
-        NodesTree.updateUI();
     }
 
     /**
