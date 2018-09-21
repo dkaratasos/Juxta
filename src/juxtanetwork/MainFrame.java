@@ -87,6 +87,7 @@ public class MainFrame extends javax.swing.JFrame {
         toolBar = new javax.swing.JToolBar();
         openTLB = new javax.swing.JButton();
         saveTLB = new javax.swing.JButton();
+        sidebarBTN = new javax.swing.JButton();
         aboutTLB = new javax.swing.JButton();
         menuBar = new javax.swing.JMenuBar();
         fileMN = new javax.swing.JMenu();
@@ -478,6 +479,18 @@ public class MainFrame extends javax.swing.JFrame {
         });
         toolBar.add(saveTLB);
 
+        sidebarBTN.setIcon(new javax.swing.ImageIcon(getClass().getResource("/juxtanetwork/sidebar16.png"))); // NOI18N
+        sidebarBTN.setToolTipText("Toggle Sidebar");
+        sidebarBTN.setFocusable(false);
+        sidebarBTN.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        sidebarBTN.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        sidebarBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sidebarBTNActionPerformed(evt);
+            }
+        });
+        toolBar.add(sidebarBTN);
+
         aboutTLB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/juxtanetwork/about16.png"))); // NOI18N
         aboutTLB.setToolTipText("About");
         aboutTLB.setFocusable(false);
@@ -566,8 +579,8 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     /**
-     * Method createNodesTree creates the nodeTree categories: MSC, HLR, Pool and calls 
-     * updateNodesTree to put the node leafs on the tree
+     * Method createNodesTree creates the nodeTree categories: MSC, HLR, Pool
+     * and calls updateNodesTree to put the node leafs on the tree
      */
     private void createNodesTree() {
         nodeTreeModel.add(nodeTreeModelMSC);
@@ -577,34 +590,36 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     /**
-     * Method updateNodesTree inserts a new node to the tree under the correct category. If the
-     * node already exists in the tree, it is not added.
+     * Method updateNodesTree inserts a new node to the tree under the correct
+     * category. If the node already exists in the tree, it is not added.
      */
     private void updateNodesTree() {
         DefaultMutableTreeNode[] nodesTreeModel = new DefaultMutableTreeNode[20];
-        if (rootOutFolder.exists()){
-        int currIndex = 0;
-        for (File node : rootOutFolder.listFiles()) {
-            if (node.isDirectory()) {
-                nodesTreeModel[currIndex] = new DefaultMutableTreeNode(node.getName());
-                if (node.getName().startsWith("MSC") && isNotIncluded(nodeTreeModel, node.getName())) {
-                    nodeTreeModelMSC.add(nodesTreeModel[currIndex]);
-                } else if (node.getName().startsWith("HLR") && isNotIncluded(nodeTreeModel, node.getName())) {
-                    nodeTreeModelHLR.add(nodesTreeModel[currIndex]);
+        if (rootOutFolder.exists()) {
+            int currIndex = 0;
+            for (File node : rootOutFolder.listFiles()) {
+                if (node.isDirectory()) {
+                    nodesTreeModel[currIndex] = new DefaultMutableTreeNode(node.getName());
+                    if (node.getName().startsWith("MSC") && isNotIncluded(nodeTreeModel, node.getName())) {
+                        nodeTreeModelMSC.add(nodesTreeModel[currIndex]);
+                    } else if (node.getName().startsWith("HLR") && isNotIncluded(nodeTreeModel, node.getName())) {
+                        nodeTreeModelHLR.add(nodesTreeModel[currIndex]);
+                    }
+                    currIndex++;
                 }
-                currIndex++;
             }
-        }
         }
         NodesTree.updateUI();
     }
 
     /**
-     * Method isNotIncluded checks if a specified treeModel name already exists in the tree provided
-     * in the parameter. 
+     * Method isNotIncluded checks if a specified treeModel name already exists
+     * in the tree provided in the parameter.
+     *
      * @param treeModel the Tree model to be checked
      * @param name the node checked
-     * @return true if the node name is not included in the tree, i.e. will be a new node on the tree
+     * @return true if the node name is not included in the tree, i.e. will be a
+     * new node on the tree
      */
     private boolean isNotIncluded(DefaultMutableTreeNode treeModel, String name) {
         boolean included = true;
@@ -621,9 +636,10 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     /**
-     * Method createCommTree creates the command tree. This method inserts in the tree the selected
-     * from the user commands for the comparison of the nodes. The commands are grouped on two categories,
-     * based on whether the command should validate to identical printout or not
+     * Method createCommTree creates the command tree. This method inserts in
+     * the tree the selected from the user commands for the comparison of the
+     * nodes. The commands are grouped on two categories, based on whether the
+     * command should validate to identical printout or not
      */
     private void createCommTree() {
         DefaultMutableTreeNode commsTreeModelId = new DefaultMutableTreeNode("Identical P/O");
@@ -811,12 +827,22 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_aboutTLBActionPerformed
 
     private void saveTLBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveTLBActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_saveTLBActionPerformed
 
     private void openTLBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openTLBActionPerformed
         getPrintouts();
     }//GEN-LAST:event_openTLBActionPerformed
+
+    private void sidebarBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sidebarBTNActionPerformed
+        if (mainSplitPane.getDividerLocation() > 1) {
+            mainSplitPane.setDividerLocation(0);
+            mainSplitPane.setDividerSize(3);
+        } else {
+            mainSplitPane.setDividerLocation(150);
+            mainSplitPane.setDividerSize(5);
+        }
+    }//GEN-LAST:event_sidebarBTNActionPerformed
 
     /**
      * @param args the command line arguments
@@ -906,6 +932,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton saveTLB;
     private javax.swing.JDialog settingsDialog;
     private javax.swing.JMenuItem settingsMN;
+    private javax.swing.JButton sidebarBTN;
     private javax.swing.JToolBar toolBar;
     // End of variables declaration//GEN-END:variables
 }
