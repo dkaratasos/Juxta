@@ -360,7 +360,7 @@
                 <Component class="javax.swing.JTree" name="NodesTree">
                   <Properties>
                     <Property name="model" type="javax.swing.tree.TreeModel" editor="org.netbeans.modules.form.editors2.TreeModelEditor">
-                      <TreeModel code="Nodes&#xa; MSC&#xa;  MSC1&#xa;  MSC2&#xa;  MSC3&#xa; HLR&#xa;  HLR1&#xa;  HLR2&#xa; Pool&#xa;  Pool1&#xa;  Pool2"/>
+                      <TreeModel code=""/>
                     </Property>
                     <Property name="toggleClickCount" type="int" value="1"/>
                   </Properties>

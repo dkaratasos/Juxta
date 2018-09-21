@@ -2,6 +2,7 @@ package juxtanetwork;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Enumeration;
 import javax.swing.DefaultListModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 
@@ -19,6 +20,9 @@ public class MainFrame extends javax.swing.JFrame {
 
     DefaultMutableTreeNode nodeTreeModel = new DefaultMutableTreeNode("Nodes");
     DefaultMutableTreeNode commsTreeModel = new DefaultMutableTreeNode("Commands");
+    DefaultMutableTreeNode nodeTreeModelMSC = new DefaultMutableTreeNode("MSC");
+    DefaultMutableTreeNode nodeTreeModelHLR = new DefaultMutableTreeNode("HLR");
+    DefaultMutableTreeNode nodeTreeModelPool = new DefaultMutableTreeNode("Pool");
 
     /**
      * Creates new form MainFrame
@@ -224,27 +228,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         mainSplitPane.setDividerLocation(150);
 
-        javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("Nodes");
-        javax.swing.tree.DefaultMutableTreeNode treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("MSC");
-        javax.swing.tree.DefaultMutableTreeNode treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("MSC1");
-        treeNode2.add(treeNode3);
-        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("MSC2");
-        treeNode2.add(treeNode3);
-        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("MSC3");
-        treeNode2.add(treeNode3);
-        treeNode1.add(treeNode2);
-        treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("HLR");
-        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("HLR1");
-        treeNode2.add(treeNode3);
-        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("HLR2");
-        treeNode2.add(treeNode3);
-        treeNode1.add(treeNode2);
-        treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("Pool");
-        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("Pool1");
-        treeNode2.add(treeNode3);
-        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("Pool2");
-        treeNode2.add(treeNode3);
-        treeNode1.add(treeNode2);
+        javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("root");
         NodesTree.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
         NodesTree.setToggleClickCount(1);
         nodesScrollPane.setViewportView(NodesTree);
@@ -567,40 +551,80 @@ public class MainFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Initializations method
+     */
     private void initializations() {
         compList1.setModel(compList1Model);
         compList2.setModel(compList2Model);
         //commList.setModel(commListModel);
         createNodesTree();
         createCommTree();
+        NodesTree.setRootVisible(false);
 
         managePrevNextBTN();
     }
 
+    /**
+     * Method createNodesTree creates the nodeTree categories: MSC, HLR, Pool and calls 
+     * updateNodesTree to put the node leafs on the tree
+     */
     private void createNodesTree() {
-
-        DefaultMutableTreeNode nodeTreeModelMSC = new DefaultMutableTreeNode("MSC");
-        DefaultMutableTreeNode nodeTreeModelHLR = new DefaultMutableTreeNode("HLR");
-        DefaultMutableTreeNode nodeTreeModelPool = new DefaultMutableTreeNode("Pool");
-        DefaultMutableTreeNode[] nodesTreeModel = new DefaultMutableTreeNode[20];
         nodeTreeModel.add(nodeTreeModelMSC);
         nodeTreeModel.add(nodeTreeModelHLR);
         nodeTreeModel.add(nodeTreeModelPool);
-
-        for (int i = 0; i < 10; i++) {
-            nodesTreeModel[i] = new DefaultMutableTreeNode("MSCnode");
-            nodeTreeModelMSC.add(nodesTreeModel[i]);
-        }
-        for (int i = 10; i < 15; i++) {
-            nodesTreeModel[i] = new DefaultMutableTreeNode("HLRnode");
-            nodeTreeModelHLR.add(nodesTreeModel[i]);
-        }
-        for (int i = 15; i < 20; i++) {
-            nodesTreeModel[i] = new DefaultMutableTreeNode("Poolnode");
-            nodeTreeModelPool.add(nodesTreeModel[i]);
-        }
+        updateNodesTree();
     }
 
+    /**
+     * Method updateNodesTree inserts a new node to the tree under the correct category. If the
+     * node already exists in the tree, it is not added.
+     */
+    private void updateNodesTree() {
+        DefaultMutableTreeNode[] nodesTreeModel = new DefaultMutableTreeNode[20];
+        if (rootOutFolder.exists()){
+        int currIndex = 0;
+        for (File node : rootOutFolder.listFiles()) {
+            if (node.isDirectory()) {
+                nodesTreeModel[currIndex] = new DefaultMutableTreeNode(node.getName());
+                if (node.getName().startsWith("MSC") && isNotIncluded(nodeTreeModel, node.getName())) {
+                    nodeTreeModelMSC.add(nodesTreeModel[currIndex]);
+                } else if (node.getName().startsWith("HLR") && isNotIncluded(nodeTreeModel, node.getName())) {
+                    nodeTreeModelHLR.add(nodesTreeModel[currIndex]);
+                }
+                currIndex++;
+            }
+        }
+        }
+        NodesTree.updateUI();
+    }
+
+    /**
+     * Method isNotIncluded checks if a specified treeModel name already exists in the tree provided
+     * in the parameter. 
+     * @param treeModel the Tree model to be checked
+     * @param name the node checked
+     * @return true if the node name is not included in the tree, i.e. will be a new node on the tree
+     */
+    private boolean isNotIncluded(DefaultMutableTreeNode treeModel, String name) {
+        boolean included = true;
+
+        Enumeration<DefaultMutableTreeNode> e = treeModel.depthFirstEnumeration();
+        while (e.hasMoreElements()) {
+            DefaultMutableTreeNode nodeCheck = e.nextElement();
+            if (name.equals(nodeCheck.toString())) {
+                included = false;
+            }
+        }
+
+        return included;
+    }
+
+    /**
+     * Method createCommTree creates the command tree. This method inserts in the tree the selected
+     * from the user commands for the comparison of the nodes. The commands are grouped on two categories,
+     * based on whether the command should validate to identical printout or not
+     */
     private void createCommTree() {
         DefaultMutableTreeNode commsTreeModelId = new DefaultMutableTreeNode("Identical P/O");
         DefaultMutableTreeNode commsTreeModelNotId = new DefaultMutableTreeNode("Differing P/O");
@@ -617,6 +641,11 @@ public class MainFrame extends javax.swing.JFrame {
             commandTreeModel[i] = new DefaultMutableTreeNode("comm_" + i);
             commsTreeModelNotId.add(commandTreeModel[i]);
         }
+        for (int i = 0; i < NodesTree.getRowCount(); i++) {
+            NodesTree.expandRow(i);
+        }
+        
+        NodesTree.updateUI();
     }
 
     /**
@@ -639,6 +668,8 @@ public class MainFrame extends javax.swing.JFrame {
                 System.out.println("No file selected!");
             }
         }
+        updateNodesTree();
+        expandTreeAll();
     }
 
     /**
@@ -657,6 +688,15 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     /**
+     * Method expandTreeAll expands all the nodes of the tree
+     */
+    public void expandTreeAll() {
+        for (int i = 0; i < NodesTree.getRowCount(); i++) {
+            NodesTree.expandRow(i);
+        }
+    }
+
+    /**
      * Method managePrevNextBTN will manage the Next and Prev buttons of the
      * tabs. When on last tab, NextBTN will not be enabled. When on first tab,
      * prevBTN will not be enabled. In all other cases both buttons are enabled
@@ -669,16 +709,19 @@ public class MainFrame extends javax.swing.JFrame {
                 nextBTN.setEnabled(false);
                 prevBTN.setEnabled(true);
                 NodesTree.setModel(new javax.swing.tree.DefaultTreeModel(commsTreeModel));
+                expandTreeAll();
                 break;
             case 0:
                 nextBTN.setEnabled(true);
                 prevBTN.setEnabled(false);
                 NodesTree.setModel(new javax.swing.tree.DefaultTreeModel(nodeTreeModel));
+                expandTreeAll();
                 break;
             default:
                 nextBTN.setEnabled(true);
                 prevBTN.setEnabled(true);
                 NodesTree.setModel(new javax.swing.tree.DefaultTreeModel(nodeTreeModel));
+                expandTreeAll();
                 break;
         }
     }
