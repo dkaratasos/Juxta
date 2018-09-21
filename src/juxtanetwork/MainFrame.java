@@ -13,16 +13,16 @@ import javax.swing.tree.DefaultMutableTreeNode;
 public class MainFrame extends javax.swing.JFrame {
 
     File rootInputFolder;
-    File rootOutFolder = new File("Data"); // Name of the Audits folder
-    final DefaultListModel compList1Model = new DefaultListModel();
-    final DefaultListModel compList2Model = new DefaultListModel();
-    final DefaultListModel commListModel = new DefaultListModel();
+    File rootOutFolder = new File("Data");                              // Name of the Audits folder
+    final DefaultListModel compList1Model = new DefaultListModel();     // Compare nodes
+    final DefaultListModel compList2Model = new DefaultListModel();     // CompareWith Nodes
+    final DefaultListModel commListModel = new DefaultListModel();      // Command list for selectiona
 
-    DefaultMutableTreeNode nodeTreeModel = new DefaultMutableTreeNode("Nodes");
-    DefaultMutableTreeNode commsTreeModel = new DefaultMutableTreeNode("Commands");
-    DefaultMutableTreeNode nodeTreeModelMSC = new DefaultMutableTreeNode("MSC");
-    DefaultMutableTreeNode nodeTreeModelHLR = new DefaultMutableTreeNode("HLR");
-    DefaultMutableTreeNode nodeTreeModelPool = new DefaultMutableTreeNode("Pool");
+    DefaultMutableTreeNode nodeTreeModel = new DefaultMutableTreeNode("Nodes");     // Nodes Tree Root TreeNode
+    DefaultMutableTreeNode commsTreeModel = new DefaultMutableTreeNode("Commands"); // Commands Tree Root TreeNode
+    DefaultMutableTreeNode nodeTreeModelMSC = new DefaultMutableTreeNode("MSC");    // MSC subtree of nodes Tree
+    DefaultMutableTreeNode nodeTreeModelHLR = new DefaultMutableTreeNode("HLR");    // HLR subtree of nodes Tree
+    DefaultMutableTreeNode nodeTreeModelPool = new DefaultMutableTreeNode("Pool");  // Pool subtree of nodes Tree
 
     /**
      * Creates new form MainFrame
@@ -555,12 +555,12 @@ public class MainFrame extends javax.swing.JFrame {
      * Initializations method
      */
     private void initializations() {
-        compList1.setModel(compList1Model);
-        compList2.setModel(compList2Model);
+        compList1.setModel(compList1Model);             // Set model for Compare nodes
+        compList2.setModel(compList2Model);             // Set model for Compare With nodes
         //commList.setModel(commListModel);
-        createNodesTree();
-        createCommTree();
-        NodesTree.setRootVisible(false);
+        createNodesTree();                               // Create the Nodes Tree Model
+        createCommTree();                                // Create the Commands Tree Model
+        NodesTree.setRootVisible(false);                 // Do not diaplsy the Name of the root of the tree
 
         managePrevNextBTN();
     }
