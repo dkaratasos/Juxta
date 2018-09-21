@@ -11,11 +11,7 @@ package juxtanetwork;
  */
 public class JuxtaNetwork {
     
-// Test line for git
-    //
-    //
-    
-    
+// Test line for git 
     /**
      * @param args the command line arguments
      */
