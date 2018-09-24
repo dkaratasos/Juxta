@@ -1,10 +1,15 @@
 package juxtanetwork;
 
+import java.awt.Component;
 import java.io.File;
 import java.io.IOException;
 import java.util.Enumeration;
 import javax.swing.DefaultListModel;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.ToolTipManager;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
 
 /**
  *
@@ -23,6 +28,10 @@ public class MainFrame extends javax.swing.JFrame {
     DefaultMutableTreeNode nodeTreeModelMSC = new DefaultMutableTreeNode("MSC");    // MSC subtree of nodes Tree
     DefaultMutableTreeNode nodeTreeModelHLR = new DefaultMutableTreeNode("HLR");    // HLR subtree of nodes Tree
     DefaultMutableTreeNode nodeTreeModelPool = new DefaultMutableTreeNode("Pool");  // Pool subtree of nodes Tree
+    
+    ImageIcon hlrIcon = new javax.swing.ImageIcon(getClass().getResource("/juxtanetwork/hlr16.gif"));
+    ImageIcon mscIcon = new javax.swing.ImageIcon(getClass().getResource("/juxtanetwork/MSC16.jpg"));
+    ImageIcon poolIcon = new javax.swing.ImageIcon(getClass().getResource("/juxtanetwork/pool.jpg"));
 
     /**
      * Creates new form MainFrame
@@ -573,6 +582,8 @@ public class MainFrame extends javax.swing.JFrame {
         createNodesTree();                               // Create the Nodes Tree Model
         createCommTree();                                // Create the Commands Tree Model
         NodesTree.setRootVisible(false);                 // Do not diaplsy the Name of the root of the tree
+        NodesTree.setCellRenderer(new MyRenderer());
+        ToolTipManager.sharedInstance().registerComponent(NodesTree); // Tooltips on Nodes Tree enabled
 
         managePrevNextBTN();
     }
@@ -633,6 +644,70 @@ public class MainFrame extends javax.swing.JFrame {
 
         return included;
     }
+    
+    /**
+     * Inner class MyRenderer is used to render specific icon for the different types of nodes in
+     * the Nodes Tree and also specific Tooltips. The categories are MSC node, HLR node, other
+     */
+    class MyRenderer extends DefaultTreeCellRenderer {
+    Icon nodeIcon;
+
+    public MyRenderer(Icon icon) {
+        nodeIcon = icon;
+    }
+    
+    public MyRenderer() {
+    }
+
+    @Override
+    public Component getTreeCellRendererComponent(
+                        javax.swing.JTree tree,
+                        Object value,
+                        boolean sel,
+                        boolean expanded,
+                        boolean leaf,
+                        int row,
+                        boolean hasFocus) {
+
+        super.getTreeCellRendererComponent(
+                        tree, value, sel,
+                        expanded, leaf, row,
+                        hasFocus);
+        if (isHLR(value)) {  // removed from if: leaf && 
+            setIcon(hlrIcon);
+            setToolTipText("HLR Node");
+        } else if (isMSC(value)) {
+            setIcon(mscIcon);
+            setToolTipText("MSC Node");
+        } else {
+            setIcon(poolIcon);
+            setToolTipText(null); //no tool tip
+        } 
+
+        return this;
+    }
+	
+ protected boolean isHLR(Object value) {
+        String nodeName = value.toString();
+		
+        if (nodeName.startsWith("HLR")) {
+            return true;
+        }
+
+        return false;
+    }
+ 
+ protected boolean isMSC(Object value) {
+        String nodeName = value.toString();
+		
+        if (nodeName.startsWith("MSC")) {
+            return true;
+        }
+
+        return false;
+    }
+}	
+
 
     /**
      * Method createCommTree creates the command tree. This method inserts in
