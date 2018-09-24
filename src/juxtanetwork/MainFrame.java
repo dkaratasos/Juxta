@@ -681,7 +681,7 @@ public class MainFrame extends javax.swing.JFrame {
             setToolTipText("MSC Node");
         } else {
             setIcon(poolIcon);
-            setToolTipText(null); //no tool tip
+            setToolTipText("Pool (MSC group)"); 
         } 
 
         return this;
