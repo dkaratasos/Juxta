@@ -579,10 +579,10 @@ public class MainFrame extends javax.swing.JFrame {
         compList1.setModel(compList1Model);             // Set model for Compare nodes
         compList2.setModel(compList2Model);             // Set model for Compare With nodes
         //commList.setModel(commListModel);
-        createNodesTree();                               // Create the Nodes Tree Model
-        createCommTree();                                // Create the Commands Tree Model
-        NodesTree.setRootVisible(false);                 // Do not diaplsy the Name of the root of the tree
-        NodesTree.setCellRenderer(new MyRenderer());
+        createNodesTree();                              // Create the Nodes Tree Model
+        createCommTree();                               // Create the Commands Tree Model
+        NodesTree.setRootVisible(false);                // Do not diaplsy the Name of the root of the tree
+        NodesTree.setCellRenderer(new MyRenderer());    // Assign icons and tooltips per type of node in NodesTree
         ToolTipManager.sharedInstance().registerComponent(NodesTree); // Tooltips on Nodes Tree enabled
 
         managePrevNextBTN();
