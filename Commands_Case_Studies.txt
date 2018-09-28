@@ -1,0 +1,324 @@
+===========================================================================
+                              R U L E S
+===========================================================================
+- Define Header as the first line in commandPO the starts with non-space character and
+  subheader the next line after header that starts with a non-space character
+  
+- Check Subheader. If same subheader appears in printout later one set the text between
+subheaders as an item Sub<i>. Save the start of Sub<i> and the subHeader text for later use. 
+The text of a Sub<i> ends with the next line having either:
+  * END
+  * Line with the same Subheader text (String variable subHeader)
+
+- Move to the end of command collecting all items Sub<i> in a list.
+ 
+- Sort items Sub<> in the list. 
+
+- Do the same for the other node's PO
+
+- Check for differences between the items of Sub<i> of PO1 and the items of Sub<i> of PO2 
+one by one and line by line
+  * If difference if found on a Sub<x> of PO1 then check if the checked line is included
+  the same in Sub<x> of PO2 on other line number. If yes, then do not count as difference
+  * If the next line start with a space character (\s \t) consider this line as one with
+  the previous line in the above check, e.g. check as one line in below examples:
+  example 1:
+  | N300VLR 4-49172402222  MAP-2  262-02-16  262-02-15 |
+  |                               262-02-10  262-02-9  |
+
+ check as if being 1 line:
+ "N300VLR 4-49172402222  MAP-2  262-02-16  262-02-15\n                               262-02-10  262-02-9"
+									   
+  example 2:
+  | LIST151  DETY=ASDH3    IRM=1   FNC=2    |  
+  |          R1=ASDHV3F                     |
+  |          MIS2=3     MIS4=2     MIS5=62  |
+
+ check as if being 1 line:									   
+ "LIST151  DETY=ASDH3    IRM=1   FNC=2\n         R1=ASDHV3F\n         MIS2=3     MIS4=2     MIS5=62"
+ 
+  and not as two or three lines (Use concatenation to join texts of lines: text1+"\n"+text2)
+  * Ignore all empty lines in difference check
+  * Collect all the differences (indexes startDiff, endDiff) for each Sub<i>
+  
+- Pack items of Sub<i> to a sortedPO using a toString() method and concatenation and 
+collect all the differences in one list (use recalculation of indexes as follows:
+for each Sub<i>
+startDiffNew = startDiff + SubStartIndex<i>
+endDiffNew = endDiff + SubStartIndex<i>)
+
+- Store the sortedPOs in the Command object and return the final list of differences
+
+===========================================================================
+===========================================================================
+
+PCORP:BLOCK=ALL;
+-----
+PROGRAM CORRECTIONS
+ 
+BLOCK    SUID                               CA     CAF    ILEN
+RTSDV    7SHC/CAAZA 107 5192/MQ9EK R1A06    92     1      16
+ 
+CI               S  TYPE  POSITION         SIZE
+RNAEQ0654        C  CODE  H'17CF           32
+RNAEQ0654        C  CODE  H'17E7           20
+RNAEQ0654        C  CODE  H'17EB           20
+RWAWY0046        C  CODE  H'009D           19
+                 F                         1
+ 
+BLOCK    SUID                               CA     CAF    ILEN
+MMMRE    8SHB/CAAW 107 0233/MQ9EK R1A04     24     0      32
+ 
+CI               S  TYPE  POSITION         SIZE
+SNAEF0472        C  CODE  H'137B           24
+ 
+BLOCK    SUID                               CA     CAF    ILEN
+
+===========================================================================
+MGCVP:VLR=ALL;
+-----
+MT COOPERATING VLR DATA
+VLR      VLRADDR            MAPV     LAI
+N300VLR  4-49172402222      MAP-2    262-02-16     262-02-15
+                                     262-02-10     262-02-9
+                                     262-02-8      262-02-7
+                                     262-02-2      262-02-1
+                                     240-99-304    240-99-303
+                                     240-99-302    240-99-301
+                                     262-55-82     262-55-81
+                                     262-55-11     262-55-10
+                                     262-55-9      262-55-8
+                                     262-55-3      262-55-2
+                                     262-55-1
+N410VLR  4-49173410333      MAP-2    262-11-41
+N411VLR  4-49172411333      MAP-2    262-02-41     262-12-41
+N900VLR  4-49172903333      MAP-2    262-02-33     262-02-32
+                                     262-02-21     262-02-20
+                                     262-02-19     262-02-18
+                                     240-99-904    240-99-903
+                                     240-99-902    240-99-901
+                                     262-55-89     262-55-59
+                                     262-55-20     262-55-19
+                                     262-55-18
+END		
+===========================================================================
+MGCVP:VLR=ALL,LAI=ALL;
+-----
+MT COOPERATING VLR DATA
+LAI
+123-45-1
+NRIL
+ 0
+VLR      VLRADDR            MAPV     NRIV
+THES1    3-468765           MAP-3
+LAI
+234-30-631
+NRIL
+ 6
+VLR      VLRADDR            MAPV     NRIV
+SSKP12   4-447953723132     MAP-3      55
+SSKP11   4-447953723131     MAP-3      46
+SSKP5    4-447953723125     MAP-3      58
+                                       59
+SSKP1    4-447953723121     MAP-3      44
+                                       45
+SSKT1    4-447953713121     MAP-3      12
+                                       13
+....
+
+LAI
+234-30-663
+NRIL
+ 6
+VLR      VLRADDR            MAPV     NRIV
+SSKP7    4-447953723127     MAP-3      37
+SSKP6    4-447953723126     MAP-3      26
+                                       27
+SSKP5    4-447953723125     MAP-3      58
+                                       59
+SSKT1    4-447953713121     MAP-3      12
+                                       13
+END 
+
+===========================================================================
+MGDRP:SCADDR=ALL;
+-----
+MT, DESTINATION BASED ROUTING OF MO SMS DATA
+
+SMS-SC INDEPENDENT DEFINITIONS
+
+DANUM                        TON  NAPI  NSCADDR
+452048851049799                         12345678
+452040025927332                         1234567890
+452048850511224                         12345
+END
+
+===========================================================================
+SAAEP:BLOCK=ALL;
+-----
+SIZE ALTERATION OF DATA FILES INFORMATION
+
+SAE    BLOCK    CNTRTYP  NI          NIU         NIE         NIR
+ 529   ETM2     MANUAL           10
+ 529   ETRALT4  MANUAL            0
+ 529   ETRBLT4  MANUAL            0
+ 529   ETRTL    MANUAL            2           0
+ 529   ETRALT6  MANUAL            0
+ 529   ETRBLT6  MANUAL            0
+ 529   ETRTB6   MANUAL            0
+ 529   ETRTG6   MANUAL            0
+ 529   ETRTL6   MANUAL            0
+ 529   ETRTT6   MANUAL            0
+ 529   ETM3     MANUAL            0
+ 529   SRS      MANUAL            0
+ 529   SRSTRAF  MANUAL            0
+ 529   ETRTB    MANUAL           54           8
+ 529   ETRTT4   MANUAL            0
+ 529   ETRTT    MANUAL            0           0
+ 529   ETRTB4   MANUAL            0
+ 529   ETRTG4   MANUAL            0
+ 529   ETRTG    MANUAL           64           2
+ 529   ETM1     MANUAL            8           0
+ 529   ETRBLT   MANUAL          222           8
+ 529   SNTPCDM  MANUAL            4
+ 529   RTPGS    MANUAL            1
+ 529   ETRALT   MANUAL            0           0
+ 529   ETRTL4   MANUAL            0
+ 529   SNTPCD   MANUAL            4
+END 
+===========================================================================
+DBTSP:TAB=AXEPARS;
+-----
+DATABASE TABLE
+
+BLOCK   TAB             TABLE                           WRAPPED
+PARA    AXEPARS                                         YES
+
+NAME            SETNAME         PARID      VALUE UNIT CLASS   DISTRIB
+ENUMNPC         GSMMSCC              16384     0      CUSTOM  IMMED
+                                STATUS  FCVSET FCVALUE DCINFO FCODE
+                                UPDATED FALSE        0 UNDEF      0
+
+NAME            SETNAME         PARID      VALUE UNIT CLASS   DISTRIB
+SCLMTHRPERC     SCLMC                16383    80      CUSTOM  IMMED
+                                STATUS  FCVSET FCVALUE DCINFO FCODE
+                                UPDATED FALSE        0 UNDEF      0
+
+:
+NAME            SETNAME         PARID      VALUE UNIT CLASS   DISTRIB
+FREQINDEX1      TSSTONESS             5686     8      SUPPLY  IMMED
+                                STATUS  FCVSET FCVALUE DCINFO FCODE
+                                UPDATED FALSE        0 UNDEF      0
+
+END
+===========================================================================
+MGEPP:ID=ALL;
+-----
+MT EXCHANGE PROPERTY DATA
+
+PROP                   TYPE
+STSOP2MNCLEN-2         OPTIONAL
+STSOP1MNCLEN-2         OPTIONAL
+EXPANDEDMNC-0          OPTIONAL
+PAGNUMBERLA-1          OPTIONAL
+AOCIATTSW-1            OPTIONAL
+AOCCATTSW-1            OPTIONAL
+CAPLSCHMTVAL-0         OPTIONAL
+CAPLSCHMTPREF-0        OPTIONAL
+CAPLSCHMTOVERR-0       OPTIONAL
+CAPLSCHMOVAL-0         OPTIONAL
+:
+STSOP1MNC-0            OPTIONAL
+STSOP1MCC-0            OPTIONAL
+SSTONESENDING-1        OPTIONAL
+
+END
+===========================================================================
+MGLAP; (same inside pool, different between pools)
+-----
+MT LOCATION AREA DATA
+
+LAI           PFC  PRL  POOL  AIDX
+
+602-02-1293   ON     0     0
+602-02-1294   ON     0     0
+602-02-1302   ON     0     0
+END
+===========================================================================
+EXROP:R=ALL;
+-----
+ROUTE DATA
+R        ROUTE PARAMETERS
+GRR      DETY=GRR      
+1MPN     DETY=MPN      FNC=1      MIS1=1     BO=22    
+MSMO     DETY=MSMO     MIS3=1     BO=92      
+MSMT     DETY=MSMT     MIS3=1     BO=93      
+IGRI1    DETY=GRI      RSV=208    MIS1=17    MIS3=5     BO=8       
+         MIS6=1     
+NGRI1    DETY=GRI      RSV=208    MIS1=17    MIS3=5     BO=8       
+         MIS6=2     
+TCIAL1   DETY=TCIA     FNC=1      RSV=4      
+ASDHV3C  DETY=ASDH3    FNC=1      
+LIST151  DETY=ASDH3    IRM=1   FNC=2      
+         R1=ASDHV3F
+         MIS2=3     MIS4=2     MIS5=62
+REC26    DETY=ASDH3    FNC=3      
+         R1=ASDHV3C
+REC27    DETY=ASDH3    FNC=3      
+         R1=ASDHV3C		 
+M2352I   DETY=MUIUCM   PRI=10  FNC=3      
+         R=M2352O
+         SI=SCCP     SP=2-2352   
+         GENERIC PARAMETERS IN ROUTE OWNER
+         MGG=MGWG3U   PBSD=BACKD
+MRNRHOB  DETY=MRNR     		
+HD3101O  DETY=MRALT    TTRANS=3   FNC=3      
+         R=HD3101I
+         MIS1=1     MIS2=22    RNO=1      SI=SCCP     SP=2-101    
+         
+         GENERIC PARAMETERS IN ROUTE OWNER
+         MGG=MGWG3A
+HD3101I  DETY=MRALT    PRI=10  FNC=3      
+         R=HD3101O
+         MIS1=1     MIS2=22    RNO=1      SI=SCCP     SP=2-101 
+UPDR6I   DETY=UPDR     PRI=10  FNC=3      
+         R=UPDR6O
+         SI=ISUP4    SP=2-2604   
+RCAT11   DETY=RCAT     FNC=2      
+         GENERIC PARAMETERS IN ROUTE OWNER
+         PREDEF=11           
+         MGG=RCATMGG	
+BIA306O  DETY=BID      TTRANS=1   FNC=3      
+         R=BIA306I
+         ST=6       SP=2-2053   
+         GENERIC PARAMETERS IN ROUTE OWNER
+         OOBTC=2             FBBS=2              GCR=1               
+         MGG=MGWG3		 
+14MIN2   DETY=MIN      FNC=14     MIS1=3     MIS2=2     BO=29      
+         RO=0       CO=2       MIS5=14101 MIS6=0     
+15MIN2   DETY=MIN      FNC=15     MIS1=1     MIS2=2     BO=30      
+         RO=0       CO=0       MIS5=14101 MIS6=0     
+A331E0O  DETY=SIPCO    TTRANS=1   FNC=3      
+         R=A331E0I
+         R2=M6SIPO
+         MIS2=1     
+         GENERIC PARAMETERS IN ROUTE OWNER
+         PROPDLS=1           HRTCP=1             BCIND=6             
+         SCI=1               T38REIN=1           T38FAX=1            
+         G729ABO=2           RSIID=29            
+         MGG=MGWG3
+OGRI129  DETY=GRI      RSV=48     MIS1=17    MIS3=7     BO=117     
+         CO=1       
+MCRR1    DETY=MCRR     MIS3=7     BO=7       RO=1       CO=1       
+END 		 
+===========================================================================
+MGNDP;
+-----
+MOBILE TELEPHONY NETWORK RESOURCE IDENTIFIER DATA
+
+NRIL  NRIV  NULLNRIV
+   4     1         0
+         2
+         3
+END
+===========================================================================

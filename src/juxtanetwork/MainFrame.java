@@ -28,7 +28,7 @@ public class MainFrame extends javax.swing.JFrame {
     DefaultMutableTreeNode nodeTreeModelMSC = new DefaultMutableTreeNode("MSC");    // MSC subtree of nodes Tree
     DefaultMutableTreeNode nodeTreeModelHLR = new DefaultMutableTreeNode("HLR");    // HLR subtree of nodes Tree
     DefaultMutableTreeNode nodeTreeModelPool = new DefaultMutableTreeNode("Pool");  // Pool subtree of nodes Tree
-    
+
     ImageIcon hlrIcon = new javax.swing.ImageIcon(getClass().getResource("/juxtanetwork/hlr16.gif"));
     ImageIcon mscIcon = new javax.swing.ImageIcon(getClass().getResource("/juxtanetwork/MSC16.jpg"));
     ImageIcon poolIcon = new javax.swing.ImageIcon(getClass().getResource("/juxtanetwork/pool.jpg"));
@@ -98,6 +98,7 @@ public class MainFrame extends javax.swing.JFrame {
         saveTLB = new javax.swing.JButton();
         sidebarBTN = new javax.swing.JButton();
         aboutTLB = new javax.swing.JButton();
+        testBTN = new javax.swing.JButton();
         menuBar = new javax.swing.JMenuBar();
         fileMN = new javax.swing.JMenu();
         OpenMN = new javax.swing.JMenuItem();
@@ -511,6 +512,17 @@ public class MainFrame extends javax.swing.JFrame {
         });
         toolBar.add(aboutTLB);
 
+        testBTN.setText("PrintSelectedComms");
+        testBTN.setFocusable(false);
+        testBTN.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        testBTN.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        testBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                testBTNActionPerformed(evt);
+            }
+        });
+        toolBar.add(testBTN);
+
         fileMN.setText("File");
 
         OpenMN.setIcon(new javax.swing.ImageIcon(getClass().getResource("/juxtanetwork/Open16.png"))); // NOI18N
@@ -578,7 +590,7 @@ public class MainFrame extends javax.swing.JFrame {
     private void initializations() {
         compList1.setModel(compList1Model);             // Set model for Compare nodes
         compList2.setModel(compList2Model);             // Set model for Compare With nodes
-        //commList.setModel(commListModel);
+        commList.setModel(commListModel);
         createNodesTree();                              // Create the Nodes Tree Model
         createCommTree();                               // Create the Commands Tree Model
         NodesTree.setRootVisible(false);                // Do not diaplsy the Name of the root of the tree
@@ -586,6 +598,13 @@ public class MainFrame extends javax.swing.JFrame {
         ToolTipManager.sharedInstance().registerComponent(NodesTree); // Tooltips on Nodes Tree enabled
 
         managePrevNextBTN();
+        commListModel.addElement("PCORP");
+        commListModel.addElement("MGNDP");
+        commListModel.addElement("DBTSP");
+        commListModel.addElement("MGEPP");
+        commListModel.addElement("Comm1");
+        commListModel.addElement("Comm2");
+        commListModel.addElement("Comm3");
     }
 
     /**
@@ -644,70 +663,71 @@ public class MainFrame extends javax.swing.JFrame {
 
         return included;
     }
-    
+
     /**
-     * Inner class MyRenderer is used to render specific icon for the different types of nodes in
-     * the Nodes Tree and also specific Tooltips. The categories are MSC node, HLR node, other
+     * Inner class MyRenderer is used to render specific icon for the different
+     * types of nodes in the Nodes Tree and also specific Tooltips. The
+     * categories are MSC node, HLR node, other
      */
     class MyRenderer extends DefaultTreeCellRenderer {
-    Icon nodeIcon;
 
-    public MyRenderer(Icon icon) {
-        nodeIcon = icon;
-    }
-    
-    public MyRenderer() {
-    }
+        Icon nodeIcon;
 
-    @Override
-    public Component getTreeCellRendererComponent(
-                        javax.swing.JTree tree,
-                        Object value,
-                        boolean sel,
-                        boolean expanded,
-                        boolean leaf,
-                        int row,
-                        boolean hasFocus) {
-
-        super.getTreeCellRendererComponent(
-                        tree, value, sel,
-                        expanded, leaf, row,
-                        hasFocus);
-        if (isHLR(value)) {  // removed from if: leaf && 
-            setIcon(hlrIcon);
-            setToolTipText("HLR Node");
-        } else if (isMSC(value)) {
-            setIcon(mscIcon);
-            setToolTipText("MSC Node");
-        } else {
-            setIcon(poolIcon);
-            setToolTipText("Pool (MSC group)"); 
-        } 
-
-        return this;
-    }
-	
- protected boolean isHLR(Object value) {
-        String nodeName = value.toString();
-		
-        if (nodeName.startsWith("HLR")) {
-            return true;
+        public MyRenderer(Icon icon) {
+            nodeIcon = icon;
         }
 
-        return false;
-    }
- 
- protected boolean isMSC(Object value) {
-        String nodeName = value.toString();
-		
-        if (nodeName.startsWith("MSC")) {
-            return true;
+        public MyRenderer() {
         }
 
-        return false;
-    }
-}	
+        @Override
+        public Component getTreeCellRendererComponent(
+                javax.swing.JTree tree,
+                Object value,
+                boolean sel,
+                boolean expanded,
+                boolean leaf,
+                int row,
+                boolean hasFocus) {
 
+            super.getTreeCellRendererComponent(
+                    tree, value, sel,
+                    expanded, leaf, row,
+                    hasFocus);
+            if (isHLR(value)) {  // removed from if: leaf && 
+                setIcon(hlrIcon);
+                setToolTipText("HLR Node");
+            } else if (isMSC(value)) {
+                setIcon(mscIcon);
+                setToolTipText("MSC Node");
+            } else {
+                setIcon(poolIcon);
+                setToolTipText("Pool (MSC group)");
+            }
+
+            return this;
+        }
+
+        protected boolean isHLR(Object value) {
+            String nodeName = value.toString();
+
+            if (nodeName.startsWith("HLR")) {
+                return true;
+            }
+
+            return false;
+        }
+
+        protected boolean isMSC(Object value) {
+            String nodeName = value.toString();
+
+            if (nodeName.startsWith("MSC")) {
+                return true;
+            }
+
+            return false;
+        }
+    }
 
     /**
      * Method createCommTree creates the command tree. This method inserts in
@@ -901,7 +921,7 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_aboutTLBActionPerformed
 
     private void saveTLBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveTLBActionPerformed
-
+        
     }//GEN-LAST:event_saveTLBActionPerformed
 
     private void openTLBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openTLBActionPerformed
@@ -917,6 +937,13 @@ public class MainFrame extends javax.swing.JFrame {
             mainSplitPane.setDividerSize(5);
         }
     }//GEN-LAST:event_sidebarBTNActionPerformed
+
+    private void testBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_testBTNActionPerformed
+        int[] test = commList.getSelectedIndices();
+        for (int i = 0; i < test.length; i++) {
+            System.out.println(test[i] + " " + commListModel.getElementAt(test[i]).toString());
+        }
+    }//GEN-LAST:event_testBTNActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1007,6 +1034,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JDialog settingsDialog;
     private javax.swing.JMenuItem settingsMN;
     private javax.swing.JButton sidebarBTN;
+    private javax.swing.JButton testBTN;
     private javax.swing.JToolBar toolBar;
     // End of variables declaration//GEN-END:variables
 }
