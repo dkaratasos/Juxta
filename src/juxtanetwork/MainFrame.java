@@ -79,7 +79,7 @@ public class MainFrame extends javax.swing.JFrame {
         compList2 = new javax.swing.JList<>();
         clear2BTN = new javax.swing.JButton();
         insertElem2BTN = new javax.swing.JButton();
-        referenceBTN = new javax.swing.JButton();
+        referenceCompWithBTN = new javax.swing.JButton();
         mainScrollTab3 = new javax.swing.JScrollPane();
         commList = new javax.swing.JList<>();
         jLabel1 = new javax.swing.JLabel();
@@ -87,6 +87,7 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         removeElem1BTN = new javax.swing.JButton();
         removeElem2BTN = new javax.swing.JButton();
+        referenceCompBTN = new javax.swing.JButton();
         resultsPanel = new javax.swing.JPanel();
         diffSplitPane = new javax.swing.JSplitPane();
         po1ScrollPane = new javax.swing.JScrollPane();
@@ -99,6 +100,9 @@ public class MainFrame extends javax.swing.JFrame {
         sidebarBTN = new javax.swing.JButton();
         aboutTLB = new javax.swing.JButton();
         testBTN = new javax.swing.JButton();
+        jSeparator1 = new javax.swing.JToolBar.Separator();
+        compareCombo = new javax.swing.JComboBox<>();
+        jSeparator2 = new javax.swing.JToolBar.Separator();
         menuBar = new javax.swing.JMenuBar();
         fileMN = new javax.swing.JMenu();
         OpenMN = new javax.swing.JMenuItem();
@@ -303,8 +307,8 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        referenceBTN.setText("R");
-        referenceBTN.setToolTipText("Load a reference to Compare with");
+        referenceCompWithBTN.setText("R");
+        referenceCompWithBTN.setToolTipText("Load a reference to Compare with");
 
         commList.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "PCORP", "MGNDP", "DBTSP", "MGEPP", "Comm1", "Comm2", "Comm3" };
@@ -335,6 +339,9 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
+        referenceCompBTN.setText("R");
+        referenceCompBTN.setToolTipText("Load a reference to Compare with");
+
         javax.swing.GroupLayout comparePanelLayout = new javax.swing.GroupLayout(comparePanel);
         comparePanel.setLayout(comparePanelLayout);
         comparePanelLayout.setHorizontalGroup(
@@ -343,31 +350,35 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGroup(comparePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, comparePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(comparePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(comparePanelLayout.createSequentialGroup()
+                        .addGroup(comparePanelLayout.createSequentialGroup()
+                            .addGroup(comparePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(insertElem1BTN)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(removeElem1BTN)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(clear1BTN))
-                            .addGroup(comparePanelLayout.createSequentialGroup()
-                                .addComponent(insertElem2BTN)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(removeElem2BTN)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(referenceBTN)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(clear2BTN))
-                            .addGroup(comparePanelLayout.createSequentialGroup()
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(20, 20, 20)))
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(insertElem2BTN))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(comparePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(removeElem1BTN, javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(removeElem2BTN, javax.swing.GroupLayout.Alignment.TRAILING))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addGroup(comparePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(referenceCompBTN, javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(referenceCompWithBTN, javax.swing.GroupLayout.Alignment.TRAILING))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(comparePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(clear1BTN, javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(clear2BTN, javax.swing.GroupLayout.Alignment.TRAILING)))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, comparePanelLayout.createSequentialGroup()
+                            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(comparePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, comparePanelLayout.createSequentialGroup()
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(20, 20, 20))
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addGap(18, 18, 18)
                 .addGroup(comparePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(comparePanelLayout.createSequentialGroup()
                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 299, Short.MAX_VALUE))
+                        .addGap(0, 291, Short.MAX_VALUE))
                     .addComponent(mainScrollTab3))
                 .addContainerGap())
         );
@@ -386,7 +397,8 @@ public class MainFrame extends javax.swing.JFrame {
                         .addGroup(comparePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(clear1BTN)
                             .addComponent(insertElem1BTN)
-                            .addComponent(removeElem1BTN))
+                            .addComponent(removeElem1BTN)
+                            .addComponent(referenceCompBTN))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(2, 2, 2)
@@ -395,10 +407,10 @@ public class MainFrame extends javax.swing.JFrame {
                         .addGroup(comparePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(clear2BTN)
                             .addComponent(insertElem2BTN)
-                            .addComponent(referenceBTN)
+                            .addComponent(referenceCompWithBTN)
                             .addComponent(removeElem2BTN)))
                     .addGroup(comparePanelLayout.createSequentialGroup()
-                        .addComponent(mainScrollTab3)
+                        .addComponent(mainScrollTab3, javax.swing.GroupLayout.DEFAULT_SIZE, 461, Short.MAX_VALUE)
                         .addContainerGap())))
         );
 
@@ -512,7 +524,7 @@ public class MainFrame extends javax.swing.JFrame {
         });
         toolBar.add(aboutTLB);
 
-        testBTN.setText("PrintSelectedComms");
+        testBTN.setText("AnalysisBTN");
         testBTN.setFocusable(false);
         testBTN.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         testBTN.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -522,6 +534,13 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
         toolBar.add(testBTN);
+        toolBar.add(jSeparator1);
+
+        compareCombo.setToolTipText("Compared Elements");
+        compareCombo.setMaximumSize(new java.awt.Dimension(100, 20));
+        compareCombo.setPreferredSize(new java.awt.Dimension(100, 20));
+        toolBar.add(compareCombo);
+        toolBar.add(jSeparator2);
 
         fileMN.setText("File");
 
@@ -598,13 +617,7 @@ public class MainFrame extends javax.swing.JFrame {
         ToolTipManager.sharedInstance().registerComponent(NodesTree); // Tooltips on Nodes Tree enabled
 
         managePrevNextBTN();
-        commListModel.addElement("PCORP");
-        commListModel.addElement("MGNDP");
-        commListModel.addElement("DBTSP");
-        commListModel.addElement("MGEPP");
-        commListModel.addElement("Comm1");
-        commListModel.addElement("Comm2");
-        commListModel.addElement("Comm3");
+        createCommsList();
     }
 
     /**
@@ -616,6 +629,16 @@ public class MainFrame extends javax.swing.JFrame {
         nodeTreeModel.add(nodeTreeModelHLR);
         nodeTreeModel.add(nodeTreeModelPool);
         updateNodesTree();
+    }
+
+    private void createCommsList() {
+        commListModel.addElement("PCORP");
+        commListModel.addElement("MGNDP");
+        commListModel.addElement("DBTSP");
+        commListModel.addElement("MGEPP");
+        commListModel.addElement("Comm1");
+        commListModel.addElement("Comm2");
+        commListModel.addElement("Comm3");
     }
 
     /**
@@ -736,20 +759,19 @@ public class MainFrame extends javax.swing.JFrame {
      * command should validate to identical printout or not
      */
     private void createCommTree() {
-        DefaultMutableTreeNode commsTreeModelId = new DefaultMutableTreeNode("Identical P/O");
-        DefaultMutableTreeNode commsTreeModelNotId = new DefaultMutableTreeNode("Differing P/O");
-        commsTreeModel.add(commsTreeModelId);
-        commsTreeModel.add(commsTreeModelNotId);
-
-        DefaultMutableTreeNode[] commandTreeModel = new DefaultMutableTreeNode[20];
-
-        for (int i = 0; i < 10; i++) {
-            commandTreeModel[i] = new DefaultMutableTreeNode("comm_" + i);
-            commsTreeModelId.add(commandTreeModel[i]);
+        DefaultMutableTreeNode[] commsTreeModelNode = new DefaultMutableTreeNode[20];
+        int countNodesSelected = 0;
+        for (int i = 0; i < compList2Model.size(); i++) {
+            commsTreeModelNode[i] = new DefaultMutableTreeNode(compList2Model.getElementAt(i).toString());
+            commsTreeModel.add(commsTreeModelNode[i]);
+            countNodesSelected++;
         }
-        for (int i = 10; i < 20; i++) {
-            commandTreeModel[i] = new DefaultMutableTreeNode("comm_" + i);
-            commsTreeModelNotId.add(commandTreeModel[i]);
+        int[] comms = commList.getSelectedIndices();
+        for (int i = 0; i < comms.length; i++) {
+            for (int j = 0; j < countNodesSelected; j++) {
+                DefaultMutableTreeNode commandTreeModelComm = new DefaultMutableTreeNode(commListModel.getElementAt(comms[i]).toString());
+                commsTreeModelNode[j].add(commandTreeModelComm);
+            }
         }
     }
 
@@ -921,7 +943,7 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_aboutTLBActionPerformed
 
     private void saveTLBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveTLBActionPerformed
-        
+
     }//GEN-LAST:event_saveTLBActionPerformed
 
     private void openTLBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openTLBActionPerformed
@@ -943,6 +965,10 @@ public class MainFrame extends javax.swing.JFrame {
         for (int i = 0; i < test.length; i++) {
             System.out.println(test[i] + " " + commListModel.getElementAt(test[i]).toString());
         }
+        for (int i = 0; i < compList1Model.size(); i++) {
+            compareCombo.addItem(compList1Model.getElementAt(i).toString());
+        }
+        createCommTree();
     }//GEN-LAST:event_testBTNActionPerformed
 
     /**
@@ -995,6 +1021,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JList<String> commList;
     private javax.swing.JList<String> compList1;
     private javax.swing.JList<String> compList2;
+    private javax.swing.JComboBox<String> compareCombo;
     private javax.swing.JPanel comparePanel;
     private javax.swing.JSplitPane diffSplitPane;
     private javax.swing.JButton discardSettingsBTN;
@@ -1013,6 +1040,8 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JToolBar.Separator jSeparator1;
+    private javax.swing.JToolBar.Separator jSeparator2;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JScrollPane mainScrollTab3;
     private javax.swing.JSplitPane mainSplitPane;
@@ -1026,7 +1055,8 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane po2ScrollPane;
     private javax.swing.JTextArea po2TextArea;
     private javax.swing.JButton prevBTN;
-    private javax.swing.JButton referenceBTN;
+    private javax.swing.JButton referenceCompBTN;
+    private javax.swing.JButton referenceCompWithBTN;
     private javax.swing.JButton removeElem1BTN;
     private javax.swing.JButton removeElem2BTN;
     private javax.swing.JPanel resultsPanel;
