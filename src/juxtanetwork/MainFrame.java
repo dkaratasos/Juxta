@@ -1,8 +1,10 @@
 package juxtanetwork;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import javax.swing.DefaultListModel;
 import javax.swing.Icon;
@@ -32,6 +34,11 @@ public class MainFrame extends javax.swing.JFrame {
     ImageIcon hlrIcon = new javax.swing.ImageIcon(getClass().getResource("/juxtanetwork/hlr16.gif"));
     ImageIcon mscIcon = new javax.swing.ImageIcon(getClass().getResource("/juxtanetwork/MSC16.jpg"));
     ImageIcon poolIcon = new javax.swing.ImageIcon(getClass().getResource("/juxtanetwork/pool.jpg"));
+
+    Highlight highliter = new Highlight();
+    Highlight highliterSearch = new Highlight();
+    ArrayList<int[]> diffs1 = new ArrayList<int[]>();
+    ArrayList<int[]> diffs2 = new ArrayList<int[]>();
 
     /**
      * Creates new form MainFrame
@@ -94,6 +101,12 @@ public class MainFrame extends javax.swing.JFrame {
         po1TextArea = new javax.swing.JTextArea();
         po2ScrollPane = new javax.swing.JScrollPane();
         po2TextArea = new javax.swing.JTextArea();
+        compareCombo = new javax.swing.JComboBox<>();
+        prevHiliteBTN = new javax.swing.JButton();
+        nextHiliteBTN = new javax.swing.JButton();
+        searchField = new javax.swing.JTextField();
+        BackFindBTN = new javax.swing.JButton();
+        ForFindBTN = new javax.swing.JButton();
         toolBar = new javax.swing.JToolBar();
         openTLB = new javax.swing.JButton();
         saveTLB = new javax.swing.JButton();
@@ -101,7 +114,6 @@ public class MainFrame extends javax.swing.JFrame {
         aboutTLB = new javax.swing.JButton();
         testBTN = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JToolBar.Separator();
-        compareCombo = new javax.swing.JComboBox<>();
         jSeparator2 = new javax.swing.JToolBar.Separator();
         menuBar = new javax.swing.JMenuBar();
         fileMN = new javax.swing.JMenu();
@@ -410,13 +422,13 @@ public class MainFrame extends javax.swing.JFrame {
                             .addComponent(referenceCompWithBTN)
                             .addComponent(removeElem2BTN)))
                     .addGroup(comparePanelLayout.createSequentialGroup()
-                        .addComponent(mainScrollTab3, javax.swing.GroupLayout.DEFAULT_SIZE, 461, Short.MAX_VALUE)
+                        .addComponent(mainScrollTab3, javax.swing.GroupLayout.DEFAULT_SIZE, 465, Short.MAX_VALUE)
                         .addContainerGap())))
         );
 
         mainTabbedPane.addTab("Compare", comparePanel);
 
-        diffSplitPane.setDividerLocation(160);
+        diffSplitPane.setDividerLocation(200);
         diffSplitPane.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
 
         po1TextArea.setColumns(20);
@@ -431,17 +443,92 @@ public class MainFrame extends javax.swing.JFrame {
 
         diffSplitPane.setRightComponent(po2ScrollPane);
 
+        compareCombo.setToolTipText("Compared Elements");
+        compareCombo.setMaximumSize(new java.awt.Dimension(100, 20));
+        compareCombo.setPreferredSize(new java.awt.Dimension(100, 20));
+
+        prevHiliteBTN.setText("<");
+        prevHiliteBTN.setToolTipText("Previous Difference");
+        prevHiliteBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                prevHiliteBTNActionPerformed(evt);
+            }
+        });
+
+        nextHiliteBTN.setText(">");
+        nextHiliteBTN.setToolTipText("Next Difference");
+        nextHiliteBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nextHiliteBTNActionPerformed(evt);
+            }
+        });
+
+        searchField.setForeground(new java.awt.Color(102, 102, 102));
+        searchField.setText("Search..");
+        searchField.setToolTipText("Search Field");
+        searchField.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                searchFieldMouseClicked(evt);
+            }
+        });
+        searchField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchFieldActionPerformed(evt);
+            }
+        });
+
+        BackFindBTN.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        BackFindBTN.setText("<");
+        BackFindBTN.setToolTipText("Previous Difference");
+        BackFindBTN.setMargin(new java.awt.Insets(2, 8, 2, 8));
+        BackFindBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BackFindBTNActionPerformed(evt);
+            }
+        });
+
+        ForFindBTN.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        ForFindBTN.setText(">");
+        ForFindBTN.setToolTipText("Previous Difference");
+        ForFindBTN.setMargin(new java.awt.Insets(2, 8, 2, 8));
+        ForFindBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ForFindBTNActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout resultsPanelLayout = new javax.swing.GroupLayout(resultsPanel);
         resultsPanel.setLayout(resultsPanelLayout);
         resultsPanelLayout.setHorizontalGroup(
             resultsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(diffSplitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 659, Short.MAX_VALUE)
+            .addGroup(resultsPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(compareCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(29, 29, 29)
+                .addComponent(BackFindBTN)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(ForFindBTN)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(prevHiliteBTN)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(nextHiliteBTN)
+                .addContainerGap())
         );
         resultsPanelLayout.setVerticalGroup(
             resultsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(resultsPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(diffSplitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 486, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, resultsPanelLayout.createSequentialGroup()
+                .addGroup(resultsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(prevHiliteBTN)
+                    .addComponent(nextHiliteBTN)
+                    .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(BackFindBTN)
+                    .addComponent(ForFindBTN)
+                    .addComponent(compareCombo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(diffSplitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 472, Short.MAX_VALUE))
         );
 
         mainTabbedPane.addTab("Results", resultsPanel);
@@ -535,11 +622,6 @@ public class MainFrame extends javax.swing.JFrame {
         });
         toolBar.add(testBTN);
         toolBar.add(jSeparator1);
-
-        compareCombo.setToolTipText("Compared Elements");
-        compareCombo.setMaximumSize(new java.awt.Dimension(100, 20));
-        compareCombo.setPreferredSize(new java.awt.Dimension(100, 20));
-        toolBar.add(compareCombo);
         toolBar.add(jSeparator2);
 
         fileMN.setText("File");
@@ -969,7 +1051,76 @@ public class MainFrame extends javax.swing.JFrame {
             compareCombo.addItem(compList1Model.getElementAt(i).toString());
         }
         createCommTree();
+
+        int[] diffsTmp11 = {5, 10};
+        diffs1.add(diffsTmp11);
+        int[] diffsTmp12 = {510, 520};
+        diffs1.add(diffsTmp12);
+        int[] diffsTmp21 = {15, 18};
+        diffs2.add(diffsTmp21);
+        int[] diffsTmp22 = {915, 920};
+        diffs2.add(diffsTmp22);
+
+        highliter.highlightremove(po1TextArea);
+        highliter.highlightremove(po2TextArea);
+        highlightDiffs(diffs1.get(1)[0], diffs1.get(1)[1], diffs2.get(1)[0], diffs2.get(1)[1]);
+        highlightDiffs(diffs1.get(0)[0], diffs1.get(0)[1], diffs2.get(0)[0], diffs2.get(0)[1]);
     }//GEN-LAST:event_testBTNActionPerformed
+
+    private void highlightDiffs(int index11, int index12, int index21, int index22) {
+        highliter.highlight(po1TextArea, index11, index12, Color.ORANGE);
+        highliter.highlight(po2TextArea, index21, index22, Color.ORANGE);
+    }
+
+//    private void highlightDiffsArea(int index1, int index2, javax.swing.JTextArea textArea) {
+//        highliter.highlight(textArea, index1, index2, Color.ORANGE);
+//        textArea.select(index1, index2 + 1);
+//        textArea.setSelectedTextColor(Color.BLUE);
+//        textArea.setSelectionColor(Color.CYAN);
+//    }
+
+    private void searchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchFieldActionPerformed
+        highliterSearch.highlightremove(po1TextArea);
+        highliterSearch.highlightText1(po1TextArea, searchField.getText());
+        highliterSearch.highlightremove(po2TextArea);
+        highliterSearch.highlightText2(po2TextArea, searchField.getText());
+    }//GEN-LAST:event_searchFieldActionPerformed
+
+    private void ForFindBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ForFindBTNActionPerformed
+        highliterSearch.highlightremove(po1TextArea);
+        highliterSearch.highlightremove(po2TextArea);
+        highliterSearch.highlightText1(po1TextArea, searchField.getText());
+        highliterSearch.highlightText2(po2TextArea, searchField.getText());
+    }//GEN-LAST:event_ForFindBTNActionPerformed
+
+    private void BackFindBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackFindBTNActionPerformed
+        highliterSearch.highlightremove(po1TextArea);
+        highliterSearch.highlightremove(po2TextArea);
+        highliterSearch.backhighlightText1(po1TextArea, searchField.getText());
+        highliterSearch.backhighlightText2(po2TextArea, searchField.getText());
+    }//GEN-LAST:event_BackFindBTNActionPerformed
+
+    private void searchFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchFieldMouseClicked
+        searchField.setText("");
+    }//GEN-LAST:event_searchFieldMouseClicked
+
+    private void nextHiliteBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextHiliteBTNActionPerformed
+        highliter.highlightremove(po1TextArea);
+        highliter.highlightremove(po2TextArea);
+        highlightDiffs(diffs1.get(1)[0], diffs1.get(1)[1], diffs2.get(1)[0], diffs2.get(1)[1]);
+//        po1TextArea.setSelectionColor(Color.CYAN);
+//        po1TextArea.select(diffs1.get(1)[0] - 1, diffs1.get(1)[1] + 1);
+//        po2TextArea.select(diffs2.get(1)[0] - 1, diffs2.get(1)[1] + 1);
+    }//GEN-LAST:event_nextHiliteBTNActionPerformed
+
+    private void prevHiliteBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prevHiliteBTNActionPerformed
+        highliter.highlightremove(po1TextArea);
+        highliter.highlightremove(po2TextArea);
+        highlightDiffs(diffs1.get(0)[0], diffs1.get(0)[1], diffs2.get(0)[0], diffs2.get(0)[1]);
+//        po1TextArea.select(diffs1.get(0)[0], diffs1.get(0)[1]);
+//        po2TextArea.select(diffs2.get(0)[0], diffs2.get(0)[1]);
+//        po1TextArea.setSelectionColor(Color.CYAN);
+    }//GEN-LAST:event_prevHiliteBTNActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1007,6 +1158,8 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BackFindBTN;
+    private javax.swing.JButton ForFindBTN;
     private javax.swing.JTree NodesTree;
     private javax.swing.JMenuItem OpenMN;
     private javax.swing.JFrame aboutFrame;
@@ -1048,6 +1201,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JTabbedPane mainTabbedPane;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JButton nextBTN;
+    private javax.swing.JButton nextHiliteBTN;
     private javax.swing.JScrollPane nodesScrollPane;
     private javax.swing.JButton openTLB;
     private javax.swing.JScrollPane po1ScrollPane;
@@ -1055,12 +1209,14 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane po2ScrollPane;
     private javax.swing.JTextArea po2TextArea;
     private javax.swing.JButton prevBTN;
+    private javax.swing.JButton prevHiliteBTN;
     private javax.swing.JButton referenceCompBTN;
     private javax.swing.JButton referenceCompWithBTN;
     private javax.swing.JButton removeElem1BTN;
     private javax.swing.JButton removeElem2BTN;
     private javax.swing.JPanel resultsPanel;
     private javax.swing.JButton saveTLB;
+    private javax.swing.JTextField searchField;
     private javax.swing.JDialog settingsDialog;
     private javax.swing.JMenuItem settingsMN;
     private javax.swing.JButton sidebarBTN;
