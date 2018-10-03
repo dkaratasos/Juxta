@@ -1117,14 +1117,6 @@ public class MainFrame extends javax.swing.JFrame {
                 + "RNAFZ0999        C  CODE  H'1234           48\n"
                 + " ");
 
-//        int[] diffsTmp11 = {5, 10};
-//        diffs1.add(diffsTmp11);
-//        int[] diffsTmp12 = {510, 520};
-//        diffs1.add(diffsTmp12);
-//        int[] diffsTmp21 = {15, 18};
-//        diffs2.add(diffsTmp21);
-//        int[] diffsTmp22 = {915, 920};
-//        diffs2.add(diffsTmp22);
         LinkedList<diff_match_patch.Diff> diffs = new LinkedList<diff_match_patch.Diff>();
         diff_match_patch dmp = new diff_match_patch();
         dmp.Diff_Timeout = 0;
@@ -1133,23 +1125,11 @@ public class MainFrame extends javax.swing.JFrame {
         diffs = dmp.diff_main(po2TextArea.getText(), po1TextArea.getText());
         diffs2 = diff_Fortext(diffs);
 
-        for (int i = 0; i < diffs1.size(); i++) {
-            System.out.println("Index diff1." + i + " Start:" + diffs1.get(i)[0] + " End:" + diffs1.get(i)[1]);
-        }
-        System.out.println("Size of text1: " + po1TextArea.getText().length());
-        System.out.println("Size of text2: " + po2TextArea.getText().length());
-
-        for (int i = 0; i < diffs2.size(); i++) {
-            System.out.println("Index diff2." + i + " Start:" + diffs2.get(i)[0] + " End:" + diffs2.get(i)[1]);
-        }
-
         highliter.highlightremove(po1TextArea);
         highliter.highlightremove(po2TextArea);
         for (int i = diffs1.size() - 1; i >= 0; i--) {
             highlightDiffs(diffs1.get(i)[0], diffs1.get(i)[1], diffs2.get(i)[0], diffs2.get(i)[1]);
         }
-//        highlightDiffs(diffs1.get(1)[0], diffs1.get(1)[1], diffs2.get(1)[0], diffs2.get(1)[1]);
-//        highlightDiffs(diffs1.get(0)[0], diffs1.get(0)[1], diffs2.get(0)[0], diffs2.get(0)[1]);
     }//GEN-LAST:event_testBTNActionPerformed
 
     public static ArrayList<int[]> diff_Fortext(List<diff_match_patch.Diff> diffs) {
