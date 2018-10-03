@@ -1126,6 +1126,7 @@ public class MainFrame extends javax.swing.JFrame {
         diffs = dmp.diff_main(po2TextArea.getText(), po1TextArea.getText());
         dmp.diff_cleanupSemantic(diffs);
         diffs2 = diff_Fortext(diffs);
+        cleanUpDiffs();
 
         highliter.highlightremove(po1TextArea);
         highliter.highlightremove(po2TextArea);
@@ -1134,7 +1135,15 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_testBTNActionPerformed
 
-    public static ArrayList<int[]> diff_Fortext(List<diff_match_patch.Diff> diffs) {
+    private void cleanUpDiffs(){
+        for (int i = diffs1.size() - 1; i >= 0; i--) {
+            if ((diffs1.get(i)[0] == diffs1.get(i)[1]) && (diffs2.get(i)[0] == diffs2.get(i)[1])){
+                diffs1.remove(i);
+                diffs2.remove(i);
+            }
+        }
+    }
+    private static ArrayList<int[]> diff_Fortext(List<diff_match_patch.Diff> diffs) {
         ArrayList<int[]> diffsList = new ArrayList<int[]>();
         StringBuilder text = new StringBuilder();
         for (diff_match_patch.Diff aDiff : diffs) {
@@ -1157,13 +1166,6 @@ public class MainFrame extends javax.swing.JFrame {
         highliter.highlight(po1TextArea, index11, index12, Color.ORANGE);
         highliter.highlight(po2TextArea, index21, index22, Color.ORANGE);
     }
-
-//    private void highlightDiffsArea(int index1, int index2, javax.swing.JTextArea textArea) {
-//        highliter.highlight(textArea, index1, index2, Color.ORANGE);
-//        textArea.select(index1, index2 + 1);
-//        textArea.setSelectedTextColor(Color.BLUE);
-//        textArea.setSelectionColor(Color.CYAN);
-//    }
 
     private void searchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchFieldActionPerformed
         highliterSearch.highlightremove(po1TextArea);
@@ -1198,9 +1200,9 @@ public class MainFrame extends javax.swing.JFrame {
         }
         highlightDiffs(diffs1.get(currDiff)[0], diffs1.get(currDiff)[1], diffs2.get(currDiff)[0], diffs2.get(currDiff)[1]);
 
-        po1TextArea.setSelectionColor(Color.CYAN);
-        po1TextArea.select(diffs1.get(currDiff)[0] - 1, diffs1.get(currDiff)[1] + 1);
-        po2TextArea.select(diffs2.get(currDiff)[0] - 1, diffs2.get(currDiff)[1] + 1);
+//        po1TextArea.setSelectionColor(Color.BLUE);
+//        po1TextArea.select(diffs1.get(currDiff)[0] - 1, diffs1.get(currDiff)[1] + 1);
+//        po2TextArea.select(diffs2.get(currDiff)[0] - 1, diffs2.get(currDiff)[1] + 1);
     }//GEN-LAST:event_nextHiliteBTNActionPerformed
 
     private void prevHiliteBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prevHiliteBTNActionPerformed
@@ -1210,8 +1212,8 @@ public class MainFrame extends javax.swing.JFrame {
             currDiff--;
         }
         highlightDiffs(diffs1.get(currDiff)[0], diffs1.get(currDiff)[1], diffs2.get(currDiff)[0], diffs2.get(currDiff)[1]);
-//        po1TextArea.select(diffs1.get(0)[0], diffs1.get(0)[1]);
-//        po2TextArea.select(diffs2.get(0)[0], diffs2.get(0)[1]);
+//        po1TextArea.select(diffs1.get(currDiff)[0], diffs1.get(currDiff)[1]);
+//        po2TextArea.select(diffs2.get(currDiff)[0], diffs2.get(currDiff)[1]);
 //        po1TextArea.setSelectionColor(Color.CYAN);
     }//GEN-LAST:event_prevHiliteBTNActionPerformed
 
