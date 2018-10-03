@@ -1141,9 +1141,6 @@ public class MainFrame extends javax.swing.JFrame {
                 diffIndexes[0] = text.length();
             }
             if (aDiff.operation != diff_match_patch.Operation.INSERT) {
-//                if (aDiff.operation == diff_match_patch.Operation.DELETE) {
-//                    diffIndexes[0] = text.length();
-//                }
                 text.append(aDiff.text);
             }
             if (aDiff.operation != diff_match_patch.Operation.EQUAL) {
@@ -1151,7 +1148,6 @@ public class MainFrame extends javax.swing.JFrame {
                 diffsList.add(diffIndexes);
             }
         }
-//        return text.toString();
         return diffsList;
     }
 
