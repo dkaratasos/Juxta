@@ -6,6 +6,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.LinkedList;
+import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -39,6 +41,7 @@ public class MainFrame extends javax.swing.JFrame {
     Highlight highliterSearch = new Highlight();
     ArrayList<int[]> diffs1 = new ArrayList<int[]>();
     ArrayList<int[]> diffs2 = new ArrayList<int[]>();
+    int currDiff = 0;
 
     /**
      * Creates new form MainFrame
@@ -107,6 +110,7 @@ public class MainFrame extends javax.swing.JFrame {
         searchField = new javax.swing.JTextField();
         BackFindBTN = new javax.swing.JButton();
         ForFindBTN = new javax.swing.JButton();
+        jProgressBar1 = new javax.swing.JProgressBar();
         toolBar = new javax.swing.JToolBar();
         openTLB = new javax.swing.JButton();
         saveTLB = new javax.swing.JButton();
@@ -535,19 +539,24 @@ public class MainFrame extends javax.swing.JFrame {
 
         mainSplitPane.setRightComponent(mainTabbedPane);
 
+        jProgressBar1.setPreferredSize(new java.awt.Dimension(146, 23));
+
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
+            .addGroup(mainPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(mainSplitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 820, Short.MAX_VALUE)
-                .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(prevBTN)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(nextBTN))
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
+                        .addComponent(mainSplitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 820, Short.MAX_VALUE)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
+                        .addComponent(jProgressBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(prevBTN)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(nextBTN))))
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -555,9 +564,11 @@ public class MainFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(mainSplitPane)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(nextBTN)
-                    .addComponent(prevBTN)))
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(nextBTN)
+                        .addComponent(prevBTN))
+                    .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
         toolBar.setFloatable(false);
@@ -1052,20 +1063,117 @@ public class MainFrame extends javax.swing.JFrame {
         }
         createCommTree();
 
-        int[] diffsTmp11 = {5, 10};
-        diffs1.add(diffsTmp11);
-        int[] diffsTmp12 = {510, 520};
-        diffs1.add(diffsTmp12);
-        int[] diffsTmp21 = {15, 18};
-        diffs2.add(diffsTmp21);
-        int[] diffsTmp22 = {915, 920};
-        diffs2.add(diffsTmp22);
+        po1TextArea.setText("<PCORP:BLOCK=ALL;\n"
+                + "PROGRAM CORRECTIONS\n"
+                + " \n"
+                + "BLOCK    SUID                               CA     CAF    ILEN\n"
+                + "GIPADA   8PXE/CAAW 107 0050/MQ5EG R1A05     380    0      32\n"
+                + " \n"
+                + "CI               S  TYPE  POSITION         SIZE\n"
+                + "SNAEM0119        C  CODE  H'044E           38\n"
+                + "SNAEM0119        C  CODE  H'057E           20\n"
+                + "SNAEM0119        C  CODE  H'0988           22\n"
+                + "SNAEM0119        C  CODE  H'1848           30\n"
+                + "SNAEM0119        C  CODE  H'1A6E           22\n"
+                + "SWAEM0123        C  CODE  H'1058           60\n"
+                + "SWAEM0123        C  CODE  H'0C66           60\n"
+                + "SWAEM0123        C  CODE  H'1C86           28\n"
+                + "SWAEM0121        C  CODE  H'0304           20\n"
+                + "SWAEM0121        C  CODE  H'0265           24\n"
+                + "SWAEM0121        C  CODE  H'0158           34\n"
+                + "SWAEM0121        C  CODE  H'01B2           22\n\n"
+                + "BLOCK    SUID                               CA     CAF    ILEN\n"
+                + "DQENUMC  7PXC/CAAZA 107 4993/MQ5EG R1A04    40     0      16\n"
+                + " \n"
+                + "CI               S  TYPE  POSITION         SIZE\n"
+                + "RNAFZ0436        C  CODE  H'0E8A           20\n"
+                + "RNAFZ0436        C  CODE  H'0F4B           20\n"
+                + " ");
+
+        po2TextArea.setText("<PCORP:BLOCK=ALL;\n"
+                + "PROGRAM CORRECTIONS\n"
+                + " \n"
+                + "BLOCK    SUID                               CA     CAF    ILEN\n"
+                + "GIPADA   8PXE/CAAW 107 0050/MQ5EG R1A05     380    0      32\n"
+                + " \n"
+                + "CI               S  TYPE  POSITION         SIZE\n"
+                + "SNAEM0119        C  CODE  H'044E           38\n"
+                + "SNAEM0119        C  CODE  H'057E           20\n"
+                + "SNAEM0119        C  CODE  H'0988           22\n"
+                + "SNAEM0119        C  CODE  H'1848           30\n"
+                + "SNAEM0119        C  CODE  H'1A6E           22\n"
+                + "SWAEM0121        C  CODE  H'0304           20\n"
+                + "SWAEM0121        C  CODE  H'0265           24\n"
+                + "SWAEM0121        C  CODE  H'0193           34\n"
+                + "S01EM0121        C  CODE  H'01B2           22\n\n"
+                + "BLOCK    SUID                               CA     CAF    ILEN\n"
+                + "DQENUMC  7PXC/CAAZA 107 4993/MQ5EG R1A04    40     0      16\n"
+                + " \n"
+                + "CI               S  TYPE  POSITION         SIZE\n"
+                + "RNAFZ0436        C  CODE  H'0E8A           20\n"
+                + "RNAFZ0436        C  CODE  H'0F4B           20\n"
+                + "RNAFZ0436        C  CODE  H'0F4B           20\n"
+                + "RNAFZ0999        C  CODE  H'0F59           45\n"
+                + "RNAFZ0999        C  CODE  H'1234           48\n"
+                + " ");
+
+//        int[] diffsTmp11 = {5, 10};
+//        diffs1.add(diffsTmp11);
+//        int[] diffsTmp12 = {510, 520};
+//        diffs1.add(diffsTmp12);
+//        int[] diffsTmp21 = {15, 18};
+//        diffs2.add(diffsTmp21);
+//        int[] diffsTmp22 = {915, 920};
+//        diffs2.add(diffsTmp22);
+        LinkedList<diff_match_patch.Diff> diffs = new LinkedList<diff_match_patch.Diff>();
+        diff_match_patch dmp = new diff_match_patch();
+        dmp.Diff_Timeout = 0;
+        diffs = dmp.diff_main(po1TextArea.getText(), po2TextArea.getText());
+        diffs1 = diff_Fortext(diffs);
+        diffs = dmp.diff_main(po2TextArea.getText(), po1TextArea.getText());
+        diffs2 = diff_Fortext(diffs);
+
+        for (int i = 0; i < diffs1.size(); i++) {
+            System.out.println("Index diff1." + i + " Start:" + diffs1.get(i)[0] + " End:" + diffs1.get(i)[1]);
+        }
+        System.out.println("Size of text1: " + po1TextArea.getText().length());
+        System.out.println("Size of text2: " + po2TextArea.getText().length());
+
+        for (int i = 0; i < diffs2.size(); i++) {
+            System.out.println("Index diff2." + i + " Start:" + diffs2.get(i)[0] + " End:" + diffs2.get(i)[1]);
+        }
 
         highliter.highlightremove(po1TextArea);
         highliter.highlightremove(po2TextArea);
-        highlightDiffs(diffs1.get(1)[0], diffs1.get(1)[1], diffs2.get(1)[0], diffs2.get(1)[1]);
-        highlightDiffs(diffs1.get(0)[0], diffs1.get(0)[1], diffs2.get(0)[0], diffs2.get(0)[1]);
+        for (int i = diffs1.size() - 1; i >= 0; i--) {
+            highlightDiffs(diffs1.get(i)[0], diffs1.get(i)[1], diffs2.get(i)[0], diffs2.get(i)[1]);
+        }
+//        highlightDiffs(diffs1.get(1)[0], diffs1.get(1)[1], diffs2.get(1)[0], diffs2.get(1)[1]);
+//        highlightDiffs(diffs1.get(0)[0], diffs1.get(0)[1], diffs2.get(0)[0], diffs2.get(0)[1]);
     }//GEN-LAST:event_testBTNActionPerformed
+
+    public static ArrayList<int[]> diff_Fortext(List<diff_match_patch.Diff> diffs) {
+        ArrayList<int[]> diffsList = new ArrayList<int[]>();
+        StringBuilder text = new StringBuilder();
+        for (diff_match_patch.Diff aDiff : diffs) {
+            int[] diffIndexes = {0, 0};
+            if (aDiff.operation != diff_match_patch.Operation.EQUAL) {
+                diffIndexes[0] = text.length();
+            }
+            if (aDiff.operation != diff_match_patch.Operation.INSERT) {
+//                if (aDiff.operation == diff_match_patch.Operation.DELETE) {
+//                    diffIndexes[0] = text.length();
+//                }
+                text.append(aDiff.text);
+            }
+            if (aDiff.operation != diff_match_patch.Operation.EQUAL) {
+                diffIndexes[1] = text.length();
+                diffsList.add(diffIndexes);
+            }
+        }
+//        return text.toString();
+        return diffsList;
+    }
 
     private void highlightDiffs(int index11, int index12, int index21, int index22) {
         highliter.highlight(po1TextArea, index11, index12, Color.ORANGE);
@@ -1105,18 +1213,25 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_searchFieldMouseClicked
 
     private void nextHiliteBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextHiliteBTNActionPerformed
-        highliter.highlightremove(po1TextArea);
-        highliter.highlightremove(po2TextArea);
-        highlightDiffs(diffs1.get(1)[0], diffs1.get(1)[1], diffs2.get(1)[0], diffs2.get(1)[1]);
-//        po1TextArea.setSelectionColor(Color.CYAN);
-//        po1TextArea.select(diffs1.get(1)[0] - 1, diffs1.get(1)[1] + 1);
-//        po2TextArea.select(diffs2.get(1)[0] - 1, diffs2.get(1)[1] + 1);
+//        highliter.highlightremove(po1TextArea);
+//        highliter.highlightremove(po2TextArea);
+        if (currDiff < diffs1.size() - 1) {
+            currDiff++;
+        }
+        highlightDiffs(diffs1.get(currDiff)[0], diffs1.get(currDiff)[1], diffs2.get(currDiff)[0], diffs2.get(currDiff)[1]);
+
+        po1TextArea.setSelectionColor(Color.CYAN);
+        po1TextArea.select(diffs1.get(currDiff)[0] - 1, diffs1.get(currDiff)[1] + 1);
+        po2TextArea.select(diffs2.get(currDiff)[0] - 1, diffs2.get(currDiff)[1] + 1);
     }//GEN-LAST:event_nextHiliteBTNActionPerformed
 
     private void prevHiliteBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prevHiliteBTNActionPerformed
-        highliter.highlightremove(po1TextArea);
-        highliter.highlightremove(po2TextArea);
-        highlightDiffs(diffs1.get(0)[0], diffs1.get(0)[1], diffs2.get(0)[0], diffs2.get(0)[1]);
+//        highliter.highlightremove(po1TextArea);
+//        highliter.highlightremove(po2TextArea);
+        if (currDiff > 0) {
+            currDiff--;
+        }
+        highlightDiffs(diffs1.get(currDiff)[0], diffs1.get(currDiff)[1], diffs2.get(currDiff)[0], diffs2.get(currDiff)[1]);
 //        po1TextArea.select(diffs1.get(0)[0], diffs1.get(0)[1]);
 //        po2TextArea.select(diffs2.get(0)[0], diffs2.get(0)[1]);
 //        po1TextArea.setSelectionColor(Color.CYAN);
@@ -1191,6 +1306,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JToolBar.Separator jSeparator1;
