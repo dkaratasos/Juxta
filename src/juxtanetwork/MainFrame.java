@@ -1121,8 +1121,10 @@ public class MainFrame extends javax.swing.JFrame {
         diff_match_patch dmp = new diff_match_patch();
         dmp.Diff_Timeout = 0;
         diffs = dmp.diff_main(po1TextArea.getText(), po2TextArea.getText());
+        dmp.diff_cleanupSemantic(diffs);
         diffs1 = diff_Fortext(diffs);
         diffs = dmp.diff_main(po2TextArea.getText(), po1TextArea.getText());
+        dmp.diff_cleanupSemantic(diffs);
         diffs2 = diff_Fortext(diffs);
 
         highliter.highlightremove(po1TextArea);
