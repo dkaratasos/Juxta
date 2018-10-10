@@ -525,13 +525,14 @@ public class MainFrame extends javax.swing.JFrame {
         resultsPanelLayout.setVerticalGroup(
             resultsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, resultsPanelLayout.createSequentialGroup()
-                .addGroup(resultsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(prevHiliteBTN)
-                    .addComponent(nextHiliteBTN)
-                    .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(BackFindBTN)
-                    .addComponent(ForFindBTN)
-                    .addComponent(compareCombo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(resultsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(compareCombo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(resultsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(prevHiliteBTN)
+                        .addComponent(nextHiliteBTN)
+                        .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(BackFindBTN)
+                        .addComponent(ForFindBTN)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(diffSplitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 472, Short.MAX_VALUE))
         );
@@ -1071,7 +1072,7 @@ public class MainFrame extends javax.swing.JFrame {
                 + "GIPADA   8PXE/CAAW 107 0050/MQ5EG R1A05     380    0      32\n"
                 + " \n"
                 + "CI               S  TYPE  POSITION         SIZE\n"
-                + "SNAEM0119        C  CODE  H'044E           38\n"
+                + "SNAEM0119        C  CODE  H'047E           38\n"
                 + "SNAEM0119        C  CODE  H'057E           20\n"
                 + "SNAEM0119        C  CODE  H'0988           22\n"
                 + "SNAEM0119        C  CODE  H'1848           30\n"
@@ -1132,18 +1133,19 @@ public class MainFrame extends javax.swing.JFrame {
         highliter.highlightremove(po1TextArea);
         highliter.highlightremove(po2TextArea);
         for (int i = diffs1.size() - 1; i >= 0; i--) {
-            highlightDiffs(diffs1.get(i)[0], diffs1.get(i)[1], diffs2.get(i)[0], diffs2.get(i)[1]);
+            highlightDiffs(diffs1.get(i)[0], diffs1.get(i)[1], diffs2.get(i)[0], diffs2.get(i)[1], Color.ORANGE);
         }
     }//GEN-LAST:event_testBTNActionPerformed
 
-    private void cleanUpDiffs(){
+    private void cleanUpDiffs() {
         for (int i = diffs1.size() - 1; i >= 0; i--) {
-            if ((diffs1.get(i)[0] == diffs1.get(i)[1]) && (diffs2.get(i)[0] == diffs2.get(i)[1])){
+            if ((diffs1.get(i)[0] == diffs1.get(i)[1]) && (diffs2.get(i)[0] == diffs2.get(i)[1])) {
                 diffs1.remove(i);
                 diffs2.remove(i);
             }
         }
     }
+
     private static ArrayList<int[]> diff_Fortext(List<diff_match_patch.Diff> diffs) {
         ArrayList<int[]> diffsList = new ArrayList<int[]>();
         StringBuilder text = new StringBuilder();
@@ -1163,9 +1165,9 @@ public class MainFrame extends javax.swing.JFrame {
         return diffsList;
     }
 
-    private void highlightDiffs(int index11, int index12, int index21, int index22) {
-        highliter.highlight(po1TextArea, index11, index12, Color.ORANGE);
-        highliter.highlight(po2TextArea, index21, index22, Color.ORANGE);
+    private void highlightDiffs(int index11, int index12, int index21, int index22, Color color) {
+        highliter.highlight(po1TextArea, index11, index12, color);
+        highliter.highlight(po2TextArea, index21, index22, color);
     }
 
     private void searchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchFieldActionPerformed
@@ -1193,29 +1195,34 @@ public class MainFrame extends javax.swing.JFrame {
         searchField.setText("");
     }//GEN-LAST:event_searchFieldMouseClicked
 
-    private void nextHiliteBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextHiliteBTNActionPerformed
-//        highliter.highlightremove(po1TextArea);
-//        highliter.highlightremove(po2TextArea);
-        if (currDiff < diffs1.size() - 1) {
-            currDiff++;
+    private void moveHighlight(boolean forBack) {
+        highliter.highlightremove(po1TextArea);
+        highliter.highlightremove(po2TextArea);
+        for (int i = 0; i < diffs1.size(); i++) {
+            if (i == currDiff) {
+                highlightDiffs(diffs1.get(i)[0], diffs1.get(i)[1], diffs2.get(i)[0], diffs2.get(i)[1], Color.MAGENTA);
+            } else {
+                highlightDiffs(diffs1.get(i)[0], diffs1.get(i)[1], diffs2.get(i)[0], diffs2.get(i)[1], Color.ORANGE);
+            }
         }
-        highlightDiffs(diffs1.get(currDiff)[0], diffs1.get(currDiff)[1], diffs2.get(currDiff)[0], diffs2.get(currDiff)[1]);
-
-//        po1TextArea.setSelectionColor(Color.BLUE);
-//        po1TextArea.select(diffs1.get(currDiff)[0] - 1, diffs1.get(currDiff)[1] + 1);
-//        po2TextArea.select(diffs2.get(currDiff)[0] - 1, diffs2.get(currDiff)[1] + 1);
+        po1TextArea.select(diffs1.get(currDiff)[0], diffs1.get(currDiff)[1]);
+        po2TextArea.select(diffs2.get(currDiff)[0], diffs2.get(currDiff)[1]);
+        if (forBack) {
+            if (currDiff < diffs1.size() - 1) {
+                currDiff++;
+            }
+        } else {
+            if (currDiff > 0) {
+                currDiff--;
+            }
+        }
+    }
+    private void nextHiliteBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextHiliteBTNActionPerformed
+        moveHighlight(true);
     }//GEN-LAST:event_nextHiliteBTNActionPerformed
 
     private void prevHiliteBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prevHiliteBTNActionPerformed
-//        highliter.highlightremove(po1TextArea);
-//        highliter.highlightremove(po2TextArea);
-        if (currDiff > 0) {
-            currDiff--;
-        }
-        highlightDiffs(diffs1.get(currDiff)[0], diffs1.get(currDiff)[1], diffs2.get(currDiff)[0], diffs2.get(currDiff)[1]);
-//        po1TextArea.select(diffs1.get(currDiff)[0], diffs1.get(currDiff)[1]);
-//        po2TextArea.select(diffs2.get(currDiff)[0], diffs2.get(currDiff)[1]);
-//        po1TextArea.setSelectionColor(Color.CYAN);
+        moveHighlight(false);
     }//GEN-LAST:event_prevHiliteBTNActionPerformed
 
     /**

@@ -38,14 +38,19 @@ public class Highlight {
         Highlighter hilite = textComp.getHighlighter();
         hilite.removeAllHighlights();
     }
+    
+    public void highlightremoveOne(JTextComponent textComp,int num) {
+        Highlighter hilite = textComp.getHighlighter();
+        hilite.removeHighlight(hilite.getHighlights()[num]);
+    }
 	
      public void highlight(JTextComponent textComp, int start, int end,Color color) {
         try {
             Highlighter hilite = textComp.getHighlighter();
-            textComp.select(start, end);
-            textComp.setSelectedTextColor(Color.BLUE);
-            textComp.setSelectionColor(Color.CYAN);
             hilite.addHighlight(start, end, new MyHighlightPainter(color));
+            textComp.select(start, end);
+//            textComp.setSelectionColor(Color.CYAN);
+//            textComp.setSelectedTextColor(Color.BLUE);
 
         } catch (Exception e) {
             System.out.println("ERROR: Problem with highlighter");
