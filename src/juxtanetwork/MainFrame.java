@@ -1137,6 +1137,12 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_testBTNActionPerformed
 
+    /**
+     * If for a specific index difference both diff1 and diff2 lists have start point equal to end point
+     * then this difference should be deleted from both diff1 and diff2 lists. These are cases when some
+     * characters are different between two texts and the differences is a DELETE(start,end) and 
+     * INSERT(end,end) for both texts
+     */
     private void cleanUpDiffs() {
         for (int i = diffs1.size() - 1; i >= 0; i--) {
             if ((diffs1.get(i)[0] == diffs1.get(i)[1]) && (diffs2.get(i)[0] == diffs2.get(i)[1])) {
@@ -1146,6 +1152,17 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Method diff_Fortext will calculate the start and end point of each difference given a List of diffs.
+     * A internal StringBuilder is used. For every item in the input diffs list: If the operation is not
+     * Equal then a difference starts and start point is saved. Then if the operation is not Insert the
+     * difference corresponds to some characters on the present text, so the characters are appended to the
+     * StringBuilder. The absolute end point of the difference in the entire text can then be found if we
+     * check (for not Equal operation only, since that is the if we kept the start point) the final size of
+     * the text.
+     * @param diffs linked list of differences that includes the operation and text of each difference
+     * @return and ArrayList of absolute [start,end] pair for each difference
+     */
     private static ArrayList<int[]> diff_Fortext(List<diff_match_patch.Diff> diffs) {
         ArrayList<int[]> diffsList = new ArrayList<int[]>();
         StringBuilder text = new StringBuilder();
@@ -1165,6 +1182,15 @@ public class MainFrame extends javax.swing.JFrame {
         return diffsList;
     }
 
+    /**
+     * Method highlightDiffs will order the highlight function for both PrintOut text areas given the
+     * start/end points and the desired color
+     * @param index11 start index of difference for text area 1
+     * @param index12 end index of difference for text area 1
+     * @param index21 start index of difference for text area 2
+     * @param index22 end index of difference for text area 2
+     * @param color desired color
+     */
     private void highlightDiffs(int index11, int index12, int index21, int index22, Color color) {
         highliter.highlight(po1TextArea, index11, index12, color);
         highliter.highlight(po2TextArea, index21, index22, color);
