@@ -219,10 +219,10 @@
                   <Group type="102" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jLabel4" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel5" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel6" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel7" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="colorDifLBL" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="colorSearchLBL" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="colorSearchFoundLBL" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="colorCurrDifLBL" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="47" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="2" attributes="0">
@@ -239,22 +239,22 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="2" attributes="0">
-                          <Component id="jLabel4" alignment="2" min="-2" max="-2" attributes="0"/>
+                          <Component id="colorDifLBL" alignment="2" min="-2" max="-2" attributes="0"/>
                           <Component id="colorDifBTN" alignment="2" min="-2" pref="28" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="2" attributes="0">
-                          <Component id="jLabel7" alignment="2" min="-2" max="-2" attributes="0"/>
+                          <Component id="colorCurrDifLBL" alignment="2" min="-2" max="-2" attributes="0"/>
                           <Component id="colorCurrDifBTN" alignment="2" min="-2" pref="28" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="2" attributes="0">
-                          <Component id="jLabel5" alignment="2" min="-2" max="-2" attributes="0"/>
+                          <Component id="colorSearchLBL" alignment="2" min="-2" max="-2" attributes="0"/>
                           <Component id="colorSearchBTN" alignment="2" min="-2" pref="28" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="2" attributes="0">
-                          <Component id="jLabel6" alignment="2" min="-2" max="-2" attributes="0"/>
+                          <Component id="colorSearchFoundLBL" alignment="2" min="-2" max="-2" attributes="0"/>
                           <Component id="colorSearchFoundBTN" alignment="2" min="-2" pref="28" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace pref="34" max="32767" attributes="0"/>
@@ -273,7 +273,7 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="colorDifBTNActionPerformed"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JLabel" name="jLabel4">
+            <Component class="javax.swing.JLabel" name="colorDifLBL">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Color for Differences:"/>
               </Properties>
@@ -288,12 +288,12 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="colorSearchBTNActionPerformed"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JLabel" name="jLabel5">
+            <Component class="javax.swing.JLabel" name="colorSearchLBL">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Color for Search:"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JLabel" name="jLabel6">
+            <Component class="javax.swing.JLabel" name="colorSearchFoundLBL">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Color for Search Found:"/>
               </Properties>
@@ -308,7 +308,7 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="colorSearchFoundBTNActionPerformed"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JLabel" name="jLabel7">
+            <Component class="javax.swing.JLabel" name="colorCurrDifLBL">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Color for Current Difference:"/>
               </Properties>

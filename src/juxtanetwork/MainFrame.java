@@ -80,12 +80,12 @@ public class MainFrame extends javax.swing.JFrame {
         jCheckBox1 = new javax.swing.JCheckBox();
         settingPanel2 = new javax.swing.JPanel();
         colorDifBTN = new javax.swing.JButton();
-        jLabel4 = new javax.swing.JLabel();
+        colorDifLBL = new javax.swing.JLabel();
         colorSearchBTN = new javax.swing.JButton();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
+        colorSearchLBL = new javax.swing.JLabel();
+        colorSearchFoundLBL = new javax.swing.JLabel();
         colorSearchFoundBTN = new javax.swing.JButton();
-        jLabel7 = new javax.swing.JLabel();
+        colorCurrDifLBL = new javax.swing.JLabel();
         colorCurrDifBTN = new javax.swing.JButton();
         chooseFromRefDialog = new javax.swing.JDialog();
         chooseRefLBL = new javax.swing.JLabel();
@@ -265,7 +265,7 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        jLabel4.setText("Color for Differences:");
+        colorDifLBL.setText("Color for Differences:");
 
         colorSearchBTN.setBackground(getSearchColor());
         colorSearchBTN.addActionListener(new java.awt.event.ActionListener() {
@@ -274,9 +274,9 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        jLabel5.setText("Color for Search:");
+        colorSearchLBL.setText("Color for Search:");
 
-        jLabel6.setText("Color for Search Found:");
+        colorSearchFoundLBL.setText("Color for Search Found:");
 
         colorSearchFoundBTN.setBackground(getSearchFoundColor());
         colorSearchFoundBTN.addActionListener(new java.awt.event.ActionListener() {
@@ -285,7 +285,7 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        jLabel7.setText("Color for Current Difference:");
+        colorCurrDifLBL.setText("Color for Current Difference:");
 
         colorCurrDifBTN.setBackground(getDiffsCurrColor());
         colorCurrDifBTN.addActionListener(new java.awt.event.ActionListener() {
@@ -301,10 +301,10 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(settingPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(settingPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel5)
-                    .addComponent(jLabel6)
-                    .addComponent(jLabel7))
+                    .addComponent(colorDifLBL)
+                    .addComponent(colorSearchLBL)
+                    .addComponent(colorSearchFoundLBL)
+                    .addComponent(colorCurrDifLBL))
                 .addGap(47, 47, 47)
                 .addGroup(settingPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(colorCurrDifBTN)
@@ -317,19 +317,19 @@ public class MainFrame extends javax.swing.JFrame {
             settingPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(settingPanel2Layout.createSequentialGroup()
                 .addGroup(settingPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(jLabel4)
+                    .addComponent(colorDifLBL)
                     .addComponent(colorDifBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(settingPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(jLabel7)
+                    .addComponent(colorCurrDifLBL)
                     .addComponent(colorCurrDifBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(settingPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(jLabel5)
+                    .addComponent(colorSearchLBL)
                     .addComponent(colorSearchBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(settingPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(jLabel6)
+                    .addComponent(colorSearchFoundLBL)
                     .addComponent(colorSearchFoundBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(34, Short.MAX_VALUE))
         );
@@ -1620,9 +1620,13 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton clear1BTN;
     private javax.swing.JButton clear2BTN;
     private javax.swing.JButton colorCurrDifBTN;
+    private javax.swing.JLabel colorCurrDifLBL;
     private javax.swing.JButton colorDifBTN;
+    private javax.swing.JLabel colorDifLBL;
     private javax.swing.JButton colorSearchBTN;
     private javax.swing.JButton colorSearchFoundBTN;
+    private javax.swing.JLabel colorSearchFoundLBL;
+    private javax.swing.JLabel colorSearchLBL;
     private javax.swing.JList<String> commList;
     private javax.swing.JList<String> compList1;
     private javax.swing.JList<String> compList2;
@@ -1647,10 +1651,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane1;
