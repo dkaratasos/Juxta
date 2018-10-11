@@ -11,6 +11,7 @@ import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.ToolTipManager;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
@@ -42,6 +43,10 @@ public class MainFrame extends javax.swing.JFrame {
     ArrayList<int[]> diffs1 = new ArrayList<int[]>();
     ArrayList<int[]> diffs2 = new ArrayList<int[]>();
     int currDiff = 0;
+    Color diffsColor = Color.ORANGE;
+    Color searchColor = Color.YELLOW;
+    Color searchFoundColor = Color.CYAN;
+    Color diffsCurrColor = Color.MAGENTA;
 
     /**
      * Creates new form MainFrame
@@ -71,12 +76,28 @@ public class MainFrame extends javax.swing.JFrame {
         settingsDialog = new javax.swing.JDialog();
         discardSettingsBTN = new javax.swing.JButton();
         applySettingsBTN = new javax.swing.JButton();
+        settingPanel1 = new javax.swing.JPanel();
+        jCheckBox1 = new javax.swing.JCheckBox();
+        settingPanel2 = new javax.swing.JPanel();
+        colorDifBTN = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        colorSearchBTN = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        colorSearchFoundBTN = new javax.swing.JButton();
+        jLabel7 = new javax.swing.JLabel();
+        colorCurrDifBTN = new javax.swing.JButton();
         chooseFromRefDialog = new javax.swing.JDialog();
         chooseRefLBL = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         refChooseList = new javax.swing.JList<>();
         cancelChooseRefBTN = new javax.swing.JButton();
         applyChooseRefBTN = new javax.swing.JButton();
+        ColorDialog = new javax.swing.JDialog();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
+        jColorChooser1 = new javax.swing.JColorChooser();
         mainPanel = new javax.swing.JPanel();
         nextBTN = new javax.swing.JButton();
         prevBTN = new javax.swing.JButton();
@@ -203,7 +224,7 @@ public class MainFrame extends javax.swing.JFrame {
         settingsDialog.setTitle("Settings");
         settingsDialog.setIconImage(new javax.swing.ImageIcon(getClass().getResource("/juxtanetwork/dual-mobile.png")).getImage());
         settingsDialog.setLocation(new java.awt.Point(800, 500));
-        settingsDialog.setMinimumSize(new java.awt.Dimension(400, 300));
+        settingsDialog.setMinimumSize(new java.awt.Dimension(410, 350));
 
         discardSettingsBTN.setText("Discard");
         discardSettingsBTN.addActionListener(new java.awt.event.ActionListener() {
@@ -219,21 +240,123 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
+        jCheckBox1.setText("Always use the last inserted data of a node to check");
+
+        javax.swing.GroupLayout settingPanel1Layout = new javax.swing.GroupLayout(settingPanel1);
+        settingPanel1.setLayout(settingPanel1Layout);
+        settingPanel1Layout.setHorizontalGroup(
+            settingPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(settingPanel1Layout.createSequentialGroup()
+                .addComponent(jCheckBox1)
+                .addGap(0, 78, Short.MAX_VALUE))
+        );
+        settingPanel1Layout.setVerticalGroup(
+            settingPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(settingPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jCheckBox1)
+                .addContainerGap(39, Short.MAX_VALUE))
+        );
+
+        colorDifBTN.setBackground(getDiffsColor());
+        colorDifBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                colorDifBTNActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setText("Color for Differences:");
+
+        colorSearchBTN.setBackground(getSearchColor());
+        colorSearchBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                colorSearchBTNActionPerformed(evt);
+            }
+        });
+
+        jLabel5.setText("Color for Search:");
+
+        jLabel6.setText("Color for Search Found:");
+
+        colorSearchFoundBTN.setBackground(getSearchFoundColor());
+        colorSearchFoundBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                colorSearchFoundBTNActionPerformed(evt);
+            }
+        });
+
+        jLabel7.setText("Color for Current Difference:");
+
+        colorCurrDifBTN.setBackground(getDiffsCurrColor());
+        colorCurrDifBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                colorCurrDifBTNActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout settingPanel2Layout = new javax.swing.GroupLayout(settingPanel2);
+        settingPanel2.setLayout(settingPanel2Layout);
+        settingPanel2Layout.setHorizontalGroup(
+            settingPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(settingPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(settingPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel6)
+                    .addComponent(jLabel7))
+                .addGap(47, 47, 47)
+                .addGroup(settingPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(colorCurrDifBTN)
+                    .addComponent(colorDifBTN)
+                    .addComponent(colorSearchBTN)
+                    .addComponent(colorSearchFoundBTN))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        settingPanel2Layout.setVerticalGroup(
+            settingPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(settingPanel2Layout.createSequentialGroup()
+                .addGroup(settingPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(jLabel4)
+                    .addComponent(colorDifBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(settingPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(jLabel7)
+                    .addComponent(colorCurrDifBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(settingPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(jLabel5)
+                    .addComponent(colorSearchBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(settingPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(jLabel6)
+                    .addComponent(colorSearchFoundBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(34, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout settingsDialogLayout = new javax.swing.GroupLayout(settingsDialog.getContentPane());
         settingsDialog.getContentPane().setLayout(settingsDialogLayout);
         settingsDialogLayout.setHorizontalGroup(
             settingsDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, settingsDialogLayout.createSequentialGroup()
-                .addContainerGap(258, Short.MAX_VALUE)
-                .addComponent(applySettingsBTN)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(discardSettingsBTN)
-                .addContainerGap())
+            .addGroup(settingsDialogLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(settingsDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(settingsDialogLayout.createSequentialGroup()
+                        .addComponent(applySettingsBTN)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(discardSettingsBTN))
+                    .addComponent(settingPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(settingPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         settingsDialogLayout.setVerticalGroup(
             settingsDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, settingsDialogLayout.createSequentialGroup()
-                .addContainerGap(266, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(settingPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(settingPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
                 .addGroup(settingsDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(discardSettingsBTN)
                     .addComponent(applySettingsBTN))
@@ -284,6 +407,59 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(applyChooseRefBTN))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        ColorDialog.setSize(new java.awt.Dimension(674, 453));
+
+        jButton2.setText("Cancel");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        jButton3.setText("Apply");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 634, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 382, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout ColorDialogLayout = new javax.swing.GroupLayout(ColorDialog.getContentPane());
+        ColorDialog.getContentPane().setLayout(ColorDialogLayout);
+        ColorDialogLayout.setHorizontalGroup(
+            ColorDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ColorDialogLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(ColorDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(ColorDialogLayout.createSequentialGroup()
+                        .addComponent(jButton3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton2))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        ColorDialogLayout.setVerticalGroup(
+            ColorDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ColorDialogLayout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(ColorDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton2)
+                    .addComponent(jButton3))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jColorChooser1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jColorChooser1MouseClicked(evt);
+            }
+        });
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("JuxtaNetwork");
@@ -478,7 +654,7 @@ public class MainFrame extends javax.swing.JFrame {
                             .addComponent(referenceCompWithBTN)
                             .addComponent(removeElem2BTN)))
                     .addGroup(comparePanelLayout.createSequentialGroup()
-                        .addComponent(mainScrollTab3, javax.swing.GroupLayout.DEFAULT_SIZE, 465, Short.MAX_VALUE)
+                        .addComponent(mainScrollTab3, javax.swing.GroupLayout.DEFAULT_SIZE, 481, Short.MAX_VALUE)
                         .addContainerGap())))
         );
 
@@ -585,7 +761,7 @@ public class MainFrame extends javax.swing.JFrame {
                         .addComponent(BackFindBTN)
                         .addComponent(ForFindBTN)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(diffSplitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 472, Short.MAX_VALUE))
+                .addComponent(diffSplitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 480, Short.MAX_VALUE))
         );
 
         mainTabbedPane.addTab("Results", resultsPanel);
@@ -1184,14 +1360,15 @@ public class MainFrame extends javax.swing.JFrame {
         highliter.highlightremove(po1TextArea);
         highliter.highlightremove(po2TextArea);
         for (int i = diffs1.size() - 1; i >= 0; i--) {
-            highlightDiffs(diffs1.get(i)[0], diffs1.get(i)[1], diffs2.get(i)[0], diffs2.get(i)[1], Color.ORANGE);
+            highlightDiffs(diffs1.get(i)[0], diffs1.get(i)[1], diffs2.get(i)[0], diffs2.get(i)[1], diffsColor);
         }
     }//GEN-LAST:event_testBTNActionPerformed
 
     /**
-     * If for a specific index difference both diff1 and diff2 lists have start point equal to end point
-     * then this difference should be deleted from both diff1 and diff2 lists. These are cases when some
-     * characters are different between two texts and the differences is a DELETE(start,end) and 
+     * If for a specific index difference both diff1 and diff2 lists have start
+     * point equal to end point then this difference should be deleted from both
+     * diff1 and diff2 lists. These are cases when some characters are different
+     * between two texts and the differences is a DELETE(start,end) and
      * INSERT(end,end) for both texts
      */
     private void cleanUpDiffs() {
@@ -1204,14 +1381,18 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     /**
-     * Method diff_Fortext will calculate the start and end point of each difference given a List of diffs.
-     * A internal StringBuilder is used. For every item in the input diffs list: If the operation is not
-     * Equal then a difference starts and start point is saved. Then if the operation is not Insert the
-     * difference corresponds to some characters on the present text, so the characters are appended to the
-     * StringBuilder. The absolute end point of the difference in the entire text can then be found if we
-     * check (for not Equal operation only, since that is the if we kept the start point) the final size of
-     * the text.
-     * @param diffs linked list of differences that includes the operation and text of each difference
+     * Method diff_Fortext will calculate the start and end point of each
+     * difference given a List of diffs. A internal StringBuilder is used. For
+     * every item in the input diffs list: If the operation is not Equal then a
+     * difference starts and start point is saved. Then if the operation is not
+     * Insert the difference corresponds to some characters on the present text,
+     * so the characters are appended to the StringBuilder. The absolute end
+     * point of the difference in the entire text can then be found if we check
+     * (for not Equal operation only, since that is the if we kept the start
+     * point) the final size of the text.
+     *
+     * @param diffs linked list of differences that includes the operation and
+     * text of each difference
      * @return and ArrayList of absolute [start,end] pair for each difference
      */
     private static ArrayList<int[]> diff_Fortext(List<diff_match_patch.Diff> diffs) {
@@ -1234,8 +1415,9 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     /**
-     * Method highlightDiffs will order the highlight function for both PrintOut text areas given the
-     * start/end points and the desired color
+     * Method highlightDiffs will order the highlight function for both PrintOut
+     * text areas given the start/end points and the desired color
+     *
      * @param index11 start index of difference for text area 1
      * @param index12 end index of difference for text area 1
      * @param index21 start index of difference for text area 2
@@ -1247,25 +1429,41 @@ public class MainFrame extends javax.swing.JFrame {
         highliter.highlight(po2TextArea, index21, index22, color);
     }
 
+    private Color getDiffsColor() {
+        return diffsColor;
+    }
+
+    private Color getDiffsCurrColor() {
+        return diffsCurrColor;
+    }
+
+    private Color getSearchColor() {
+        return searchColor;
+    }
+
+    private Color getSearchFoundColor() {
+        return searchFoundColor;
+    }
+
     private void searchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchFieldActionPerformed
         highliterSearch.highlightremove(po1TextArea);
-        highliterSearch.highlightText1(po1TextArea, searchField.getText());
+        highliterSearch.highlightText1(po1TextArea, searchField.getText(), searchColor, searchFoundColor);
         highliterSearch.highlightremove(po2TextArea);
-        highliterSearch.highlightText2(po2TextArea, searchField.getText());
+        highliterSearch.highlightText2(po2TextArea, searchField.getText(), searchColor, searchFoundColor);
     }//GEN-LAST:event_searchFieldActionPerformed
 
     private void ForFindBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ForFindBTNActionPerformed
         highliterSearch.highlightremove(po1TextArea);
         highliterSearch.highlightremove(po2TextArea);
-        highliterSearch.highlightText1(po1TextArea, searchField.getText());
-        highliterSearch.highlightText2(po2TextArea, searchField.getText());
+        highliterSearch.highlightText1(po1TextArea, searchField.getText(), searchColor, searchFoundColor);
+        highliterSearch.highlightText2(po2TextArea, searchField.getText(), searchColor, searchFoundColor);
     }//GEN-LAST:event_ForFindBTNActionPerformed
 
     private void BackFindBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackFindBTNActionPerformed
         highliterSearch.highlightremove(po1TextArea);
         highliterSearch.highlightremove(po2TextArea);
-        highliterSearch.backhighlightText1(po1TextArea, searchField.getText());
-        highliterSearch.backhighlightText2(po2TextArea, searchField.getText());
+        highliterSearch.backhighlightText1(po1TextArea, searchField.getText(), searchColor, searchFoundColor);
+        highliterSearch.backhighlightText2(po2TextArea, searchField.getText(), searchColor, searchFoundColor);
     }//GEN-LAST:event_BackFindBTNActionPerformed
 
     private void searchFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchFieldMouseClicked
@@ -1273,9 +1471,11 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_searchFieldMouseClicked
 
     /**
-     * Moves the current Highlight (different color) to the next difference if forBack is true or to
-     * the previous difference if forBack is false. It removes all highlights and repaints them for
-     * current difference will have a different color
+     * Moves the current Highlight (different color) to the next difference if
+     * forBack is true or to the previous difference if forBack is false. It
+     * removes all highlights and repaints them for current difference will have
+     * a different color
+     *
      * @param forBack boolean for forward or backward move
      */
     private void moveHighlight(boolean forBack) {
@@ -1292,9 +1492,9 @@ public class MainFrame extends javax.swing.JFrame {
         highliter.highlightremove(po2TextArea);
         for (int i = 0; i < diffs1.size(); i++) {
             if (i == currDiff) {
-                highlightDiffs(diffs1.get(i)[0], diffs1.get(i)[1], diffs2.get(i)[0], diffs2.get(i)[1], Color.MAGENTA);
+                highlightDiffs(diffs1.get(i)[0], diffs1.get(i)[1], diffs2.get(i)[0], diffs2.get(i)[1], diffsCurrColor);
             } else {
-                highlightDiffs(diffs1.get(i)[0], diffs1.get(i)[1], diffs2.get(i)[0], diffs2.get(i)[1], Color.ORANGE);
+                highlightDiffs(diffs1.get(i)[0], diffs1.get(i)[1], diffs2.get(i)[0], diffs2.get(i)[1], diffsColor);
             }
         }
         po1TextArea.select(diffs1.get(currDiff)[0], diffs1.get(currDiff)[1]);
@@ -1308,6 +1508,62 @@ public class MainFrame extends javax.swing.JFrame {
     private void prevHiliteBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prevHiliteBTNActionPerformed
         moveHighlight(false);
     }//GEN-LAST:event_prevHiliteBTNActionPerformed
+
+    private void colorDifBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_colorDifBTNActionPerformed
+        JFrame frame = new JFrame("JColorChooser");
+        Color newColor = jColorChooser1.showDialog(
+                frame,
+                "Choose Background Color",
+                colorDifBTN.getBackground());
+        if (newColor != null) {
+            diffsColor = newColor;
+            colorDifBTN.setBackground(diffsColor);
+        }
+    }//GEN-LAST:event_colorDifBTNActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void colorSearchBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_colorSearchBTNActionPerformed
+        JFrame frame = new JFrame("JColorChooser");
+        Color newColor = jColorChooser1.showDialog(
+                frame,
+                "Choose Background Color",
+                colorSearchBTN.getBackground());
+        if (newColor != null) {
+            searchColor = newColor;
+            colorSearchBTN.setBackground(searchColor);
+        }
+    }//GEN-LAST:event_colorSearchBTNActionPerformed
+
+    private void jColorChooser1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jColorChooser1MouseClicked
+
+    }//GEN-LAST:event_jColorChooser1MouseClicked
+
+    private void colorSearchFoundBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_colorSearchFoundBTNActionPerformed
+        JFrame frame = new JFrame("JColorChooser");
+        Color newColor = jColorChooser1.showDialog(
+                frame,
+                "Choose Background Color",
+                colorSearchFoundBTN.getBackground());
+        if (newColor != null) {
+            searchFoundColor = newColor;
+            colorSearchFoundBTN.setBackground(searchFoundColor);
+        }
+    }//GEN-LAST:event_colorSearchFoundBTNActionPerformed
+
+    private void colorCurrDifBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_colorCurrDifBTNActionPerformed
+        JFrame frame = new JFrame("JColorChooser");
+        Color newColor = jColorChooser1.showDialog(
+                frame,
+                "Choose Background Color",
+                colorCurrDifBTN.getBackground());
+        if (newColor != null) {
+            diffsCurrColor = newColor;
+            colorCurrDifBTN.setBackground(diffsCurrColor);
+        }
+    }//GEN-LAST:event_colorCurrDifBTNActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1346,6 +1602,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BackFindBTN;
+    private javax.swing.JDialog ColorDialog;
     private javax.swing.JButton ForFindBTN;
     private javax.swing.JTree NodesTree;
     private javax.swing.JMenuItem OpenMN;
@@ -1362,6 +1619,10 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel chooseRefLBL;
     private javax.swing.JButton clear1BTN;
     private javax.swing.JButton clear2BTN;
+    private javax.swing.JButton colorCurrDifBTN;
+    private javax.swing.JButton colorDifBTN;
+    private javax.swing.JButton colorSearchBTN;
+    private javax.swing.JButton colorSearchFoundBTN;
     private javax.swing.JList<String> commList;
     private javax.swing.JList<String> compList1;
     private javax.swing.JList<String> compList2;
@@ -1379,9 +1640,18 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JTextArea infoTextArea;
     private javax.swing.JButton insertElem1BTN;
     private javax.swing.JButton insertElem2BTN;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JCheckBox jCheckBox1;
+    private javax.swing.JColorChooser jColorChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
@@ -1411,6 +1681,8 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JPanel resultsPanel;
     private javax.swing.JButton saveTLB;
     private javax.swing.JTextField searchField;
+    private javax.swing.JPanel settingPanel1;
+    private javax.swing.JPanel settingPanel2;
     private javax.swing.JDialog settingsDialog;
     private javax.swing.JMenuItem settingsMN;
     private javax.swing.JButton sidebarBTN;
