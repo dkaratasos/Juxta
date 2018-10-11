@@ -71,6 +71,12 @@ public class MainFrame extends javax.swing.JFrame {
         settingsDialog = new javax.swing.JDialog();
         discardSettingsBTN = new javax.swing.JButton();
         applySettingsBTN = new javax.swing.JButton();
+        chooseFromRefDialog = new javax.swing.JDialog();
+        chooseRefLBL = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jList1 = new javax.swing.JList<>();
+        cancelChooseRefBTN = new javax.swing.JButton();
+        applyChooseRefBTN = new javax.swing.JButton();
         mainPanel = new javax.swing.JPanel();
         nextBTN = new javax.swing.JButton();
         prevBTN = new javax.swing.JButton();
@@ -232,6 +238,51 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(discardSettingsBTN)
                     .addComponent(applySettingsBTN))
                 .addContainerGap())
+        );
+
+        chooseRefLBL.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        chooseRefLBL.setText("Choose from Reference");
+
+        jList1.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane3.setViewportView(jList1);
+
+        cancelChooseRefBTN.setText("Cancel");
+
+        applyChooseRefBTN.setText("Apply");
+
+        javax.swing.GroupLayout chooseFromRefDialogLayout = new javax.swing.GroupLayout(chooseFromRefDialog.getContentPane());
+        chooseFromRefDialog.getContentPane().setLayout(chooseFromRefDialogLayout);
+        chooseFromRefDialogLayout.setHorizontalGroup(
+            chooseFromRefDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(chooseFromRefDialogLayout.createSequentialGroup()
+                .addGap(27, 27, 27)
+                .addGroup(chooseFromRefDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(chooseRefLBL))
+                .addContainerGap(29, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, chooseFromRefDialogLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(applyChooseRefBTN)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cancelChooseRefBTN)
+                .addContainerGap())
+        );
+        chooseFromRefDialogLayout.setVerticalGroup(
+            chooseFromRefDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(chooseFromRefDialogLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(chooseRefLBL)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(chooseFromRefDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cancelChooseRefBTN)
+                    .addComponent(applyChooseRefBTN))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -1304,7 +1355,11 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane aboutScrollPane;
     private javax.swing.JButton aboutTLB;
     private javax.swing.JTextArea aboutTextArea;
+    private javax.swing.JButton applyChooseRefBTN;
     private javax.swing.JButton applySettingsBTN;
+    private javax.swing.JButton cancelChooseRefBTN;
+    private javax.swing.JDialog chooseFromRefDialog;
+    private javax.swing.JLabel chooseRefLBL;
     private javax.swing.JButton clear1BTN;
     private javax.swing.JButton clear2BTN;
     private javax.swing.JList<String> commList;
@@ -1327,9 +1382,11 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JList<String> jList1;
     private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JToolBar.Separator jSeparator2;
     private javax.swing.JPanel mainPanel;
