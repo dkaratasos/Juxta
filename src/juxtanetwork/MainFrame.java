@@ -1195,7 +1195,22 @@ public class MainFrame extends javax.swing.JFrame {
         searchField.setText("");
     }//GEN-LAST:event_searchFieldMouseClicked
 
+    /**
+     * Moves the current Highlight (different color) to the next difference if forBack is true or to
+     * the previous difference if forBack is false. It removes all highlights and repaints them for
+     * current difference will have a different color
+     * @param forBack boolean for forward or backward move
+     */
     private void moveHighlight(boolean forBack) {
+        if (forBack) {
+            if (currDiff < diffs1.size() - 1) {
+                currDiff++;
+            }
+        } else {
+            if (currDiff > 0) {
+                currDiff--;
+            }
+        }
         highliter.highlightremove(po1TextArea);
         highliter.highlightremove(po2TextArea);
         for (int i = 0; i < diffs1.size(); i++) {
@@ -1207,15 +1222,7 @@ public class MainFrame extends javax.swing.JFrame {
         }
         po1TextArea.select(diffs1.get(currDiff)[0], diffs1.get(currDiff)[1]);
         po2TextArea.select(diffs2.get(currDiff)[0], diffs2.get(currDiff)[1]);
-        if (forBack) {
-            if (currDiff < diffs1.size() - 1) {
-                currDiff++;
-            }
-        } else {
-            if (currDiff > 0) {
-                currDiff--;
-            }
-        }
+
     }
     private void nextHiliteBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextHiliteBTNActionPerformed
         moveHighlight(true);
