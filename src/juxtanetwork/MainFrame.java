@@ -74,7 +74,7 @@ public class MainFrame extends javax.swing.JFrame {
         chooseFromRefDialog = new javax.swing.JDialog();
         chooseRefLBL = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
+        refChooseList = new javax.swing.JList<>();
         cancelChooseRefBTN = new javax.swing.JButton();
         applyChooseRefBTN = new javax.swing.JButton();
         mainPanel = new javax.swing.JPanel();
@@ -243,12 +243,12 @@ public class MainFrame extends javax.swing.JFrame {
         chooseRefLBL.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         chooseRefLBL.setText("Choose from Reference");
 
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
+        refChooseList.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
-        jScrollPane3.setViewportView(jList1);
+        jScrollPane3.setViewportView(refChooseList);
 
         cancelChooseRefBTN.setText("Cancel");
 
@@ -1382,7 +1382,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JList<String> jList1;
     private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
@@ -1404,6 +1403,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JTextArea po2TextArea;
     private javax.swing.JButton prevBTN;
     private javax.swing.JButton prevHiliteBTN;
+    private javax.swing.JList<String> refChooseList;
     private javax.swing.JButton referenceCompBTN;
     private javax.swing.JButton referenceCompWithBTN;
     private javax.swing.JButton removeElem1BTN;
