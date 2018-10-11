@@ -93,10 +93,6 @@ public class MainFrame extends javax.swing.JFrame {
         refChooseList = new javax.swing.JList<>();
         cancelChooseRefBTN = new javax.swing.JButton();
         applyChooseRefBTN = new javax.swing.JButton();
-        ColorDialog = new javax.swing.JDialog();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jPanel1 = new javax.swing.JPanel();
         jColorChooser1 = new javax.swing.JColorChooser();
         mainPanel = new javax.swing.JPanel();
         nextBTN = new javax.swing.JButton();
@@ -408,59 +404,6 @@ public class MainFrame extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        ColorDialog.setSize(new java.awt.Dimension(674, 453));
-
-        jButton2.setText("Cancel");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-
-        jButton3.setText("Apply");
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 634, Short.MAX_VALUE)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 382, Short.MAX_VALUE)
-        );
-
-        javax.swing.GroupLayout ColorDialogLayout = new javax.swing.GroupLayout(ColorDialog.getContentPane());
-        ColorDialog.getContentPane().setLayout(ColorDialogLayout);
-        ColorDialogLayout.setHorizontalGroup(
-            ColorDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(ColorDialogLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(ColorDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(ColorDialogLayout.createSequentialGroup()
-                        .addComponent(jButton3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton2))
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        ColorDialogLayout.setVerticalGroup(
-            ColorDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(ColorDialogLayout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(ColorDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        jColorChooser1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jColorChooser1MouseClicked(evt);
-            }
-        });
-
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("JuxtaNetwork");
         setIconImage(new javax.swing.ImageIcon(getClass().getResource("/juxtanetwork/dual-mobile.png")).getImage());
@@ -761,7 +704,7 @@ public class MainFrame extends javax.swing.JFrame {
                         .addComponent(BackFindBTN)
                         .addComponent(ForFindBTN)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(diffSplitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 480, Short.MAX_VALUE))
+                .addComponent(diffSplitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 484, Short.MAX_VALUE))
         );
 
         mainTabbedPane.addTab("Results", resultsPanel);
@@ -1521,10 +1464,6 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_colorDifBTNActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
-
     private void colorSearchBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_colorSearchBTNActionPerformed
         JFrame frame = new JFrame("JColorChooser");
         Color newColor = jColorChooser1.showDialog(
@@ -1536,10 +1475,6 @@ public class MainFrame extends javax.swing.JFrame {
             colorSearchBTN.setBackground(searchColor);
         }
     }//GEN-LAST:event_colorSearchBTNActionPerformed
-
-    private void jColorChooser1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jColorChooser1MouseClicked
-
-    }//GEN-LAST:event_jColorChooser1MouseClicked
 
     private void colorSearchFoundBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_colorSearchFoundBTNActionPerformed
         JFrame frame = new JFrame("JColorChooser");
@@ -1602,7 +1537,6 @@ public class MainFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BackFindBTN;
-    private javax.swing.JDialog ColorDialog;
     private javax.swing.JButton ForFindBTN;
     private javax.swing.JTree NodesTree;
     private javax.swing.JMenuItem OpenMN;
@@ -1644,14 +1578,11 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JTextArea infoTextArea;
     private javax.swing.JButton insertElem1BTN;
     private javax.swing.JButton insertElem2BTN;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JColorChooser jColorChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
