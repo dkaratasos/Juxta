@@ -48,6 +48,9 @@ public class MainFrame extends javax.swing.JFrame {
     Color searchFoundColor = Color.CYAN;
     Color diffsCurrColor = Color.MAGENTA;
 
+    //IXGKOAG --  DEFINE and Initialize Compare Object
+    Compare cmp = new Compare();
+
     /**
      * Creates new form MainFrame
      */
@@ -475,6 +478,11 @@ public class MainFrame extends javax.swing.JFrame {
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
+        compList2.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                compList2FocusLost(evt);
+            }
+        });
         jScrollPane2.setViewportView(compList2);
 
         clear2BTN.setText("X");
@@ -495,11 +503,21 @@ public class MainFrame extends javax.swing.JFrame {
 
         referenceCompWithBTN.setText("R");
         referenceCompWithBTN.setToolTipText("Load a reference to Compare with");
+        referenceCompWithBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                referenceCompWithBTNActionPerformed(evt);
+            }
+        });
 
         commList.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "PCORP", "MGNDP", "DBTSP", "MGEPP", "Comm1", "Comm2", "Comm3" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
+        });
+        commList.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                commListFocusLost(evt);
+            }
         });
         mainScrollTab3.setViewportView(commList);
 
@@ -527,6 +545,11 @@ public class MainFrame extends javax.swing.JFrame {
 
         referenceCompBTN.setText("R");
         referenceCompBTN.setToolTipText("Load a reference to Compare with");
+        referenceCompBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                referenceCompBTNActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout comparePanelLayout = new javax.swing.GroupLayout(comparePanel);
         comparePanel.setLayout(comparePanelLayout);
@@ -880,7 +903,6 @@ public class MainFrame extends javax.swing.JFrame {
         NodesTree.setRootVisible(false);                // Do not diaplsy the Name of the root of the tree
         NodesTree.setCellRenderer(new MyRenderer());    // Assign icons and tooltips per type of node in NodesTree
         ToolTipManager.sharedInstance().registerComponent(NodesTree); // Tooltips on Nodes Tree enabled
-
         managePrevNextBTN();
         createCommsList();
     }
@@ -904,6 +926,7 @@ public class MainFrame extends javax.swing.JFrame {
         commListModel.addElement("Comm1");
         commListModel.addElement("Comm2");
         commListModel.addElement("Comm3");
+
     }
 
     /**
@@ -1165,26 +1188,38 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void removeElem2BTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeElem2BTNActionPerformed
         compList2Model.removeAllElements();
+        //IXGKOAG -- Update TargetNodes arrayList in Compare Object
+        cmp.updateTargetNodes(compList2);
     }//GEN-LAST:event_removeElem2BTNActionPerformed
 
     private void removeElem1BTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeElem1BTNActionPerformed
         compList1Model.removeAllElements();
+        //IXGKOAG -- Update BaseNodes arrayList in Compare Object
+        cmp.updateBaseNodes(compList1);
     }//GEN-LAST:event_removeElem1BTNActionPerformed
 
     private void insertElem2BTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertElem2BTNActionPerformed
         insertElem(compList2Model);
+        //IXGKOAG -- Update TargetNodes arrayList in Compare Object
+        cmp.updateTargetNodes(compList2);
     }//GEN-LAST:event_insertElem2BTNActionPerformed
 
     private void clear2BTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clear2BTNActionPerformed
         compList2Model.clear();
+        //IXGKOAG -- Update TargetNodes arrayList in Compare Object
+        cmp.updateTargetNodes(compList2);
     }//GEN-LAST:event_clear2BTNActionPerformed
 
     private void insertElem1BTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertElem1BTNActionPerformed
         insertElem(compList1Model);
+        //IXGKOAG -- Update BaseNodes arrayList in Compare Object
+        cmp.updateBaseNodes(compList1);
     }//GEN-LAST:event_insertElem1BTNActionPerformed
 
     private void clear1BTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clear1BTNActionPerformed
         compList1Model.clear();
+        //IXGKOAG -- Update BaseNodes arrayList in Compare Object
+        cmp.updateBaseNodes(compList1);
     }//GEN-LAST:event_clear1BTNActionPerformed
 
     private void prevBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prevBTNActionPerformed
@@ -1499,6 +1534,28 @@ public class MainFrame extends javax.swing.JFrame {
             colorCurrDifBTN.setBackground(diffsCurrColor);
         }
     }//GEN-LAST:event_colorCurrDifBTNActionPerformed
+
+
+    private void compList2FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_compList2FocusLost
+
+    }//GEN-LAST:event_compList2FocusLost
+
+    private void commListFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_commListFocusLost
+        //IXGKOAG - Update SelectedCommands ArrayList in Compare Object
+        cmp.updateSelectedCommands(commList);
+    }//GEN-LAST:event_commListFocusLost
+
+    private void referenceCompBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_referenceCompBTNActionPerformed
+
+        //IXGKOAG -- Update BaseNodes arrayList in Compare Object
+        cmp.updateBaseNodes(compList1);
+    }//GEN-LAST:event_referenceCompBTNActionPerformed
+
+    private void referenceCompWithBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_referenceCompWithBTNActionPerformed
+        // TODO add your handling code here:
+        //IXGKOAG -- Update TargetNodes arrayList in Compare Object
+        cmp.updateTargetNodes(compList2);
+    }//GEN-LAST:event_referenceCompWithBTNActionPerformed
 
     /**
      * @param args the command line arguments

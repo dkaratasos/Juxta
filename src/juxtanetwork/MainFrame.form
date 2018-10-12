@@ -816,6 +816,9 @@
                               </StringArray>
                             </Property>
                           </Properties>
+                          <Events>
+                            <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="compList2FocusLost"/>
+                          </Events>
                           <AuxValues>
                             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
                           </AuxValues>
@@ -845,6 +848,9 @@
                         <Property name="text" type="java.lang.String" value="R"/>
                         <Property name="toolTipText" type="java.lang.String" value="Load a reference to Compare with"/>
                       </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="referenceCompWithBTNActionPerformed"/>
+                      </Events>
                     </Component>
                     <Container class="javax.swing.JScrollPane" name="mainScrollTab3">
                       <AuxValues>
@@ -867,6 +873,9 @@
                               </StringArray>
                             </Property>
                           </Properties>
+                          <Events>
+                            <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="commListFocusLost"/>
+                          </Events>
                           <AuxValues>
                             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
                           </AuxValues>
@@ -911,6 +920,9 @@
                         <Property name="text" type="java.lang.String" value="R"/>
                         <Property name="toolTipText" type="java.lang.String" value="Load a reference to Compare with"/>
                       </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="referenceCompBTNActionPerformed"/>
+                      </Events>
                     </Component>
                   </SubComponents>
                 </Container>
