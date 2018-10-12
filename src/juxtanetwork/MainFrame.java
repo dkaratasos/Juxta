@@ -949,6 +949,7 @@ public class MainFrame extends javax.swing.JFrame {
                 }
             }
         }
+        
         NodesTree.updateUI();
     }
 
