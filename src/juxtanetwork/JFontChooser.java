@@ -120,6 +120,15 @@ public class JFontChooser extends JComponent
     /**
      * Constructs a <code>JFontChooser</code> object.
      **/
+    public JFontChooser()
+    {
+        this(DEFAULT_SELECTED_FONT);
+    }
+    
+    /**
+     * Constructs a <code>JFontChooser</code> object passing the previous Font of the object
+     * @param oldFont the previous font
+     **/
     public JFontChooser(Font oldFont)
     {
         this(DEFAULT_FONT_SIZE_STRINGS,oldFont);
