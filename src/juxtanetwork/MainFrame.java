@@ -49,7 +49,7 @@ public class MainFrame extends javax.swing.JFrame {
     Color diffsCurrColor = Color.MAGENTA;
 
     //IXGKOAG --  DEFINE and Initialize Compare Object
-    Compare cmp = new Compare();
+    Compare cmp;// = new Compare();
 
     /**
      * Creates new form MainFrame
@@ -910,6 +910,8 @@ public class MainFrame extends javax.swing.JFrame {
         ToolTipManager.sharedInstance().registerComponent(NodesTree); // Tooltips on Nodes Tree enabled
         managePrevNextBTN();
         createCommsList();
+        //IXGKOAG --  Initialize Compare Object
+//        this.cmp = new Compare(compList1, compList2);
     }
 
     /**
