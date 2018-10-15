@@ -644,6 +644,11 @@ public class MainFrame extends javax.swing.JFrame {
         compareCombo.setToolTipText("Compared Elements");
         compareCombo.setMaximumSize(new java.awt.Dimension(100, 20));
         compareCombo.setPreferredSize(new java.awt.Dimension(100, 20));
+        compareCombo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                compareComboActionPerformed(evt);
+            }
+        });
 
         prevHiliteBTN.setText("<");
         prevHiliteBTN.setToolTipText("Previous Difference");
@@ -1557,6 +1562,10 @@ public class MainFrame extends javax.swing.JFrame {
         //IXGKOAG -- Update TargetNodes arrayList in Compare Object
         cmp.updateTargetNodes(compList2);
     }//GEN-LAST:event_referenceCompWithBTNActionPerformed
+
+    private void compareComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_compareComboActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_compareComboActionPerformed
 
     /**
      * @param args the command line arguments

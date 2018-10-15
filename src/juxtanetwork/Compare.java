@@ -1,9 +1,10 @@
 //IXGKOAG
-//1. Collect Select Commands from Command List  
+//1. Collect Select Commands from Command List
 package juxtanetwork;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Properties;
 import javax.swing.JList;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -18,6 +19,10 @@ public class Compare {
     private ArrayList<String> selectedCommands = new ArrayList<String>();
     private ArrayList<String> BaseNodes = new ArrayList<String>();
     private ArrayList<String> TargetNodes = new ArrayList<String>();
+//============
+    // Hash Maps to store Hieradically information
+    // <BaseNode,<TargetNode,<CommandName,Command>>>
+    private HashMap<String,HashMap<String, HashMap<String, Command>>> Structure = new HashMap<String,HashMap<String, HashMap<String, Command>>>() ;
 
     //Base Files Path's
     // Empty yet Constructor
@@ -71,11 +76,11 @@ public class Compare {
         // check if node name contains dot or slash or dash in case of cluster node, to be agreed
         String[] items = node.split("\\.");
         if (items.length > 1) {
-            String path = "./"+LogsDirectory + fileSeperator + items[0] + fileSeperator + time + fileSeperator + items[1];
+            String path = "./" + LogsDirectory + fileSeperator + items[0] + fileSeperator + time + fileSeperator + items[1];
         }
-        String path = "./"+LogsDirectory + fileSeperator + node + fileSeperator + time + fileSeperator;
+        String path = "./" + LogsDirectory + fileSeperator + node + fileSeperator + time + fileSeperator;
 
-        //this is for test 
+        //------- this is for test --------------
         path += "BC0";
 
         return path;
@@ -99,29 +104,42 @@ public class Compare {
             return;
         }
 //=============================================
-        for (String command : selectedCommands) {
-            for (String baseNode : BaseNodes) {
-                String BasePath = getPath(baseNode, timeStampBase);
-                for (String targetNode : TargetNodes) {
-                    String TargetPath = getPath(targetNode, timeStampTarget);
+//--- Create Structure HashMap with All needed info to
+//    construct GUI items and Calculate Data
+
+        for (String baseNode : BaseNodes) {
+            String BasePath = getPath(baseNode, timeStampBase);
+            HashMap<String, HashMap<String, Command>> TargetCommands = new HashMap<String, HashMap<String, Command>>();
+
+            for (String targetNode : TargetNodes) {
+                String TargetPath = getPath(targetNode, timeStampTarget);
+                HashMap<String, Command> Commands = new HashMap<String, Command>();
+
+                for (String command : selectedCommands) {
+                    String pathTarget = TargetPath + fileSeperator + command;
+                    String pathBase = BasePath + fileSeperator + command;
+
                     //=== If both Files exist
-                    System.out.println("BasePath : " + BasePath);
-                    System.out.println("TargetPath : " + TargetPath);
-                    File f1 = new File(BasePath + fileSeperator + command);
-                    File f2 = new File(TargetPath + fileSeperator + command);
+                    File f1 = new File(pathBase);
+                    File f2 = new File(pathTarget);
+
                     if (f1.exists() & f1.exists()) {
-                    System.out.println("f1 : " + f1.getPath() );
-                    System.out.println("f2 : " + f2.getPath());
-                    //append to treeview
-                    
-                    //create list of command objects
-                        
+                        //create CommandObject and appendit to the targetNode Commands
+                        Command CommandObject = new Command(command, f1, f2);
+                        Commands.put(command, CommandObject);
                     }
-
                 }
+                TargetCommands.put(targetNode, Commands);
             }
+            Structure.put(baseNode, TargetCommands);
+        } 
+        // Do the GUI Stuff
+        
+        
+        
+        
+        
+        
+        
         }
-
-    }
-
 }
