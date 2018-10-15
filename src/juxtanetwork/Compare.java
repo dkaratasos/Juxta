@@ -1,15 +1,21 @@
 //IXGKOAG
-//1. Collect Select Commands from Command List
+//1. Collect Select Commands from Command List 
+//2. 
 package juxtanetwork;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Properties;
+import javax.swing.JComboBox;
 import javax.swing.JList;
+import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 public class Compare {
+
+    JComboBox<String> BaseNodesCombo;
+    JTree TargetNodesTree;
 
     String fileSeperator = "/";
     private String LogsDirectory = "Data";
@@ -22,11 +28,18 @@ public class Compare {
 //============
     // Hash Maps to store Hieradically information
     // <BaseNode,<TargetNode,<CommandName,Command>>>
-    private HashMap<String,HashMap<String, HashMap<String, Command>>> Structure = new HashMap<String,HashMap<String, HashMap<String, Command>>>() ;
+    private HashMap<String, HashMap<String, HashMap<String, Command>>> Structure = new HashMap<String, HashMap<String, HashMap<String, Command>>>();
+//============
 
-    //Base Files Path's
-    // Empty yet Constructor
-    public Compare() {
+    /**
+     * IXGKOAG Compare Constructor
+     *
+     * @param BaseNodesCombo
+     * @param TargetNodesTree
+     */
+    Compare(JComboBox<String> BaseNodesCombo, JTree TargetNodesTree) {
+        this.BaseNodesCombo = BaseNodesCombo;
+        this.TargetNodesTree = TargetNodesTree;
     }
 
     //Update Selected Commands ArrayList
@@ -37,7 +50,7 @@ public class Compare {
             selectedCommands.add(commList.getModel().getElementAt(selectedIndex[i]));
         }
         System.out.println("Selected Commads : " + selectedCommands);
-        getPOintoHash();
+        prepareHashStructure();
     }
 
     //Update BaseNodes ArrayList
@@ -47,7 +60,7 @@ public class Compare {
             BaseNodes.add(compList1.getModel().getElementAt(i));
         }
         System.out.println("Selected Base Nodes : " + BaseNodes);
-        getPOintoHash();
+        prepareHashStructure();
     }
 
     //Update TargetNodes ArrayList
@@ -57,7 +70,7 @@ public class Compare {
             TargetNodes.add(compList2.getModel().getElementAt(i));
         }
         System.out.println("Selected Target Nodes : " + TargetNodes);
-        getPOintoHash();
+        prepareHashStructure();
     }
 
     //Update timeStampBase String
@@ -86,7 +99,7 @@ public class Compare {
         return path;
     }
 
-    void getPOintoHash() {
+    void prepareHashStructure() {
         //======Check if all data exists, do something.. e.g. popup
         if (selectedCommands.size() == 0) {
             return;
@@ -132,14 +145,17 @@ public class Compare {
                 TargetCommands.put(targetNode, Commands);
             }
             Structure.put(baseNode, TargetCommands);
-        } 
-        // Do the GUI Stuff
-        
-        
-        
-        
-        
-        
-        
         }
+        //Hash prepared do additional Stuff 
+        updateBaseNodesCombo();
+    }
+
+    public void updateBaseNodesCombo() {
+        this.BaseNodesCombo.removeAllItems();
+        for (String key : Structure.keySet()) {
+            this.BaseNodesCombo.addItem(key);            
+        }
+
+    }
+
 }
