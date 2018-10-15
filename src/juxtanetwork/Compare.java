@@ -153,16 +153,26 @@ public class Compare {
     public void updateBaseNodesCombo() {
         this.BaseNodesCombo.removeAllItems();
         for (String key : Structure.keySet()) {
-            this.BaseNodesCombo.addItem(key);            
+            this.BaseNodesCombo.addItem(key);
         }
-
+        this.BaseNodesCombo.setSelectedIndex(0);
     }
-    
-    public void updateTargetNodesTree(){
-       // this.BaseNodesCombo.removeAllItems();
-       // for (String key : Structure.keySet()) {
-      //      this.BaseNodesCombo.addItem(key);            
-     //   }
 
+    public void updateTargetNodesTree() {       
+         this.TargetNodesTree.removeAll();
+        HashMap<String, HashMap<String, Command>> TargetCommands = this.Structure.get((String)this.BaseNodesCombo.getSelectedItem());
+        
+        for (String key : TargetCommands.keySet()) {
+            
+            
+            
+            
+            //this.TargetNodesTree.
+        }      
+        
+        // this.BaseNodesCombo.removeAllItems();
+        // for (String key : Structure.keySet()) {
+        //      this.BaseNodesCombo.addItem(key);            
+        //   }
     }
 }
