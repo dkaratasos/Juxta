@@ -81,6 +81,8 @@ public class MainFrame extends javax.swing.JFrame {
         applySettingsBTN = new javax.swing.JButton();
         settingPanel1 = new javax.swing.JPanel();
         jCheckBox1 = new javax.swing.JCheckBox();
+        fontLBL = new javax.swing.JLabel();
+        fontBTN = new javax.swing.JButton();
         settingPanel2 = new javax.swing.JPanel();
         colorDifBTN = new javax.swing.JButton();
         colorDifLBL = new javax.swing.JLabel();
@@ -241,12 +243,26 @@ public class MainFrame extends javax.swing.JFrame {
 
         jCheckBox1.setText("Always use the last inserted data of a node to check");
 
+        fontLBL.setText("Font:");
+
+        fontBTN.setText("Choose...");
+        fontBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fontBTNActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout settingPanel1Layout = new javax.swing.GroupLayout(settingPanel1);
         settingPanel1.setLayout(settingPanel1Layout);
         settingPanel1Layout.setHorizontalGroup(
             settingPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(settingPanel1Layout.createSequentialGroup()
-                .addComponent(jCheckBox1)
+                .addGroup(settingPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jCheckBox1)
+                    .addGroup(settingPanel1Layout.createSequentialGroup()
+                        .addComponent(fontLBL)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(fontBTN)))
                 .addGap(0, 78, Short.MAX_VALUE))
         );
         settingPanel1Layout.setVerticalGroup(
@@ -254,7 +270,11 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(settingPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jCheckBox1)
-                .addContainerGap(39, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(settingPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(fontLBL)
+                    .addComponent(fontBTN))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
 
         colorDifBTN.setBackground(getDiffsColor());
@@ -355,7 +375,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addComponent(settingPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(settingPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(settingsDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(discardSettingsBTN)
                     .addComponent(applySettingsBTN))
@@ -412,7 +432,6 @@ public class MainFrame extends javax.swing.JFrame {
         setIconImage(new javax.swing.ImageIcon(getClass().getResource("/juxtanetwork/dual-mobile.png")).getImage());
         setLocation(new java.awt.Point(500, 200));
         setMinimumSize(new java.awt.Dimension(600, 640));
-        setPreferredSize(new java.awt.Dimension(850, 650));
 
         nextBTN.setText("Next");
         nextBTN.setToolTipText("Next tab");
@@ -1547,16 +1566,22 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_commListFocusLost
 
     private void referenceCompBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_referenceCompBTNActionPerformed
-
         //IXGKOAG -- Update BaseNodes arrayList in Compare Object
         cmp.updateBaseNodes(compList1);
     }//GEN-LAST:event_referenceCompBTNActionPerformed
 
     private void referenceCompWithBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_referenceCompWithBTNActionPerformed
-        // TODO add your handling code here:
         //IXGKOAG -- Update TargetNodes arrayList in Compare Object
         cmp.updateTargetNodes(compList2);
     }//GEN-LAST:event_referenceCompWithBTNActionPerformed
+
+    private void fontBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fontBTNActionPerformed
+        JFontChooser font = new JFontChooser(po1TextArea.getFont());
+        font.showDialog(settingsDialog);
+        
+        po1TextArea.setFont(font.getSelectedFont());
+        po2TextArea.setFont(font.getSelectedFont());
+    }//GEN-LAST:event_fontBTNActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1630,6 +1655,8 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem exitMN;
     private javax.swing.JFileChooser fileChooser;
     private javax.swing.JMenu fileMN;
+    private javax.swing.JButton fontBTN;
+    private javax.swing.JLabel fontLBL;
     private javax.swing.JMenu helpMN;
     private javax.swing.JLabel infoNameLBL;
     private javax.swing.JScrollPane infoPanel;
