@@ -81,6 +81,8 @@ public class MainFrame extends javax.swing.JFrame {
         applySettingsBTN = new javax.swing.JButton();
         settingPanel1 = new javax.swing.JPanel();
         jCheckBox1 = new javax.swing.JCheckBox();
+        fontLBL = new javax.swing.JLabel();
+        fontBTN = new javax.swing.JButton();
         settingPanel2 = new javax.swing.JPanel();
         colorDifBTN = new javax.swing.JButton();
         colorDifLBL = new javax.swing.JLabel();
@@ -102,7 +104,7 @@ public class MainFrame extends javax.swing.JFrame {
         prevBTN = new javax.swing.JButton();
         mainSplitPane = new javax.swing.JSplitPane();
         nodesScrollPane = new javax.swing.JScrollPane();
-        NodesTree = new javax.swing.JTree();
+        TargetNodesTree = new javax.swing.JTree();
         mainTabbedPane = new javax.swing.JTabbedPane();
         infoPanel = new javax.swing.JScrollPane();
         infoTextArea = new javax.swing.JTextArea();
@@ -130,7 +132,7 @@ public class MainFrame extends javax.swing.JFrame {
         po1TextArea = new javax.swing.JTextArea();
         po2ScrollPane = new javax.swing.JScrollPane();
         po2TextArea = new javax.swing.JTextArea();
-        compareCombo = new javax.swing.JComboBox<>();
+        BaseNodesCombo = new javax.swing.JComboBox<>();
         prevHiliteBTN = new javax.swing.JButton();
         nextHiliteBTN = new javax.swing.JButton();
         searchField = new javax.swing.JTextField();
@@ -241,12 +243,26 @@ public class MainFrame extends javax.swing.JFrame {
 
         jCheckBox1.setText("Always use the last inserted data of a node to check");
 
+        fontLBL.setText("Font:");
+
+        fontBTN.setText("Choose...");
+        fontBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fontBTNActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout settingPanel1Layout = new javax.swing.GroupLayout(settingPanel1);
         settingPanel1.setLayout(settingPanel1Layout);
         settingPanel1Layout.setHorizontalGroup(
             settingPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(settingPanel1Layout.createSequentialGroup()
-                .addComponent(jCheckBox1)
+                .addGroup(settingPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jCheckBox1)
+                    .addGroup(settingPanel1Layout.createSequentialGroup()
+                        .addComponent(fontLBL)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(fontBTN)))
                 .addGap(0, 78, Short.MAX_VALUE))
         );
         settingPanel1Layout.setVerticalGroup(
@@ -254,7 +270,11 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(settingPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jCheckBox1)
-                .addContainerGap(39, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(settingPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(fontLBL)
+                    .addComponent(fontBTN))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
         colorDifBTN.setBackground(getDiffsColor());
@@ -355,7 +375,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addComponent(settingPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(settingPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(settingsDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(discardSettingsBTN)
                     .addComponent(applySettingsBTN))
@@ -412,7 +432,6 @@ public class MainFrame extends javax.swing.JFrame {
         setIconImage(new javax.swing.ImageIcon(getClass().getResource("/juxtanetwork/dual-mobile.png")).getImage());
         setLocation(new java.awt.Point(500, 200));
         setMinimumSize(new java.awt.Dimension(600, 640));
-        setPreferredSize(new java.awt.Dimension(850, 650));
 
         nextBTN.setText("Next");
         nextBTN.setToolTipText("Next tab");
@@ -432,9 +451,9 @@ public class MainFrame extends javax.swing.JFrame {
         mainSplitPane.setDividerLocation(150);
 
         javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("root");
-        NodesTree.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
-        NodesTree.setToggleClickCount(1);
-        nodesScrollPane.setViewportView(NodesTree);
+        TargetNodesTree.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
+        TargetNodesTree.setToggleClickCount(1);
+        nodesScrollPane.setViewportView(TargetNodesTree);
 
         mainSplitPane.setLeftComponent(nodesScrollPane);
 
@@ -641,12 +660,12 @@ public class MainFrame extends javax.swing.JFrame {
 
         diffSplitPane.setRightComponent(po2ScrollPane);
 
-        compareCombo.setToolTipText("Compared Elements");
-        compareCombo.setMaximumSize(new java.awt.Dimension(100, 20));
-        compareCombo.setPreferredSize(new java.awt.Dimension(100, 20));
-        compareCombo.addActionListener(new java.awt.event.ActionListener() {
+        BaseNodesCombo.setToolTipText("Compared Elements");
+        BaseNodesCombo.setMaximumSize(new java.awt.Dimension(100, 20));
+        BaseNodesCombo.setPreferredSize(new java.awt.Dimension(100, 20));
+        BaseNodesCombo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                compareComboActionPerformed(evt);
+                BaseNodesComboActionPerformed(evt);
             }
         });
 
@@ -707,7 +726,7 @@ public class MainFrame extends javax.swing.JFrame {
             .addComponent(diffSplitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 659, Short.MAX_VALUE)
             .addGroup(resultsPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(compareCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(BaseNodesCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(29, 29, 29)
                 .addComponent(BackFindBTN)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -724,7 +743,7 @@ public class MainFrame extends javax.swing.JFrame {
             resultsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, resultsPanelLayout.createSequentialGroup()
                 .addGroup(resultsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(compareCombo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(BaseNodesCombo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(resultsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(prevHiliteBTN)
                         .addComponent(nextHiliteBTN)
@@ -905,13 +924,13 @@ public class MainFrame extends javax.swing.JFrame {
         commList.setModel(commListModel);
         createNodesTree();                              // Create the Nodes Tree Model
         createCommTree();                               // Create the Commands Tree Model
-        NodesTree.setRootVisible(false);                // Do not diaplsy the Name of the root of the tree
-        NodesTree.setCellRenderer(new MyRenderer());    // Assign icons and tooltips per type of node in NodesTree
-        ToolTipManager.sharedInstance().registerComponent(NodesTree); // Tooltips on Nodes Tree enabled
+        TargetNodesTree.setRootVisible(false);                // Do not diaplsy the Name of the root of the tree
+        TargetNodesTree.setCellRenderer(new MyRenderer());    // Assign icons and tooltips per type of node in TargetNodesTree
+        ToolTipManager.sharedInstance().registerComponent(TargetNodesTree); // Tooltips on Nodes Tree enabled
         managePrevNextBTN();
         createCommsList();
         //IXGKOAG --  Initialize Compare Object
-//        this.cmp = new Compare(compList1, compList2);
+        this.cmp = new Compare(BaseNodesCombo, TargetNodesTree);
     }
 
     /**
@@ -957,7 +976,7 @@ public class MainFrame extends javax.swing.JFrame {
             }
         }
         
-        NodesTree.updateUI();
+        TargetNodesTree.updateUI();
     }
 
     /**
@@ -1114,8 +1133,8 @@ public class MainFrame extends javax.swing.JFrame {
      * Method expandTreeAll expands all the nodes of the tree
      */
     public void expandTreeAll() {
-        for (int i = 0; i < NodesTree.getRowCount(); i++) {
-            NodesTree.expandRow(i);
+        for (int i = 0; i < TargetNodesTree.getRowCount(); i++) {
+            TargetNodesTree.expandRow(i);
         }
     }
 
@@ -1131,19 +1150,19 @@ public class MainFrame extends javax.swing.JFrame {
             case 2:
                 nextBTN.setEnabled(false);
                 prevBTN.setEnabled(true);
-                NodesTree.setModel(new javax.swing.tree.DefaultTreeModel(commsTreeModel));
+                TargetNodesTree.setModel(new javax.swing.tree.DefaultTreeModel(commsTreeModel));
                 expandTreeAll();
                 break;
             case 0:
                 nextBTN.setEnabled(true);
                 prevBTN.setEnabled(false);
-                NodesTree.setModel(new javax.swing.tree.DefaultTreeModel(nodeTreeModel));
+                TargetNodesTree.setModel(new javax.swing.tree.DefaultTreeModel(nodeTreeModel));
                 expandTreeAll();
                 break;
             default:
                 nextBTN.setEnabled(true);
                 prevBTN.setEnabled(true);
-                NodesTree.setModel(new javax.swing.tree.DefaultTreeModel(nodeTreeModel));
+                TargetNodesTree.setModel(new javax.swing.tree.DefaultTreeModel(nodeTreeModel));
                 expandTreeAll();
                 break;
         }
@@ -1156,7 +1175,7 @@ public class MainFrame extends javax.swing.JFrame {
      * @param model
      */
     public void insertElem(DefaultListModel model) {
-        DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) NodesTree
+        DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) TargetNodesTree
                 .getLastSelectedPathComponent();
         String selectedNodeName = selectedNode.toString();
         if (selectedNode.isLeaf()) {
@@ -1274,7 +1293,7 @@ public class MainFrame extends javax.swing.JFrame {
             System.out.println(test[i] + " " + commListModel.getElementAt(test[i]).toString());
         }
         for (int i = 0; i < compList1Model.size(); i++) {
-            compareCombo.addItem(compList1Model.getElementAt(i).toString());
+            BaseNodesCombo.addItem(compList1Model.getElementAt(i).toString());
         }
         createCommTree();
 
@@ -1565,9 +1584,17 @@ public class MainFrame extends javax.swing.JFrame {
         cmp.updateTargetNodes(compList2);
     }//GEN-LAST:event_referenceCompWithBTNActionPerformed
 
-    private void compareComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_compareComboActionPerformed
+    private void BaseNodesComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BaseNodesComboActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_compareComboActionPerformed
+    }//GEN-LAST:event_BaseNodesComboActionPerformed
+
+    private void fontBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fontBTNActionPerformed
+        JFontChooser font = new JFontChooser(po1TextArea.getFont());
+        font.showDialog(settingsDialog);
+        
+        po1TextArea.setFont(font.getSelectedFont());
+        po2TextArea.setFont(font.getSelectedFont());
+    }//GEN-LAST:event_fontBTNActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1606,9 +1633,10 @@ public class MainFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BackFindBTN;
+    private javax.swing.JComboBox<String> BaseNodesCombo;
     private javax.swing.JButton ForFindBTN;
-    private javax.swing.JTree NodesTree;
     private javax.swing.JMenuItem OpenMN;
+    private javax.swing.JTree TargetNodesTree;
     private javax.swing.JFrame aboutFrame;
     private javax.swing.JButton aboutOkBTN;
     private javax.swing.JPanel aboutPanel;
@@ -1633,7 +1661,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JList<String> commList;
     private javax.swing.JList<String> compList1;
     private javax.swing.JList<String> compList2;
-    private javax.swing.JComboBox<String> compareCombo;
     private javax.swing.JPanel comparePanel;
     private javax.swing.JSplitPane diffSplitPane;
     private javax.swing.JButton discardSettingsBTN;
@@ -1641,6 +1668,8 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem exitMN;
     private javax.swing.JFileChooser fileChooser;
     private javax.swing.JMenu fileMN;
+    private javax.swing.JButton fontBTN;
+    private javax.swing.JLabel fontLBL;
     private javax.swing.JMenu helpMN;
     private javax.swing.JLabel infoNameLBL;
     private javax.swing.JScrollPane infoPanel;
