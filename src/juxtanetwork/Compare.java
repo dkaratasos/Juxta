@@ -157,5 +157,12 @@ public class Compare {
         }
 
     }
+    
+    public void updateTargetNodesTree(){
+       // this.BaseNodesCombo.removeAllItems();
+       // for (String key : Structure.keySet()) {
+      //      this.BaseNodesCombo.addItem(key);            
+     //   }
 
+    }
 }
