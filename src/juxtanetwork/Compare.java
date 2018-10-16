@@ -6,7 +6,6 @@ package juxtanetwork;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Properties;
 import javax.swing.JComboBox;
 import javax.swing.JList;
 import javax.swing.JTree;
@@ -15,7 +14,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 public class Compare {
 
     JComboBox<String> BaseNodesCombo;
-    JTree TargetNodesTree;
+    DefaultMutableTreeNode commsTreeModel;
 
     String fileSeperator = "/";
     private String LogsDirectory = "Data";
@@ -35,11 +34,11 @@ public class Compare {
      * IXGKOAG Compare Constructor
      *
      * @param BaseNodesCombo
-     * @param TargetNodesTree
+     * @param commsTreeModel
      */
-    Compare(JComboBox<String> BaseNodesCombo, JTree TargetNodesTree) {
+    Compare(JComboBox<String> BaseNodesCombo, DefaultMutableTreeNode commsTreeModel) {
         this.BaseNodesCombo = BaseNodesCombo;
-        this.TargetNodesTree = TargetNodesTree;
+        this.commsTreeModel = commsTreeModel;
     }
 
     //Update Selected Commands ArrayList
@@ -61,6 +60,7 @@ public class Compare {
         }
         System.out.println("Selected Base Nodes : " + BaseNodes);
         prepareHashStructure();
+
     }
 
     //Update TargetNodes ArrayList
@@ -148,6 +148,7 @@ public class Compare {
         }
         //Hash prepared do additional Stuff 
         updateBaseNodesCombo();
+        //  updateTargetNodesTree();
     }
 
     public void updateBaseNodesCombo() {
@@ -155,24 +156,40 @@ public class Compare {
         for (String key : Structure.keySet()) {
             this.BaseNodesCombo.addItem(key);
         }
-        this.BaseNodesCombo.setSelectedIndex(0);
+        //this.BaseNodesCombo.setSelectedIndex(0);
     }
 
-    public void updateTargetNodesTree() {       
-         this.TargetNodesTree.removeAll();
-        HashMap<String, HashMap<String, Command>> TargetCommands = this.Structure.get((String)this.BaseNodesCombo.getSelectedItem());
-        
-        for (String key : TargetCommands.keySet()) {
+    public void updateTargetNodesTree() {
+        // Get Selected BaseNodesCombo item
+        String selectedNode = (String) this.BaseNodesCombo.getSelectedItem();
+        System.out.println("Selected Base Node :" + selectedNode);
+
+        // Get the CompareTo Target Nodes Based on User Selection  
+        HashMap<String, HashMap<String, Command>> TargetNodes = this.Structure.get(selectedNode);
+
+        //treeview
+        int currIndex1 = 0;
+        int currIndex2 = 0;
+        DefaultMutableTreeNode[] nodesTreeModel = new DefaultMutableTreeNode[100];
+        DefaultMutableTreeNode[] commandsTreeModel = new DefaultMutableTreeNode[100];
+
+        //For each Node
+        for (String CompareNode : TargetNodes.keySet()) {
+            System.out.println("Target Node :" + CompareNode);
+            //Append TargetNode Element
+            nodesTreeModel[currIndex1] = new DefaultMutableTreeNode(CompareNode);
+            this.commsTreeModel.add(nodesTreeModel[currIndex1]);
+
+            //For each CompareTo Target Node get Commands
+            HashMap<String, Command> TargetCommands = TargetNodes.get(CompareNode);
+            for (String CommandOnNode : TargetCommands.keySet()) {
+                
+                commandsTreeModel[currIndex2] = new DefaultMutableTreeNode(CommandOnNode);
+                nodesTreeModel[currIndex1].add(commandsTreeModel[currIndex2]);
+                currIndex2++;
             
-            
-            
-            
-            //this.TargetNodesTree.
-        }      
-        
-        // this.BaseNodesCombo.removeAllItems();
-        // for (String key : Structure.keySet()) {
-        //      this.BaseNodesCombo.addItem(key);            
-        //   }
+            }
+            currIndex1++;
+        }
     }
 }
