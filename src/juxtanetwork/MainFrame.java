@@ -49,14 +49,13 @@ public class MainFrame extends javax.swing.JFrame {
     Color diffsCurrColor = Color.MAGENTA;
 
     //IXGKOAG --  DEFINE and Initialize Compare Object
-    Compare cmp;// = new Compare();
+    Compare cmp;
 
     /**
      * Creates new form MainFrame
      */
     public MainFrame() {
         initComponents();
-
         initializations();
     }
 
@@ -663,6 +662,16 @@ public class MainFrame extends javax.swing.JFrame {
         BaseNodesCombo.setToolTipText("Compared Elements");
         BaseNodesCombo.setMaximumSize(new java.awt.Dimension(100, 20));
         BaseNodesCombo.setPreferredSize(new java.awt.Dimension(100, 20));
+        BaseNodesCombo.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                BaseNodesComboItemStateChanged(evt);
+            }
+        });
+        BaseNodesCombo.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                BaseNodesComboFocusLost(evt);
+            }
+        });
         BaseNodesCombo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BaseNodesComboActionPerformed(evt);
@@ -725,13 +734,12 @@ public class MainFrame extends javax.swing.JFrame {
             resultsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(diffSplitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 659, Short.MAX_VALUE)
             .addGroup(resultsPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(BaseNodesCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29)
+                .addComponent(BaseNodesCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(BackFindBTN)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(ForFindBTN)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(prevHiliteBTN)
@@ -743,7 +751,7 @@ public class MainFrame extends javax.swing.JFrame {
             resultsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, resultsPanelLayout.createSequentialGroup()
                 .addGroup(resultsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(BaseNodesCombo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(BaseNodesCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(resultsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(prevHiliteBTN)
                         .addComponent(nextHiliteBTN)
@@ -751,7 +759,7 @@ public class MainFrame extends javax.swing.JFrame {
                         .addComponent(BackFindBTN)
                         .addComponent(ForFindBTN)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(diffSplitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 484, Short.MAX_VALUE))
+                .addComponent(diffSplitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 483, Short.MAX_VALUE))
         );
 
         mainTabbedPane.addTab("Results", resultsPanel);
@@ -930,7 +938,7 @@ public class MainFrame extends javax.swing.JFrame {
         managePrevNextBTN();
         createCommsList();
         //IXGKOAG --  Initialize Compare Object
-        this.cmp = new Compare(BaseNodesCombo, TargetNodesTree);
+        this.cmp = new Compare(BaseNodesCombo, commsTreeModel);
     }
 
     /**
@@ -965,17 +973,22 @@ public class MainFrame extends javax.swing.JFrame {
             int currIndex = 0;
             for (File node : rootOutFolder.listFiles()) {
                 if (node.isDirectory()) {
+
                     nodesTreeModel[currIndex] = new DefaultMutableTreeNode(node.getName());
+
                     if (node.getName().startsWith("MSC") && isNotIncluded(nodeTreeModel, node.getName())) {
+
                         nodeTreeModelMSC.add(nodesTreeModel[currIndex]);
+
                     } else if (node.getName().startsWith("HLR") && isNotIncluded(nodeTreeModel, node.getName())) {
+
                         nodeTreeModelHLR.add(nodesTreeModel[currIndex]);
                     }
                     currIndex++;
                 }
             }
         }
-        
+
         TargetNodesTree.updateUI();
     }
 
@@ -1241,6 +1254,7 @@ public class MainFrame extends javax.swing.JFrame {
         insertElem(compList1Model);
         //IXGKOAG -- Update BaseNodes arrayList in Compare Object
         cmp.updateBaseNodes(compList1);
+
     }//GEN-LAST:event_insertElem1BTNActionPerformed
 
     private void clear1BTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clear1BTNActionPerformed
@@ -1591,10 +1605,23 @@ public class MainFrame extends javax.swing.JFrame {
     private void fontBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fontBTNActionPerformed
         JFontChooser font = new JFontChooser(po1TextArea.getFont());
         font.showDialog(settingsDialog);
-        
+
         po1TextArea.setFont(font.getSelectedFont());
         po2TextArea.setFont(font.getSelectedFont());
     }//GEN-LAST:event_fontBTNActionPerformed
+
+    private void BaseNodesComboItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_BaseNodesComboItemStateChanged
+        //IXGKOAG
+        this.TargetNodesTree.setModel(null);
+        String item = this.BaseNodesCombo.getSelectedItem().toString();
+        cmp.updateTargetNodesTree(item);
+        this.TargetNodesTree.setModel(new javax.swing.tree.DefaultTreeModel(commsTreeModel));
+        expandTreeAll();
+        this.TargetNodesTree.repaint();
+    }//GEN-LAST:event_BaseNodesComboItemStateChanged
+
+    private void BaseNodesComboFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_BaseNodesComboFocusLost
+    }//GEN-LAST:event_BaseNodesComboFocusLost
 
     /**
      * @param args the command line arguments
