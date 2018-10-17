@@ -148,8 +148,8 @@ public class Compare {
             Structure.put(baseNode, TargetCommands);
         }
         //Hash prepared do additional Stuff 
-        updateBaseNodesCombo();
-        updateTargetNodesTree();
+          updateBaseNodesCombo();
+        //updateTargetNodesTree();
     }
 
     public void updateBaseNodesCombo() {
@@ -157,17 +157,16 @@ public class Compare {
         for (String key : Structure.keySet()) {
             this.BaseNodesCombo.addItem(key);
         }
-        //this.BaseNodesCombo.setSelectedIndex(0);
+       // this.BaseNodesCombo.setSelectedIndex(0);
     }
 
-    public void updateTargetNodesTree() {
-        //Remove all TreeView Items - if any
-        this.commsTreeModel.removeAllChildren();
-
-        // Get Selected BaseNodesCombo item
-        String selectedNode = (String) this.BaseNodesCombo.getSelectedItem();
+    public void updateTargetNodesTree(String selectedNode) { 
+        if (selectedNode.equals("")){return;}
         System.out.println("Selected Base Node :" + selectedNode);
-
+        //Remove all TreeView Items - if any
+        //.setModel(null)
+        this.commsTreeModel.removeAllChildren();
+if (selectedNode.equals("MSC2")){return;}
         // Get the CompareTo Target Nodes Based on User Selection  
         HashMap<String, HashMap<String, Command>> TargetNodes = this.Structure.get(selectedNode);
 
