@@ -129,14 +129,14 @@ public class Compare {
                 HashMap<String, Command> Commands = new HashMap<String, Command>();
 
                 for (String command : selectedCommands) {
-                    String pathTarget = TargetPath + fileSeperator + command;
-                    String pathBase = BasePath + fileSeperator + command;
+                    String BaseFile = BasePath + fileSeperator + command;
+                    String TargetFile = TargetPath + fileSeperator + command;
 
                     //=== If both Files exist
-                    File f1 = new File(pathBase);
-                    File f2 = new File(pathTarget);
+                    File f1 = new File(BaseFile);
+                    File f2 = new File(TargetFile);
 
-                    if (f1.exists() & f1.exists()) {
+                    if ((f1.exists()&& f1.isFile() )&& (f2.exists()&& f2.isFile())) {
                         //create CommandObject and appendit to the targetNode Commands
                         Command CommandObject = new Command(command, f1, f2);
                         Commands.put(command, CommandObject);
@@ -160,6 +160,9 @@ public class Compare {
     }
 
     public void updateTargetNodesTree() {
+        //Remove all TreeView Items - if any
+        this.commsTreeModel.removeAllChildren(); 
+
         // Get Selected BaseNodesCombo item
         String selectedNode = (String) this.BaseNodesCombo.getSelectedItem();
         System.out.println("Selected Base Node :" + selectedNode);
@@ -183,11 +186,11 @@ public class Compare {
             //For each CompareTo Target Node get Commands
             HashMap<String, Command> TargetCommands = TargetNodes.get(CompareNode);
             for (String CommandOnNode : TargetCommands.keySet()) {
-                
+
                 commandsTreeModel[currIndex2] = new DefaultMutableTreeNode(CommandOnNode);
                 nodesTreeModel[currIndex1].add(commandsTreeModel[currIndex2]);
                 currIndex2++;
-            
+
             }
             currIndex1++;
         }
