@@ -117,9 +117,10 @@ public class Compare {
             return;
         }
 //=============================================
+//Clear Structure HashMap
+        Structure.clear();
 //--- Create Structure HashMap with All needed info to
 //    construct GUI items and Calculate Data
-
         for (String baseNode : BaseNodes) {
             String BasePath = getPath(baseNode, timeStampBase);
             HashMap<String, HashMap<String, Command>> TargetCommands = new HashMap<String, HashMap<String, Command>>();
@@ -136,7 +137,7 @@ public class Compare {
                     File f1 = new File(BaseFile);
                     File f2 = new File(TargetFile);
 
-                    if ((f1.exists()&& f1.isFile() )&& (f2.exists()&& f2.isFile())) {
+                    if ((f1.exists() && f1.isFile()) && (f2.exists() && f2.isFile())) {
                         //create CommandObject and appendit to the targetNode Commands
                         Command CommandObject = new Command(command, f1, f2);
                         Commands.put(command, CommandObject);
@@ -148,7 +149,7 @@ public class Compare {
         }
         //Hash prepared do additional Stuff 
         updateBaseNodesCombo();
-        //  updateTargetNodesTree();
+        updateTargetNodesTree();
     }
 
     public void updateBaseNodesCombo() {
@@ -161,7 +162,7 @@ public class Compare {
 
     public void updateTargetNodesTree() {
         //Remove all TreeView Items - if any
-        this.commsTreeModel.removeAllChildren(); 
+        this.commsTreeModel.removeAllChildren();
 
         // Get Selected BaseNodesCombo item
         String selectedNode = (String) this.BaseNodesCombo.getSelectedItem();
