@@ -43,7 +43,13 @@ public class Compare {
 
     //Update Selected Commands ArrayList
     void updateSelectedCommands(JList<String> commList) {
-        selectedCommands.clear();
+        selectedCommands.clear();  
+        //This item should be selected Last 
+        if ((this.BaseNodes.isEmpty() )||(this.TargetNodes.isEmpty() ) ) {
+            commList.clearSelection();
+            return;
+        }
+        
         int[] selectedIndex = commList.getSelectedIndices();
         for (int i = 0; i < selectedIndex.length; i++) {
             selectedCommands.add(commList.getModel().getElementAt(selectedIndex[i]));
@@ -140,6 +146,9 @@ public class Compare {
                     if ((f1.exists() && f1.isFile()) && (f2.exists() && f2.isFile())) {
                         //create CommandObject and appendit to the targetNode Commands
                         Command CommandObject = new Command(command, f1, f2);
+                        // Perform Some Tasks in Command Object
+                        
+                        
                         Commands.put(command, CommandObject);
                     }
                 }
@@ -188,13 +197,21 @@ public class Compare {
             //For each CompareTo Target Node get Commands
             HashMap<String, Command> TargetCommands = TargetNodes.get(CompareNode);
             for (String CommandOnNode : TargetCommands.keySet()) {
-
                 commandsTreeModel[currIndex2] = new DefaultMutableTreeNode(CommandOnNode);
                 nodesTreeModel[currIndex1].add(commandsTreeModel[currIndex2]);
                 currIndex2++;
-
             }
             currIndex1++;
         }
     }
+    
+    public void nodeSelected(){
+    
+    
+    
+    
+    }
+    
+    
+    
 }

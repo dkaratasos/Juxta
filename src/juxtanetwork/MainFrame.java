@@ -15,6 +15,7 @@ import javax.swing.JFrame;
 import javax.swing.ToolTipManager;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.TreePath;
 
 /**
  *
@@ -452,6 +453,16 @@ public class MainFrame extends javax.swing.JFrame {
         javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("root");
         TargetNodesTree.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
         TargetNodesTree.setToggleClickCount(1);
+        TargetNodesTree.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                TargetNodesTreeMouseClicked(evt);
+            }
+        });
+        TargetNodesTree.addTreeSelectionListener(new javax.swing.event.TreeSelectionListener() {
+            public void valueChanged(javax.swing.event.TreeSelectionEvent evt) {
+                TargetNodesTreeValueChanged(evt);
+            }
+        });
         nodesScrollPane.setViewportView(TargetNodesTree);
 
         mainSplitPane.setLeftComponent(nodesScrollPane);
@@ -1622,6 +1633,16 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void BaseNodesComboFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_BaseNodesComboFocusLost
     }//GEN-LAST:event_BaseNodesComboFocusLost
+
+    private void TargetNodesTreeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TargetNodesTreeMouseClicked
+
+    }//GEN-LAST:event_TargetNodesTreeMouseClicked
+
+    private void TargetNodesTreeValueChanged(javax.swing.event.TreeSelectionEvent evt) {//GEN-FIRST:event_TargetNodesTreeValueChanged
+     //IXGKOAG
+     TreePath selectedPath =  this.TargetNodesTree.getSelectionPath();
+     cmp.nodeSelected();
+    }//GEN-LAST:event_TargetNodesTreeValueChanged
 
     /**
      * @param args the command line arguments
