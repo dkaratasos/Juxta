@@ -950,7 +950,6 @@ public class MainFrame extends javax.swing.JFrame {
         TargetNodesTree.setCellRenderer(new MyRenderer());    // Assign icons and tooltips per type of node in TargetNodesTree
         ToolTipManager.sharedInstance().registerComponent(TargetNodesTree); // Tooltips on Nodes Tree enabled
         managePrevNextBTN();
-        createCommsList();
         //IXGKOAG --  Initialize Compare Object
         this.cmp = new Compare(BaseNodesCombo, commsTreeModel);
     }
