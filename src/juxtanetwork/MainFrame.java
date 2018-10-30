@@ -51,6 +51,9 @@ public class MainFrame extends javax.swing.JFrame {
 
     //IXGKOAG --  DEFINE and Initialize Compare Object
     Compare cmp;
+    
+    //CHMA-GGEW-SOVL  -- Define Common Command List
+    ArrayList<String> arrayCommList = new ArrayList<String>();
 
     /**
      * Creates new form MainFrame
@@ -964,13 +967,13 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     private void createCommsList() {
-        commListModel.addElement("PCORP");
-        commListModel.addElement("MGNDP");
-        commListModel.addElement("DBTSP");
-        commListModel.addElement("MGEPP");
-        commListModel.addElement("Comm1");
-        commListModel.addElement("Comm2");
-        commListModel.addElement("Comm3");
+        
+        //CHMA-GGEW-SOVL -- Insert common commands in the GUI list
+        
+        commListModel.clear();
+        for (String s: arrayCommList){
+            commListModel.addElement(s);
+        }
 
     }
 
@@ -1238,21 +1241,32 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_mainTabbedPaneStateChanged
 
     private void removeElem2BTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeElem2BTNActionPerformed
-        compList2Model.removeAllElements();
+        //CHMA-GGEW-SOVL -- remove element from Target nodes list
+        compList2Model.removeElementAt(compList2.getSelectedIndex());
+
         //IXGKOAG -- Update TargetNodes arrayList in Compare Object
-        cmp.updateTargetNodes(compList2);
+        //CHMA-GGEW-SOVL -- Update code for creating the common command list
+        arrayCommList = cmp.updateTargetNodes(compList2);
+        createCommsList();
     }//GEN-LAST:event_removeElem2BTNActionPerformed
 
     private void removeElem1BTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeElem1BTNActionPerformed
-        compList1Model.removeAllElements();
+        //CHMA-GGEW-SOVL -- remove element from Base nodes list
+        compList1Model.removeElementAt(compList1.getSelectedIndex());
+        
         //IXGKOAG -- Update BaseNodes arrayList in Compare Object
-        cmp.updateBaseNodes(compList1);
+        //CHMA-GGEW-SOVL -- Update code for creating the common command list
+        arrayCommList = cmp.updateBaseNodes(compList1);
+        createCommsList();
     }//GEN-LAST:event_removeElem1BTNActionPerformed
 
     private void insertElem2BTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertElem2BTNActionPerformed
         insertElem(compList2Model);
+        
         //IXGKOAG -- Update TargetNodes arrayList in Compare Object
-        cmp.updateTargetNodes(compList2);
+        //CHMA-GGEW-SOVL -- Update code for creating the common command list
+        arrayCommList = cmp.updateTargetNodes(compList2);
+        createCommsList();
     }//GEN-LAST:event_insertElem2BTNActionPerformed
 
     private void clear2BTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clear2BTNActionPerformed
@@ -1263,9 +1277,11 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void insertElem1BTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertElem1BTNActionPerformed
         insertElem(compList1Model);
+        
         //IXGKOAG -- Update BaseNodes arrayList in Compare Object
-        cmp.updateBaseNodes(compList1);
-
+        //CHMA-GGEW-SOVL -- Update code for creating the common command list
+        arrayCommList = cmp.updateBaseNodes(compList1);
+        createCommsList();  
     }//GEN-LAST:event_insertElem1BTNActionPerformed
 
     private void clear1BTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clear1BTNActionPerformed

@@ -59,7 +59,8 @@ public class Compare {
     }
 
     //Update BaseNodes ArrayList
-    void updateBaseNodes(JList<String> compList1) {
+    //CHMA-GGEW-SOVL -- Update to return the ArrayList to Mainframe
+    ArrayList<String> updateBaseNodes(JList<String> compList1) {
         BaseNodes.clear();
         for (int i = 0; i < compList1.getModel().getSize(); i++) {
             BaseNodes.add(compList1.getModel().getElementAt(i));
@@ -67,16 +68,84 @@ public class Compare {
         System.out.println("Selected Base Nodes : " + BaseNodes);
         prepareHashStructure();
 
+        //CHMA-GGEW-SOVL -- Return the common command list
+        return findCommonCommands();
     }
 
     //Update TargetNodes ArrayList
-    void updateTargetNodes(JList<String> compList2) {
+    //CHMA-GGEW-SOVL -- Update to return the ArrayList to Mainframe
+    ArrayList<String> updateTargetNodes(JList<String> compList2) {
         TargetNodes.clear();
         for (int i = 0; i < compList2.getModel().getSize(); i++) {
             TargetNodes.add(compList2.getModel().getElementAt(i));
         }
         System.out.println("Selected Target Nodes : " + TargetNodes);
         prepareHashStructure();
+        
+        //CHMA-GGEW-SOVL -- Return the common command list
+        return findCommonCommands();
+    }
+    
+    //CHMA-GGEW-SOVL -- method for creating the overall common command list
+    private ArrayList<String> findCommonCommands (){
+        ArrayList<String> baseCommands = new ArrayList();
+        ArrayList<String> targetCommands = new ArrayList();
+        ArrayList<String> commands = new ArrayList();
+        
+        // Create Base nodes common commands
+        for (String baseNode : BaseNodes) {
+            commands.clear();
+            String basePath = getPath(baseNode, timeStampBase);
+            File base = new File(basePath);
+            for (File f : base.listFiles()){
+                int pos = f.getName().lastIndexOf(".");
+                if (pos > 0) {
+                    commands.add(f.getName().substring(0,pos));
+                } else {
+                    commands.add(f.getName());
+                }
+            }
+            baseCommands = compareCommands(baseCommands, commands);
+        }
+        
+        // Create Target nodes common commands
+        for (String targetNode : TargetNodes) {
+            commands.clear();
+            String targetPath = getPath(targetNode, timeStampTarget);
+            File target = new File(targetPath);
+            for (File f : target.listFiles()){
+                int pos = f.getName().lastIndexOf(".");
+                if (pos > 0) {
+                    commands.add(f.getName().substring(0,pos));
+                } else {
+                    commands.add(f.getName());
+                }
+            }
+            targetCommands = compareCommands(targetCommands, commands);
+        }
+        
+        // Return overall common command list
+        return compareCommands(baseCommands, targetCommands);
+    }
+    
+    //CHMA-GGEW-SOVL -- method for comparing two Command lists and return the common list
+    private ArrayList<String> compareCommands (ArrayList<String> listOne, ArrayList<String> listTwo){
+        ArrayList<String> similar = new ArrayList<String>();
+        similar.clear();
+        if (listOne.isEmpty()){
+            if (!listTwo.isEmpty()){
+                similar.addAll(listTwo);
+            }
+        } else {
+            if (listTwo.isEmpty()){
+                similar.addAll(listOne);
+            } else {
+                listOne.retainAll(listTwo);
+                similar = listOne;
+            }
+        }
+
+        return similar;
     }
 
     //Update timeStampBase String
