@@ -17,6 +17,11 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreePath;
 
+// CHMA-GGEW-SOVL -- Imports needed for save functionality
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.io.BufferedWriter;
+
 /**
  *
  * @author Java Project Team
@@ -965,6 +970,10 @@ public class MainFrame extends javax.swing.JFrame {
         updateNodesTree();
     }
 
+    /**
+     * Method createCommsList creates the common command list in GUI
+     * whenever a new node is inserted/removed
+     */
     private void createCommsList() {
         
         //CHMA-GGEW-SOVL -- Insert common commands in the GUI list
@@ -1210,6 +1219,43 @@ public class MainFrame extends javax.swing.JFrame {
             }
         }
     }
+   
+    // CHMA-GGEW-SOVL
+    /**
+     * This method writes the line number and whole line of a difference for 
+     * printout poTextArea to file created from writer.
+     *
+     * @param writer
+     * @param diffs
+     * @param poTextArea
+     * @param printout
+     */
+    private void writeDiffToFile(BufferedWriter writer, int[] diffs, javax.swing.JTextArea poTextArea, String printout){
+        try {
+            writer.write(printout);
+            writer.newLine();
+            if (diffs[0] == diffs[1]){
+                writer.write("line/s missing");
+            }
+            else {
+                int line1 = poTextArea.getLineOfOffset(diffs[0]);
+                int line2 = poTextArea.getLineOfOffset(diffs[1]-1);
+                if (line1 == line2) {
+                    writer.write("line " + line1 + ":");
+                    writer.newLine();
+                    writer.write(poTextArea.getText(poTextArea.getLineStartOffset(line1), poTextArea.getLineEndOffset(line1) - poTextArea.getLineStartOffset(line1) - 1));
+                }
+                else {
+                    writer.write("lines " + line1 + "-" + line2 + ":");
+                    writer.newLine();
+                    writer.write(poTextArea.getText(poTextArea.getLineStartOffset(line1), poTextArea.getLineEndOffset(line2) - poTextArea.getLineStartOffset(line1) - 1));
+                }
+            }
+            writer.newLine();
+        } catch (javax.swing.text.BadLocationException | IOException ex) {
+            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+    }
 
     private void OpenMNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OpenMNActionPerformed
         getPrintouts();
@@ -1271,7 +1317,9 @@ public class MainFrame extends javax.swing.JFrame {
     private void clear2BTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clear2BTNActionPerformed
         compList2Model.clear();
         //IXGKOAG -- Update TargetNodes arrayList in Compare Object
-        cmp.updateTargetNodes(compList2);
+        //CHMA-GGEW-SOVL -- Update code for creating the common command list
+        arrayCommList = cmp.updateTargetNodes(compList2);
+        createCommsList();
     }//GEN-LAST:event_clear2BTNActionPerformed
 
     private void insertElem1BTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertElem1BTNActionPerformed
@@ -1286,7 +1334,9 @@ public class MainFrame extends javax.swing.JFrame {
     private void clear1BTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clear1BTNActionPerformed
         compList1Model.clear();
         //IXGKOAG -- Update BaseNodes arrayList in Compare Object
-        cmp.updateBaseNodes(compList1);
+        //CHMA-GGEW-SOVL -- Update code for creating the common command list
+        arrayCommList = cmp.updateBaseNodes(compList1);
+        createCommsList();
     }//GEN-LAST:event_clear1BTNActionPerformed
 
     private void prevBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prevBTNActionPerformed
@@ -1310,7 +1360,25 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_aboutTLBActionPerformed
 
     private void saveTLBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveTLBActionPerformed
-
+        
+        // CHMA-GGEW-SOVL -- Code for saving the differences beween certain printouts
+        try {
+            BufferedWriter writer = Files.newBufferedWriter(Paths.get("C:\\Users\\ggew\\Desktop\\NewData\\file.txt"));
+            for (int i = 0; i < diffs1.size(); i++) {
+                int x=i+1;
+                writer.write("Diff" + x);
+                writer.newLine();
+                writer.write("------");
+                writer.newLine();
+                writeDiffToFile(writer,diffs1.get(i),po1TextArea,"PO1");
+                writeDiffToFile(writer,diffs2.get(i),po2TextArea,"PO2");
+                writer.newLine();
+            } 
+            writer.close();
+        } 
+        catch (IOException ex) {
+            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_saveTLBActionPerformed
 
     private void openTLBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openTLBActionPerformed
