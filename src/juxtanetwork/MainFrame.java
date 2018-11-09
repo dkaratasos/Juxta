@@ -22,6 +22,19 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.io.BufferedWriter;
 import javax.swing.JFileChooser;
+
+
+
+
+//VAAG-CHRE
+import java.util.*;
+import java.io.Reader;
+import java.io.FileReader;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 /**
  *
  * @author Java Project Team
@@ -949,6 +962,8 @@ public class MainFrame extends javax.swing.JFrame {
         compList1.setModel(compList1Model);             // Set model for Compare nodes
         compList2.setModel(compList2Model);             // Set model for Compare With nodes
         commList.setModel(commListModel);
+        //vaag
+        nodeTreeModel.removeAllChildren();
         createNodesTree();                              // Create the Nodes Tree Model
         createCommTree();                               // Create the Commands Tree Model
         TargetNodesTree.setRootVisible(false);                // Do not diaplsy the Name of the root of the tree
@@ -985,33 +1000,87 @@ public class MainFrame extends javax.swing.JFrame {
 
     }
 
+     //VAAG-CHRE, MODIFIED
     /**
      * Method updateNodesTree inserts a new node to the tree under the correct
      * category. If the node already exists in the tree, it is not added.
      */
+  
     private void updateNodesTree() {
         DefaultMutableTreeNode[] nodesTreeModel = new DefaultMutableTreeNode[20];
+        DefaultMutableTreeNode[] subnodesTreeModel = new DefaultMutableTreeNode[20];
         if (rootOutFolder.exists()) {
             int currIndex = 0;
+            int subcurrIndex = 0;
+            String recentname;
             for (File node : rootOutFolder.listFiles()) {
                 if (node.isDirectory()) {
-
-                    nodesTreeModel[currIndex] = new DefaultMutableTreeNode(node.getName());
-
-                    if (node.getName().startsWith("MSC") && isNotIncluded(nodeTreeModel, node.getName())) {
-
-                        nodeTreeModelMSC.add(nodesTreeModel[currIndex]);
-
-                    } else if (node.getName().startsWith("HLR") && isNotIncluded(nodeTreeModel, node.getName())) {
-
-                        nodeTreeModelHLR.add(nodesTreeModel[currIndex]);
-                    }
-                    currIndex++;
+                    nodesTreeModel[currIndex] = new DefaultMutableTreeNode(node.getName());                 
+                       //timestamp folders
+                        for (File subnode : node.listFiles()) {
+                         //more recent timestamp 
+                         recentname = getrecenttimestamp(node);
+                         if (subnode.getName().equals(recentname)) {
+                             String currentLine;
+                             //BC or info
+                             for (File subsubnode : subnode.listFiles()) {
+                               if (subsubnode.getName().contains("info")){
+                                 try  {    
+                                 FileReader fileReader = new FileReader(subsubnode);
+                                 BufferedReader bufferedReader = new BufferedReader(fileReader); 
+                                     try {
+                                         while ((currentLine = bufferedReader.readLine()) != null) {
+                                             if (currentLine.contains("MSC")&& isNotIncluded(nodeTreeModel, node.getName())){
+                                                 nodeTreeModelMSC.add(nodesTreeModel[currIndex]);
+                                             } else if (currentLine.contains("HLR")&& isNotIncluded(nodeTreeModel, node.getName())){
+                                                 nodeTreeModelHLR.add(nodesTreeModel[currIndex]);
+                                             }
+                                         }  } catch (IOException ex) {
+                                         Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+                                     }
+                                 
+                                }catch(FileNotFoundException ex) {
+                                  System.out.println(
+                                      "Unable to open file '" + 
+                                    subsubnode.getName() + "'");                
+                                }
+                              }
+                               subcurrIndex++;
+                             }
+                             subcurrIndex = 0;
+                             for (File subsubnode : subnode.listFiles()) {
+                              if (subsubnode.isDirectory()) {
+                    
+                                 subnodesTreeModel[subcurrIndex] = new DefaultMutableTreeNode(subsubnode.getName());
+                                 if (subsubnode.getName().startsWith("BC") && isNotIncluded(nodesTreeModel[currIndex], subsubnode.getName())) {
+                                   nodesTreeModel[currIndex].add(subnodesTreeModel[subcurrIndex]);  
+                           
+                                 } 
+                               }
+                               subcurrIndex++;   
+                             }
+                         }
+                        currIndex++;
+                        } 
                 }
             }
-        }
-
+        }       
         TargetNodesTree.updateUI();
+    }
+
+//VAAG, CHRE
+    /**
+     * Method getrecenttimestamp finds the most recent timestamp folder
+     */
+     private String getrecenttimestamp(File node) {
+        ArrayList<String> arraylist = new ArrayList<>(50); 
+        for (File subnode : node.listFiles()) {
+            arraylist.add(subnode.getName());    
+        }
+        Collections.sort(arraylist, Collections.reverseOrder());
+        String recentname = arraylist.get(0);
+       
+        return recentname;
     }
 
     /**
@@ -1073,6 +1142,10 @@ public class MainFrame extends javax.swing.JFrame {
             } else if (isMSC(value)) {
                 setIcon(mscIcon);
                 setToolTipText("MSC Node");
+                //VAAG,CHRE
+            } else if (isBC(value)) {
+                setIcon(hlrIcon);
+                setToolTipText("BC Node");
             } else {
                 setIcon(poolIcon);
                 setToolTipText("Pool (MSC group)");
@@ -1095,6 +1168,16 @@ public class MainFrame extends javax.swing.JFrame {
             String nodeName = value.toString();
 
             if (nodeName.startsWith("MSC")) {
+                return true;
+            }
+
+            return false;
+        }
+         //VAAG,CHRE
+        protected boolean isBC(Object value) {
+            String nodeName = value.toString();
+
+            if (nodeName.startsWith("BC")) {
                 return true;
             }
 
