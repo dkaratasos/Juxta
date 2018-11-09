@@ -21,7 +21,7 @@ import javax.swing.tree.TreePath;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.io.BufferedWriter;
-
+import javax.swing.JFileChooser;
 /**
  *
  * @author Java Project Team
@@ -1361,9 +1361,21 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void saveTLBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveTLBActionPerformed
         
+        
+     JFileChooser fC = new JFileChooser();
+        Component modalToComponent = null;
+       if (fC.showSaveDialog(modalToComponent) == JFileChooser.APPROVE_OPTION) {
+     //File file = fC.getSelectedFile();
+     
+     // save to file
+    }
+        
+        
+        
+        
         // CHMA-GGEW-SOVL -- Code for saving the differences beween certain printouts
         try {
-            BufferedWriter writer = Files.newBufferedWriter(Paths.get("C:\\Users\\ggew\\Desktop\\NewData\\file.txt"));
+            BufferedWriter writer = Files.newBufferedWriter(Paths.get(fC.getSelectedFile().getAbsolutePath()));
             for (int i = 0; i < diffs1.size(); i++) {
                 int x=i+1;
                 writer.write("Diff" + x);
