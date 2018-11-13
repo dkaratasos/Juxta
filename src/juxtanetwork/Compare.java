@@ -161,15 +161,15 @@ public class Compare {
 
 //get Path to  Files
     String getPath(String node, String time) {
-        // check if node name contains dot or slash or dash in case of cluster node, to be agreed
-        String[] items = node.split("\\.");
+        // check if node name contains / or slash or dash in case of cluster node, to be agreed
+        String[] items = node.split("\\/");
+        System.out.println(items.toString());
+        String path = "";
         if (items.length > 1) {
-            String path = "./" + LogsDirectory + fileSeperator + items[0] + fileSeperator + time + fileSeperator + items[1];
+            path = "./" + LogsDirectory + fileSeperator + items[0] + fileSeperator + time + fileSeperator + items[1];
+        }else{
+        path = "./" + LogsDirectory + fileSeperator + node + fileSeperator + time + fileSeperator;
         }
-        String path = "./" + LogsDirectory + fileSeperator + node + fileSeperator + time + fileSeperator;
-
-        //------- this is for test --------------
-        path += "BC0";
 
         return path;
     }

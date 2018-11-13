@@ -1270,14 +1270,12 @@ public class MainFrame extends javax.swing.JFrame {
     public void insertElem(DefaultListModel model) {
         DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) TargetNodesTree
                 .getLastSelectedPathComponent();
-        //MODIFIED IXGKOAG
-        //System.out.println( selectedNode.getParent().toString());
-        String selectedNodeName = selectedNode.toString();
-        String selectedNodeParrentName = selectedNode.getParent().toString();  
-        
+        String selectedNodeName = selectedNode.getParent()+"/"+selectedNode.toString();
+        System.out.println("parent: "+selectedNode.getParent());
+        System.out.println("selectedNodeName: "+selectedNodeName);
         if (selectedNode.isLeaf()) {
-            if (!model.contains(selectedNodeParrentName+"."+selectedNodeName)) {
-                model.addElement(selectedNodeParrentName+"."+selectedNodeName);
+            if (!model.contains(selectedNodeName)) {
+                model.addElement(selectedNodeName);
             }
         }
     }
