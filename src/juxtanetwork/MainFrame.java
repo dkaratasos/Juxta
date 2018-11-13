@@ -1270,10 +1270,14 @@ public class MainFrame extends javax.swing.JFrame {
     public void insertElem(DefaultListModel model) {
         DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) TargetNodesTree
                 .getLastSelectedPathComponent();
+        //MODIFIED IXGKOAG
+        //System.out.println( selectedNode.getParent().toString());
         String selectedNodeName = selectedNode.toString();
+        String selectedNodeParrentName = selectedNode.getParent().toString();  
+        
         if (selectedNode.isLeaf()) {
-            if (!model.contains(selectedNodeName)) {
-                model.addElement(selectedNodeName);
+            if (!model.contains(selectedNodeParrentName+"."+selectedNodeName)) {
+                model.addElement(selectedNodeParrentName+"."+selectedNodeName);
             }
         }
     }
@@ -1379,6 +1383,10 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_clear2BTNActionPerformed
 
     private void insertElem1BTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertElem1BTNActionPerformed
+       
+       // String node = compList1Model.getSelectionPath().getLastPathComponent().toString();
+       // String parent = compList1Model.getSelectionPath().getPathComponent(0).toString();
+     
         insertElem(compList1Model);
 
         //IXGKOAG -- Update BaseNodes arrayList in Compare Object
