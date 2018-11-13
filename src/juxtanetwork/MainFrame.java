@@ -121,6 +121,9 @@ public class MainFrame extends javax.swing.JFrame {
         applyChooseRefBTN = new javax.swing.JButton();
         chooseRefLBL1 = new javax.swing.JLabel();
         jColorChooser1 = new javax.swing.JColorChooser();
+        errorDialog = new javax.swing.JDialog();
+        errorMessageLBL = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
         mainPanel = new javax.swing.JPanel();
         nextBTN = new javax.swing.JButton();
         prevBTN = new javax.swing.JButton();
@@ -478,6 +481,41 @@ public class MainFrame extends javax.swing.JFrame {
         chooseFromRefDialogLayout.setVerticalGroup(
             chooseFromRefDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+
+        errorDialog.setMinimumSize(new java.awt.Dimension(400, 90));
+        errorDialog.setType(java.awt.Window.Type.POPUP);
+
+        errorMessageLBL.setText("Error");
+
+        jButton1.setText("OK");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout errorDialogLayout = new javax.swing.GroupLayout(errorDialog.getContentPane());
+        errorDialog.getContentPane().setLayout(errorDialogLayout);
+        errorDialogLayout.setHorizontalGroup(
+            errorDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(errorDialogLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(errorDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, errorDialogLayout.createSequentialGroup()
+                        .addGap(0, 333, Short.MAX_VALUE)
+                        .addComponent(jButton1))
+                    .addComponent(errorMessageLBL, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        errorDialogLayout.setVerticalGroup(
+            errorDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(errorDialogLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(errorMessageLBL, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -1210,6 +1248,7 @@ public class MainFrame extends javax.swing.JFrame {
     private void createCommTree() {
         DefaultMutableTreeNode[] commsTreeModelNode = new DefaultMutableTreeNode[20];
         int countNodesSelected = 0;
+        commsTreeModel.removeAllChildren();
         for (int i = 0; i < compList2Model.size(); i++) {
             commsTreeModelNode[i] = new DefaultMutableTreeNode(compList2Model.getElementAt(i).toString());
             commsTreeModel.add(commsTreeModelNode[i]);
@@ -1222,6 +1261,14 @@ public class MainFrame extends javax.swing.JFrame {
                 commsTreeModelNode[j].add(commandTreeModelComm);
             }
         }
+        TargetNodesTree.updateUI();
+
+//        this.TargetNodesTree.setModel(null);
+//        String item = this.BaseNodesCombo.getSelectedItem().toString();
+//        cmp.updateTargetNodesTree(item);
+//        this.TargetNodesTree.setModel(new javax.swing.tree.DefaultTreeModel(commsTreeModel));
+//        expandTreeAll();
+//        this.TargetNodesTree.repaint();
     }
 
     /**
@@ -1400,7 +1447,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void insertElem2BTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertElem2BTNActionPerformed
         chooseRefLBL1.setText("Target");
-        chooseFromRefDialog.setVisible(true);        
+        chooseFromRefDialog.setVisible(true);
     }//GEN-LAST:event_insertElem2BTNActionPerformed
 
     private void clear2BTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clear2BTNActionPerformed
@@ -1411,7 +1458,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void insertElem1BTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertElem1BTNActionPerformed
         chooseRefLBL1.setText("Base");
-        chooseFromRefDialog.setVisible(true);      
+        chooseFromRefDialog.setVisible(true);
     }//GEN-LAST:event_insertElem1BTNActionPerformed
 
     private void clear1BTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clear1BTNActionPerformed
@@ -1484,19 +1531,38 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_sidebarBTNActionPerformed
 
     private void testBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_testBTNActionPerformed
+        if (commList.getSelectedIndex() == -1) {
+            errorMessageLBL.setText("Please select 1 or more commands");
+            errorDialog.setVisible(true);
+            return;
+        }
+        if (compList1Model.isEmpty()) {
+            errorMessageLBL.setText("Please set Base Nodes for comparison");
+            errorDialog.setVisible(true);
+            return;
+        }
+        if (compList1Model.isEmpty()) {
+            errorMessageLBL.setText("Please set Target Nodes for comparison");
+            errorDialog.setVisible(true);
+            return;
+        }
+
         //MOD IXGKOAG
         //IXGKOAG - Update SelectedCommands ArrayList in Compare Object
         cmp.updateSelectedCommands(commList);
         cmp.prepareHashStructure();
-        
+
         int[] test = commList.getSelectedIndices();
         for (int i = 0; i < test.length; i++) {
             System.out.println(test[i] + " " + commListModel.getElementAt(test[i]).toString());
         }
-        for (int i = 0; i < compList1Model.size(); i++) {
-            BaseNodesCombo.addItem(compList1Model.getElementAt(i).toString());
-        }
+//        for (int i = 0; i < compList1Model.size(); i++) {
+//            BaseNodesCombo.addItem(compList1Model.getElementAt(i).toString());
+//        }
         createCommTree();
+        TargetNodesTree.setModel(new javax.swing.tree.DefaultTreeModel(commsTreeModel));
+        expandTreeAll();
+        mainTabbedPane.setSelectedIndex(2);
 
         po1TextArea.setText("<PCORP:BLOCK=ALL;\n"
                 + "PROGRAM CORRECTIONS\n"
@@ -1795,12 +1861,12 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void BaseNodesComboItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_BaseNodesComboItemStateChanged
         //IXGKOAG
-        this.TargetNodesTree.setModel(null);
-        String item = this.BaseNodesCombo.getSelectedItem().toString();
-        cmp.updateTargetNodesTree(item);
-        this.TargetNodesTree.setModel(new javax.swing.tree.DefaultTreeModel(commsTreeModel));
-        expandTreeAll();
-        this.TargetNodesTree.repaint();
+//        this.TargetNodesTree.setModel(null);
+//        String item = this.BaseNodesCombo.getSelectedItem().toString();
+//        cmp.updateTargetNodesTree(item);
+//        this.TargetNodesTree.setModel(new javax.swing.tree.DefaultTreeModel(commsTreeModel));
+//        expandTreeAll();
+//        this.TargetNodesTree.repaint();
     }//GEN-LAST:event_BaseNodesComboItemStateChanged
 
     private void BaseNodesComboFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_BaseNodesComboFocusLost
@@ -1843,6 +1909,10 @@ public class MainFrame extends javax.swing.JFrame {
     private void commListMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_commListMouseReleased
 
     }//GEN-LAST:event_commListMouseReleased
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        errorDialog.setVisible(false);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1914,6 +1984,8 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JSplitPane diffSplitPane;
     private javax.swing.JButton discardSettingsBTN;
     private javax.swing.JMenu editMN;
+    private javax.swing.JDialog errorDialog;
+    private javax.swing.JLabel errorMessageLBL;
     private javax.swing.JMenuItem exitMN;
     private javax.swing.JFileChooser fileChooser;
     private javax.swing.JMenu fileMN;
@@ -1925,6 +1997,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JTextArea infoTextArea;
     private javax.swing.JButton insertElem1BTN;
     private javax.swing.JButton insertElem2BTN;
+    private javax.swing.JButton jButton1;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JColorChooser jColorChooser1;
     private javax.swing.JLabel jLabel1;
