@@ -53,6 +53,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     ImageIcon hlrIcon = new javax.swing.ImageIcon(getClass().getResource("/juxtanetwork/hlr16.gif"));
     ImageIcon mscIcon = new javax.swing.ImageIcon(getClass().getResource("/juxtanetwork/MSC16.jpg"));
+    ImageIcon bladeIcon = new javax.swing.ImageIcon(getClass().getResource("/juxtanetwork/blade16.png"));
     ImageIcon poolIcon = new javax.swing.ImageIcon(getClass().getResource("/juxtanetwork/pool.jpg"));
 
     Highlight highliter = new Highlight();
@@ -627,7 +628,7 @@ public class MainFrame extends javax.swing.JFrame {
                             .addContainerGap()
                             .addGroup(comparePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, comparePanelLayout.createSequentialGroup()
-                                    .addGap(0, 12, Short.MAX_VALUE)
+                                    .addGap(0, 44, Short.MAX_VALUE)
                                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGap(20, 20, 20))
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
@@ -636,7 +637,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGroup(comparePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(comparePanelLayout.createSequentialGroup()
                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 281, Short.MAX_VALUE))
+                        .addGap(0, 312, Short.MAX_VALUE))
                     .addComponent(mainScrollTab3))
                 .addContainerGap())
         );
@@ -668,7 +669,7 @@ public class MainFrame extends javax.swing.JFrame {
                             .addComponent(referenceCompWithBTN)
                             .addComponent(removeElem2BTN)))
                     .addGroup(comparePanelLayout.createSequentialGroup()
-                        .addComponent(mainScrollTab3, javax.swing.GroupLayout.DEFAULT_SIZE, 481, Short.MAX_VALUE)
+                        .addComponent(mainScrollTab3, javax.swing.GroupLayout.DEFAULT_SIZE, 555, Short.MAX_VALUE)
                         .addContainerGap())))
         );
 
@@ -762,7 +763,7 @@ public class MainFrame extends javax.swing.JFrame {
         resultsPanel.setLayout(resultsPanelLayout);
         resultsPanelLayout.setHorizontalGroup(
             resultsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(diffSplitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 659, Short.MAX_VALUE)
+            .addComponent(diffSplitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 722, Short.MAX_VALUE)
             .addGroup(resultsPanelLayout.createSequentialGroup()
                 .addComponent(BaseNodesCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -789,7 +790,7 @@ public class MainFrame extends javax.swing.JFrame {
                         .addComponent(BackFindBTN)
                         .addComponent(ForFindBTN)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(diffSplitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 483, Short.MAX_VALUE))
+                .addComponent(diffSplitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 561, Short.MAX_VALUE))
         );
 
         mainTabbedPane.addTab("Results", resultsPanel);
@@ -806,7 +807,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
-                        .addComponent(mainSplitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 820, Short.MAX_VALUE)
+                        .addComponent(mainSplitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 883, Short.MAX_VALUE)
                         .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
                         .addComponent(jProgressBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -819,7 +820,7 @@ public class MainFrame extends javax.swing.JFrame {
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(mainSplitPane)
+                .addComponent(mainSplitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 621, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -1117,7 +1118,7 @@ public class MainFrame extends javax.swing.JFrame {
                 setToolTipText("MSC Node");
                 //VAAG,CHRE
             } else if (isBC(value)) {
-                setIcon(mscIcon);
+                setIcon(bladeIcon);
                 setToolTipText("BC Node");
             } else {
                 setIcon(poolIcon);
