@@ -601,6 +601,14 @@ public class MainFrame extends javax.swing.JFrame {
                 commListFocusLost(evt);
             }
         });
+        commList.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                commListMouseClicked(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                commListMouseReleased(evt);
+            }
+        });
         mainScrollTab3.setViewportView(commList);
 
         jLabel1.setText("Compare Element");
@@ -1392,7 +1400,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void insertElem2BTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertElem2BTNActionPerformed
         chooseRefLBL1.setText("Target");
-        chooseFromRefDialog.setVisible(true);
+        chooseFromRefDialog.setVisible(true);        
     }//GEN-LAST:event_insertElem2BTNActionPerformed
 
     private void clear2BTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clear2BTNActionPerformed
@@ -1403,12 +1411,11 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void insertElem1BTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertElem1BTNActionPerformed
         chooseRefLBL1.setText("Base");
-        chooseFromRefDialog.setVisible(true);
+        chooseFromRefDialog.setVisible(true);      
     }//GEN-LAST:event_insertElem1BTNActionPerformed
 
     private void clear1BTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clear1BTNActionPerformed
         compList1Model.clear();
-
         arrayCommList = cmp.updateBaseNodes(compList1);
         createCommsList();
     }//GEN-LAST:event_clear1BTNActionPerformed
@@ -1477,6 +1484,11 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_sidebarBTNActionPerformed
 
     private void testBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_testBTNActionPerformed
+        //MOD IXGKOAG
+        //IXGKOAG - Update SelectedCommands ArrayList in Compare Object
+        cmp.updateSelectedCommands(commList);
+        cmp.prepareHashStructure();
+        
         int[] test = commList.getSelectedIndices();
         for (int i = 0; i < test.length; i++) {
             System.out.println(test[i] + " " + commListModel.getElementAt(test[i]).toString());
@@ -1813,7 +1825,7 @@ public class MainFrame extends javax.swing.JFrame {
             arrayCommList = cmp.updateBaseNodes(compList1);
         } else {
             insertElem(compList2Model);
-            arrayCommList = cmp.updateBaseNodes(compList2);
+            arrayCommList = cmp.updateTargetNodes(compList2);
         }
         createCommsList();
 
@@ -1823,6 +1835,14 @@ public class MainFrame extends javax.swing.JFrame {
     private void cancelChooseRefBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelChooseRefBTNActionPerformed
         chooseFromRefDialog.setVisible(false);
     }//GEN-LAST:event_cancelChooseRefBTNActionPerformed
+
+    private void commListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_commListMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_commListMouseClicked
+
+    private void commListMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_commListMouseReleased
+
+    }//GEN-LAST:event_commListMouseReleased
 
     /**
      * @param args the command line arguments
