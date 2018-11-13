@@ -113,11 +113,13 @@ public class MainFrame extends javax.swing.JFrame {
         colorCurrDifLBL = new javax.swing.JLabel();
         colorCurrDifBTN = new javax.swing.JButton();
         chooseFromRefDialog = new javax.swing.JDialog();
+        jPanel1 = new javax.swing.JPanel();
         chooseRefLBL = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         refChooseList = new javax.swing.JList<>();
         cancelChooseRefBTN = new javax.swing.JButton();
         applyChooseRefBTN = new javax.swing.JButton();
+        chooseRefLBL1 = new javax.swing.JLabel();
         jColorChooser1 = new javax.swing.JColorChooser();
         mainPanel = new javax.swing.JPanel();
         nextBTN = new javax.swing.JButton();
@@ -402,6 +404,8 @@ public class MainFrame extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        chooseFromRefDialog.setMinimumSize(new java.awt.Dimension(180, 270));
+
         chooseRefLBL.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         chooseRefLBL.setText("Choose from Reference");
 
@@ -413,38 +417,67 @@ public class MainFrame extends javax.swing.JFrame {
         jScrollPane3.setViewportView(refChooseList);
 
         cancelChooseRefBTN.setText("Cancel");
+        cancelChooseRefBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelChooseRefBTNActionPerformed(evt);
+            }
+        });
 
         applyChooseRefBTN.setText("Apply");
+        applyChooseRefBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                applyChooseRefBTNActionPerformed(evt);
+            }
+        });
+
+        chooseRefLBL1.setFont(new java.awt.Font("Tahoma", 3, 12)); // NOI18N
+        chooseRefLBL1.setText("Base");
+        chooseRefLBL1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                            .addComponent(applyChooseRefBTN)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(cancelChooseRefBTN))
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(chooseRefLBL))
+                .addContainerGap(21, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(chooseRefLBL1, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(chooseRefLBL)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(chooseRefLBL1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cancelChooseRefBTN)
+                    .addComponent(applyChooseRefBTN))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout chooseFromRefDialogLayout = new javax.swing.GroupLayout(chooseFromRefDialog.getContentPane());
         chooseFromRefDialog.getContentPane().setLayout(chooseFromRefDialogLayout);
         chooseFromRefDialogLayout.setHorizontalGroup(
             chooseFromRefDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(chooseFromRefDialogLayout.createSequentialGroup()
-                .addGap(27, 27, 27)
-                .addGroup(chooseFromRefDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(chooseRefLBL))
-                .addContainerGap(29, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, chooseFromRefDialogLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(applyChooseRefBTN)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cancelChooseRefBTN)
-                .addContainerGap())
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         chooseFromRefDialogLayout.setVerticalGroup(
             chooseFromRefDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(chooseFromRefDialogLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(chooseRefLBL)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(chooseFromRefDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cancelChooseRefBTN)
-                    .addComponent(applyChooseRefBTN))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -820,7 +853,7 @@ public class MainFrame extends javax.swing.JFrame {
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(mainSplitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 621, Short.MAX_VALUE)
+                .addComponent(mainSplitPane)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -1270,9 +1303,9 @@ public class MainFrame extends javax.swing.JFrame {
     public void insertElem(DefaultListModel model) {
         DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) TargetNodesTree
                 .getLastSelectedPathComponent();
-        String selectedNodeName = selectedNode.getParent()+"/"+selectedNode.toString();
-        System.out.println("parent: "+selectedNode.getParent());
-        System.out.println("selectedNodeName: "+selectedNodeName);
+        String selectedNodeName = selectedNode.getParent() + "/" + selectedNode.toString();
+        System.out.println("parent: " + selectedNode.getParent());
+        System.out.println("selectedNodeName: " + selectedNodeName);
         if (selectedNode.isLeaf()) {
             if (!model.contains(selectedNodeName)) {
                 model.addElement(selectedNodeName);
@@ -1344,59 +1377,38 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_mainTabbedPaneStateChanged
 
     private void removeElem2BTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeElem2BTNActionPerformed
-        //CHMA-GGEW-SOVL -- remove element from Target nodes list
         compList2Model.removeElementAt(compList2.getSelectedIndex());
 
-        //IXGKOAG -- Update TargetNodes arrayList in Compare Object
-        //CHMA-GGEW-SOVL -- Update code for creating the common command list
         arrayCommList = cmp.updateTargetNodes(compList2);
         createCommsList();
     }//GEN-LAST:event_removeElem2BTNActionPerformed
 
     private void removeElem1BTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeElem1BTNActionPerformed
-        //CHMA-GGEW-SOVL -- remove element from Base nodes list
         compList1Model.removeElementAt(compList1.getSelectedIndex());
 
-        //IXGKOAG -- Update BaseNodes arrayList in Compare Object
-        //CHMA-GGEW-SOVL -- Update code for creating the common command list
         arrayCommList = cmp.updateBaseNodes(compList1);
         createCommsList();
     }//GEN-LAST:event_removeElem1BTNActionPerformed
 
     private void insertElem2BTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertElem2BTNActionPerformed
-        insertElem(compList2Model);
-
-        //IXGKOAG -- Update TargetNodes arrayList in Compare Object
-        //CHMA-GGEW-SOVL -- Update code for creating the common command list
-        arrayCommList = cmp.updateTargetNodes(compList2);
-        createCommsList();
+        chooseRefLBL1.setText("Target");
+        chooseFromRefDialog.setVisible(true);
     }//GEN-LAST:event_insertElem2BTNActionPerformed
 
     private void clear2BTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clear2BTNActionPerformed
         compList2Model.clear();
-        //IXGKOAG -- Update TargetNodes arrayList in Compare Object
-        //CHMA-GGEW-SOVL -- Update code for creating the common command list
         arrayCommList = cmp.updateTargetNodes(compList2);
         createCommsList();
     }//GEN-LAST:event_clear2BTNActionPerformed
 
     private void insertElem1BTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertElem1BTNActionPerformed
-       
-       // String node = compList1Model.getSelectionPath().getLastPathComponent().toString();
-       // String parent = compList1Model.getSelectionPath().getPathComponent(0).toString();
-     
-        insertElem(compList1Model);
-
-        //IXGKOAG -- Update BaseNodes arrayList in Compare Object
-        //CHMA-GGEW-SOVL -- Update code for creating the common command list
-        arrayCommList = cmp.updateBaseNodes(compList1);
-        createCommsList();
+        chooseRefLBL1.setText("Base");
+        chooseFromRefDialog.setVisible(true);
     }//GEN-LAST:event_insertElem1BTNActionPerformed
 
     private void clear1BTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clear1BTNActionPerformed
         compList1Model.clear();
-        //IXGKOAG -- Update BaseNodes arrayList in Compare Object
-        //CHMA-GGEW-SOVL -- Update code for creating the common command list
+
         arrayCommList = cmp.updateBaseNodes(compList1);
         createCommsList();
     }//GEN-LAST:event_clear1BTNActionPerformed
@@ -1750,14 +1762,10 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_commListFocusLost
 
     private void referenceCompBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_referenceCompBTNActionPerformed
-
-        //IXGKOAG -- Update BaseNodes arrayList in Compare Object
         cmp.updateBaseNodes(compList1);
     }//GEN-LAST:event_referenceCompBTNActionPerformed
 
     private void referenceCompWithBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_referenceCompWithBTNActionPerformed
-        // TODO add your handling code here:
-        //IXGKOAG -- Update TargetNodes arrayList in Compare Object
         cmp.updateTargetNodes(compList2);
     }//GEN-LAST:event_referenceCompWithBTNActionPerformed
 
@@ -1795,6 +1803,26 @@ public class MainFrame extends javax.swing.JFrame {
         TreePath selectedPath = this.TargetNodesTree.getSelectionPath();
         cmp.nodeSelected();
     }//GEN-LAST:event_TargetNodesTreeValueChanged
+
+    private void applyChooseRefBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_applyChooseRefBTNActionPerformed
+        String selectedRef = refChooseList.getSelectedValue();
+        System.out.println("selectedRef is: " + selectedRef);
+
+        if (chooseRefLBL1.getText().equals("Base")) {
+            insertElem(compList1Model);
+            arrayCommList = cmp.updateBaseNodes(compList1);
+        } else {
+            insertElem(compList2Model);
+            arrayCommList = cmp.updateBaseNodes(compList2);
+        }
+        createCommsList();
+
+        chooseFromRefDialog.setVisible(false);
+    }//GEN-LAST:event_applyChooseRefBTNActionPerformed
+
+    private void cancelChooseRefBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelChooseRefBTNActionPerformed
+        chooseFromRefDialog.setVisible(false);
+    }//GEN-LAST:event_cancelChooseRefBTNActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1848,6 +1876,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton cancelChooseRefBTN;
     private javax.swing.JDialog chooseFromRefDialog;
     private javax.swing.JLabel chooseRefLBL;
+    private javax.swing.JLabel chooseRefLBL1;
     private javax.swing.JButton clear1BTN;
     private javax.swing.JButton clear2BTN;
     private javax.swing.JButton colorCurrDifBTN;
@@ -1881,6 +1910,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
