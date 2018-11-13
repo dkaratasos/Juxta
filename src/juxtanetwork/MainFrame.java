@@ -959,7 +959,6 @@ public class MainFrame extends javax.swing.JFrame {
      * Initializations method
      */
     private void initializations() {
-        //ggew dummy comment
         compList1.setModel(compList1Model);             // Set model for Compare nodes
         compList2.setModel(compList2Model);             // Set model for Compare With nodes
         commList.setModel(commListModel);
@@ -1019,6 +1018,7 @@ public class MainFrame extends javax.swing.JFrame {
                     nodesTreeModel[currIndex] = new DefaultMutableTreeNode(node.getName());                 
                        //timestamp folders
                         for (File subnode : node.listFiles()) {
+                          if (subnode.isDirectory()) {
                          //more recent timestamp 
                          recentname = getrecenttimestamp(node);
                          if (subnode.getName().equals(recentname)) {
@@ -1063,6 +1063,7 @@ public class MainFrame extends javax.swing.JFrame {
                          }
                         currIndex++;
                         } 
+                }
                 }
             }
         }       
