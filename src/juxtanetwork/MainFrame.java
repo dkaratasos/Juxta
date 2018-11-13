@@ -483,7 +483,8 @@ public class MainFrame extends javax.swing.JFrame {
             .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
-        errorDialog.setMinimumSize(new java.awt.Dimension(400, 90));
+        errorDialog.setMinimumSize(new java.awt.Dimension(400, 120));
+        errorDialog.setModal(true);
         errorDialog.setType(java.awt.Window.Type.POPUP);
 
         errorMessageLBL.setText("Error");
@@ -1531,22 +1532,22 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_sidebarBTNActionPerformed
 
     private void testBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_testBTNActionPerformed
-        if (commList.getSelectedIndex() == -1) {
-            errorMessageLBL.setText("Please select 1 or more commands");
-            errorDialog.setVisible(true);
-            return;
-        }
+
         if (compList1Model.isEmpty()) {
             errorMessageLBL.setText("Please set Base Nodes for comparison");
             errorDialog.setVisible(true);
             return;
         }
-        if (compList1Model.isEmpty()) {
+        if (compList2Model.isEmpty()) {
             errorMessageLBL.setText("Please set Target Nodes for comparison");
             errorDialog.setVisible(true);
             return;
         }
-
+        if (commList.getSelectedIndex() == -1) {
+            errorMessageLBL.setText("Please select 1 or more commands");
+            errorDialog.setVisible(true);
+            return;
+        }
         //MOD IXGKOAG
         //IXGKOAG - Update SelectedCommands ArrayList in Compare Object
         cmp.updateSelectedCommands(commList);
