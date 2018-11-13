@@ -23,9 +23,6 @@ import java.nio.file.Paths;
 import java.io.BufferedWriter;
 import javax.swing.JFileChooser;
 
-
-
-
 //VAAG-CHRE
 import java.util.*;
 import java.io.Reader;
@@ -35,6 +32,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 /**
  *
  * @author Java Project Team
@@ -69,7 +67,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     //IXGKOAG --  DEFINE and Initialize Compare Object
     Compare cmp;
-    
+
     //CHMA-GGEW-SOVL  -- Define Common Command List
     ArrayList<String> arrayCommList = new ArrayList<String>();
 
@@ -986,103 +984,76 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     /**
-     * Method createCommsList creates the common command list in GUI
-     * whenever a new node is inserted/removed
+     * Method createCommsList creates the common command list in GUI whenever a
+     * new node is inserted/removed
      */
     private void createCommsList() {
-        
+
         //CHMA-GGEW-SOVL -- Insert common commands in the GUI list
-        
         commListModel.clear();
-        for (String s: arrayCommList){
+        for (String s : arrayCommList) {
             commListModel.addElement(s);
         }
 
     }
 
-     //VAAG-CHRE, MODIFIED
+    //VAAG-CHRE, MODIFIED
     /**
      * Method updateNodesTree inserts a new node to the tree under the correct
      * category. If the node already exists in the tree, it is not added.
      */
-  
     private void updateNodesTree() {
         DefaultMutableTreeNode[] nodesTreeModel = new DefaultMutableTreeNode[20];
         DefaultMutableTreeNode[] subnodesTreeModel = new DefaultMutableTreeNode[20];
         if (rootOutFolder.exists()) {
             int currIndex = 0;
             int subcurrIndex = 0;
-            String recentname;
             for (File node : rootOutFolder.listFiles()) {
                 if (node.isDirectory()) {
-                    nodesTreeModel[currIndex] = new DefaultMutableTreeNode(node.getName());                 
-                       //timestamp folders
-                        for (File subnode : node.listFiles()) {
-                          if (subnode.isDirectory()) {
-                         //more recent timestamp 
-                         recentname = getrecenttimestamp(node);
-                         if (subnode.getName().equals(recentname)) {
-                             String currentLine;
-                             //BC or info
-                             for (File subsubnode : subnode.listFiles()) {
-                               if (subsubnode.getName().contains("info")){
-                                 try  {    
-                                 FileReader fileReader = new FileReader(subsubnode);
-                                 BufferedReader bufferedReader = new BufferedReader(fileReader); 
-                                     try {
-                                         while ((currentLine = bufferedReader.readLine()) != null) {
-                                             if (currentLine.contains("MSC")&& isNotIncluded(nodeTreeModel, node.getName())){
-                                                 nodeTreeModelMSC.add(nodesTreeModel[currIndex]);
-                                             } else if (currentLine.contains("HLR")&& isNotIncluded(nodeTreeModel, node.getName())){
-                                                 nodeTreeModelHLR.add(nodesTreeModel[currIndex]);
-                                             }
-                                         }  } catch (IOException ex) {
-                                         Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-                                     }
-                                 
-                                }catch(FileNotFoundException ex) {
-                                  System.out.println(
-                                      "Unable to open file '" + 
-                                    subsubnode.getName() + "'");                
+                    nodesTreeModel[currIndex] = new DefaultMutableTreeNode(node.getName());   //timestamp folders
+                    for (File subnode : node.listFiles()) {
+                        if (subnode.getName().contains("info")) {
+                            try {
+                                FileReader fileReader = new FileReader(subnode);
+                                BufferedReader bufferedReader = new BufferedReader(fileReader);
+                                String currentLine;                             //BC or info
+                                try {
+                                    while ((currentLine = bufferedReader.readLine()) != null) {
+                                        if (currentLine.contains("MSC") && isNotIncluded(nodeTreeModel, node.getName())) {
+                                            nodeTreeModelMSC.add(nodesTreeModel[currIndex]);
+                                        } else if (currentLine.contains("HLR") && isNotIncluded(nodeTreeModel, node.getName())) {
+                                            nodeTreeModelHLR.add(nodesTreeModel[currIndex]);
+                                        }
+                                    }
+                                } catch (IOException ex) {
+                                    System.out.println("Unable to open file '" + subnode.getName() + "' Error in bufferedReader");
                                 }
-                              }
-                               subcurrIndex++;
-                             }
-                             subcurrIndex = 0;
-                             for (File subsubnode : subnode.listFiles()) {
-                              if (subsubnode.isDirectory()) {
-                    
-                                 subnodesTreeModel[subcurrIndex] = new DefaultMutableTreeNode(subsubnode.getName());
-                                 if (subsubnode.getName().startsWith("BC") && isNotIncluded(nodesTreeModel[currIndex], subsubnode.getName())) {
-                                   nodesTreeModel[currIndex].add(subnodesTreeModel[subcurrIndex]);  
-                           
-                                 } 
-                               }
-                               subcurrIndex++;   
-                             }
-                         }
-                        currIndex++;
-                        } 
-                }
-                }
-            }
-        }       
-        TargetNodesTree.updateUI();
-    }
 
-//VAAG, CHRE
-    /**
-     * Method getrecenttimestamp finds the most recent timestamp folder
-     */
-     private String getrecenttimestamp(File node) {
-        ArrayList<String> arraylist = new ArrayList<>(50); 
-        for (File subnode : node.listFiles()) {
-            arraylist.add(subnode.getName());    
+                            } catch (FileNotFoundException ex) {
+                                System.out.println("Unable to open file '" + subnode.getName() + "'");
+                            }
+                        } else {
+                            if (subnode.isDirectory()) {                         //more recent timestamp 
+                                subcurrIndex = 0;
+                                for (File subsubnode : subnode.listFiles()) {
+                                    if (subsubnode.isDirectory()) {
+                                        subnodesTreeModel[subcurrIndex] = new DefaultMutableTreeNode(subsubnode.getName());
+                                        if (subsubnode.getName().startsWith("BC") && isNotIncluded(nodesTreeModel[currIndex], subsubnode.getName())) {
+                                            nodesTreeModel[currIndex].add(subnodesTreeModel[subcurrIndex]);
+                                        }
+                                    }
+                                    subcurrIndex++;
+                                }
+                            }
+
+                        }
+
+                    }
+                }
+                currIndex++;
+            }
         }
-        Collections.sort(arraylist, Collections.reverseOrder());
-        String recentname = arraylist.get(0);
-       
-        return recentname;
+        TargetNodesTree.updateUI();
     }
 
     /**
@@ -1146,7 +1117,7 @@ public class MainFrame extends javax.swing.JFrame {
                 setToolTipText("MSC Node");
                 //VAAG,CHRE
             } else if (isBC(value)) {
-                setIcon(hlrIcon);
+                setIcon(mscIcon);
                 setToolTipText("BC Node");
             } else {
                 setIcon(poolIcon);
@@ -1175,7 +1146,8 @@ public class MainFrame extends javax.swing.JFrame {
 
             return false;
         }
-         //VAAG,CHRE
+        //VAAG,CHRE
+
         protected boolean isBC(Object value) {
             String nodeName = value.toString();
 
@@ -1304,10 +1276,10 @@ public class MainFrame extends javax.swing.JFrame {
             }
         }
     }
-   
+
     // CHMA-GGEW-SOVL
     /**
-     * This method writes the line number and whole line of a difference for 
+     * This method writes the line number and whole line of a difference for
      * printout poTextArea to file created from writer.
      *
      * @param writer
@@ -1315,22 +1287,20 @@ public class MainFrame extends javax.swing.JFrame {
      * @param poTextArea
      * @param printout
      */
-    private void writeDiffToFile(BufferedWriter writer, int[] diffs, javax.swing.JTextArea poTextArea, String printout){
+    private void writeDiffToFile(BufferedWriter writer, int[] diffs, javax.swing.JTextArea poTextArea, String printout) {
         try {
             writer.write(printout);
             writer.newLine();
-            if (diffs[0] == diffs[1]){
+            if (diffs[0] == diffs[1]) {
                 writer.write("line/s missing");
-            }
-            else {
+            } else {
                 int line1 = poTextArea.getLineOfOffset(diffs[0]);
-                int line2 = poTextArea.getLineOfOffset(diffs[1]-1);
+                int line2 = poTextArea.getLineOfOffset(diffs[1] - 1);
                 if (line1 == line2) {
                     writer.write("line " + line1 + ":");
                     writer.newLine();
                     writer.write(poTextArea.getText(poTextArea.getLineStartOffset(line1), poTextArea.getLineEndOffset(line1) - poTextArea.getLineStartOffset(line1) - 1));
-                }
-                else {
+                } else {
                     writer.write("lines " + line1 + "-" + line2 + ":");
                     writer.newLine();
                     writer.write(poTextArea.getText(poTextArea.getLineStartOffset(line1), poTextArea.getLineEndOffset(line2) - poTextArea.getLineStartOffset(line1) - 1));
@@ -1383,7 +1353,7 @@ public class MainFrame extends javax.swing.JFrame {
     private void removeElem1BTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeElem1BTNActionPerformed
         //CHMA-GGEW-SOVL -- remove element from Base nodes list
         compList1Model.removeElementAt(compList1.getSelectedIndex());
-        
+
         //IXGKOAG -- Update BaseNodes arrayList in Compare Object
         //CHMA-GGEW-SOVL -- Update code for creating the common command list
         arrayCommList = cmp.updateBaseNodes(compList1);
@@ -1392,7 +1362,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void insertElem2BTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertElem2BTNActionPerformed
         insertElem(compList2Model);
-        
+
         //IXGKOAG -- Update TargetNodes arrayList in Compare Object
         //CHMA-GGEW-SOVL -- Update code for creating the common command list
         arrayCommList = cmp.updateTargetNodes(compList2);
@@ -1409,11 +1379,11 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void insertElem1BTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertElem1BTNActionPerformed
         insertElem(compList1Model);
-        
+
         //IXGKOAG -- Update BaseNodes arrayList in Compare Object
         //CHMA-GGEW-SOVL -- Update code for creating the common command list
         arrayCommList = cmp.updateBaseNodes(compList1);
-        createCommsList();  
+        createCommsList();
     }//GEN-LAST:event_insertElem1BTNActionPerformed
 
     private void clear1BTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clear1BTNActionPerformed
@@ -1445,35 +1415,30 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_aboutTLBActionPerformed
 
     private void saveTLBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveTLBActionPerformed
-        
-        
-     JFileChooser fC = new JFileChooser();
+
+        JFileChooser fC = new JFileChooser();
         Component modalToComponent = null;
-       if (fC.showSaveDialog(modalToComponent) == JFileChooser.APPROVE_OPTION) {
-     //File file = fC.getSelectedFile();
-     
-     // save to file
-    }
-        
-        
-        
-        
+        if (fC.showSaveDialog(modalToComponent) == JFileChooser.APPROVE_OPTION) {
+            //File file = fC.getSelectedFile();
+
+            // save to file
+        }
+
         // CHMA-GGEW-SOVL -- Code for saving the differences beween certain printouts
         try {
             BufferedWriter writer = Files.newBufferedWriter(Paths.get(fC.getSelectedFile().getAbsolutePath()));
             for (int i = 0; i < diffs1.size(); i++) {
-                int x=i+1;
+                int x = i + 1;
                 writer.write("Diff" + x);
                 writer.newLine();
                 writer.write("------");
                 writer.newLine();
-                writeDiffToFile(writer,diffs1.get(i),po1TextArea,"PO1");
-                writeDiffToFile(writer,diffs2.get(i),po2TextArea,"PO2");
+                writeDiffToFile(writer, diffs1.get(i), po1TextArea, "PO1");
+                writeDiffToFile(writer, diffs2.get(i), po2TextArea, "PO2");
                 writer.newLine();
-            } 
+            }
             writer.close();
-        } 
-        catch (IOException ex) {
+        } catch (IOException ex) {
             java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_saveTLBActionPerformed
@@ -1819,9 +1784,9 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_TargetNodesTreeMouseClicked
 
     private void TargetNodesTreeValueChanged(javax.swing.event.TreeSelectionEvent evt) {//GEN-FIRST:event_TargetNodesTreeValueChanged
-     //IXGKOAG
-     TreePath selectedPath =  this.TargetNodesTree.getSelectionPath();
-     cmp.nodeSelected();
+        //IXGKOAG
+        TreePath selectedPath = this.TargetNodesTree.getSelectionPath();
+        cmp.nodeSelected();
     }//GEN-LAST:event_TargetNodesTreeValueChanged
 
     /**
