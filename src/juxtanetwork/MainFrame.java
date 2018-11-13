@@ -959,6 +959,7 @@ public class MainFrame extends javax.swing.JFrame {
      * Initializations method
      */
     private void initializations() {
+        //ggew dummy comment
         compList1.setModel(compList1Model);             // Set model for Compare nodes
         compList2.setModel(compList2Model);             // Set model for Compare With nodes
         commList.setModel(commListModel);
