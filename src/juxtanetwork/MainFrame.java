@@ -22,6 +22,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.io.BufferedWriter;
 import javax.swing.JFileChooser;
+import java.util.HashMap;
+
 
 //VAAG-CHRE
 import java.util.*;
@@ -56,6 +58,7 @@ public class MainFrame extends javax.swing.JFrame {
     ImageIcon mscIcon = new javax.swing.ImageIcon(getClass().getResource("/juxtanetwork/MSC16.jpg"));
     ImageIcon bladeIcon = new javax.swing.ImageIcon(getClass().getResource("/juxtanetwork/blade16.png"));
     ImageIcon poolIcon = new javax.swing.ImageIcon(getClass().getResource("/juxtanetwork/pool.jpg"));
+    ImageIcon comIcon = new javax.swing.ImageIcon(getClass().getResource("/juxtanetwork/comm-16.png"));
 
     Highlight highliter = new Highlight();
     Highlight highliterSearch = new Highlight();
@@ -63,6 +66,7 @@ public class MainFrame extends javax.swing.JFrame {
     ArrayList<int[]> diffs2 = new ArrayList<int[]>();
     ArrayList<String> TimeStampBase = new ArrayList<String>();
     ArrayList<String> TimeStampTarget = new ArrayList<String>();
+    HashMap <String, HashMap<String, Integer>> validated = new HashMap <String, HashMap<String, Integer>>();
     int currDiff = 0;
     Color diffsColor = Color.ORANGE;
     Color searchColor = Color.YELLOW;
@@ -1091,7 +1095,7 @@ public class MainFrame extends javax.swing.JFrame {
     private void createNodesTree() {
         nodeTreeModel.add(nodeTreeModelMSC);
         nodeTreeModel.add(nodeTreeModelHLR);
-        nodeTreeModel.add(nodeTreeModelPool);
+//        nodeTreeModel.add(nodeTreeModelPool);
         updateNodesTree();
     }
 
@@ -1221,19 +1225,41 @@ public class MainFrame extends javax.swing.JFrame {
                     tree, value, sel,
                     expanded, leaf, row,
                     hasFocus);
-            if (isHLR(value)) {  // removed from if: leaf && 
+            
+//            setBackgroundSelectionColor(Color.BLACK);
+//            setBackgroundNonSelectionColor(Color.BLACK);
+//            setTextSelectionColor(Color.MAGENTA);
+//            setTextNonSelectionColor(Color.BLACK);
+            if (isHLR(value)) { 
                 setIcon(hlrIcon);
                 setToolTipText("HLR Node");
+                setTextSelectionColor(Color.WHITE);
+                setOpaque(false);
             } else if (isMSC(value)) {
                 setIcon(mscIcon);
                 setToolTipText("MSC Node");
-                //VAAG,CHRE
+                setTextSelectionColor(Color.WHITE);
+                setOpaque(false);
             } else if (isBC(value)) {
                 setIcon(bladeIcon);
                 setToolTipText("BC Node");
+                setTextSelectionColor(Color.WHITE);
+                setOpaque(false);
+//                setBackground(Color.WHITE);
             } else {
-                setIcon(poolIcon);
-                setToolTipText("Pool (MSC group)");
+                setIcon(comIcon);
+                try{
+//                   this.getName()
+                    System.out.println("this is "+this.getText());
+                    System.out.println("getParent is ");
+                if (validated.get("MSC1/BC1").get(value.toString()) == 1){
+                    setForeground(Color.RED); 
+                }else if(validated.get("MSC1/BC1").get(value.toString()) == 2){
+                    setForeground(Color.GREEN); 
+                }
+                } catch (Exception e){
+                    
+                }
             }
 
             return this;
@@ -1287,9 +1313,13 @@ public class MainFrame extends javax.swing.JFrame {
             countNodesSelected++;
         }
         int[] comms = commList.getSelectedIndices();
+        HashMap<String, Integer> commands = new HashMap<String, Integer>();
         for (int i = 0; i < comms.length; i++) {
             for (int j = 0; j < countNodesSelected; j++) {
                 DefaultMutableTreeNode commandTreeModelComm = new DefaultMutableTreeNode(commListModel.getElementAt(comms[i]).toString());
+                commands.put(commandTreeModelComm.toString(), (Integer) 0);
+                validated.put(commsTreeModelNode[j].toString(),commands);
+                
                 commsTreeModelNode[j].add(commandTreeModelComm);
             }
         }
@@ -1480,12 +1510,14 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_removeElem1BTNActionPerformed
 
     private void insertElem2BTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertElem2BTNActionPerformed
-        constructRefList();
-        chooseRefLBL1.setText("Target");
-        if (lastTimeCheck.isSelected()) {
-            chooseRef(refChooseList.getModel().getElementAt(refChooseList.getModel().getSize() - 1));
-        } else {
-            chooseFromRefDialog.setVisible(true);
+        if (constructRefList()) {
+            chooseRefLBL1.setText("Target");
+            if (lastTimeCheck.isSelected()) {
+                chooseRef(refListModel.getElementAt(refListModel.getSize() - 1).toString());
+            } else {
+                refChooseList.setSelectedIndex(refListModel.getSize() - 1);                
+                chooseFromRefDialog.setVisible(true);
+            }
         }
     }//GEN-LAST:event_insertElem2BTNActionPerformed
 
@@ -1497,18 +1529,23 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_clear2BTNActionPerformed
 
     private void insertElem1BTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertElem1BTNActionPerformed
-        constructRefList();
-        chooseRefLBL1.setText("Base");
-        if (lastTimeCheck.isSelected()) {
-            chooseRef(refChooseList.getModel().getElementAt(refChooseList.getModel().getSize() - 1));
-        } else {
-            chooseFromRefDialog.setVisible(true);
+        if (constructRefList()) {
+            chooseRefLBL1.setText("Base");
+            if (lastTimeCheck.isSelected()) {
+                chooseRef(refListModel.getElementAt(refListModel.getSize() - 1).toString());
+            } else {
+                refChooseList.setSelectedIndex(refListModel.getSize() - 1);
+                chooseFromRefDialog.setVisible(true);
+            }
         }
     }//GEN-LAST:event_insertElem1BTNActionPerformed
 
-    private void constructRefList() {
+    private boolean constructRefList() {
         DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) TargetNodesTree
                 .getLastSelectedPathComponent();
+        if (selectedNode == null) {
+            return false;
+        }
         String selectedNodeName = selectedNode.getParent().toString();
         refListModel.clear();
         if (selectedNode.isLeaf()) {
@@ -1519,6 +1556,7 @@ public class MainFrame extends javax.swing.JFrame {
                 }
             }
         }
+        return true;
     }
 
     String getPath(String node) {
@@ -1598,7 +1636,7 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_sidebarBTNActionPerformed
 
-    private void doAnalysis(){
+    private void doAnalysis() {
         if (compList1Model.isEmpty()) {
             errorMessageLBL.setText("Please set Base Nodes for comparison");
             errorDialog.setVisible(true);
@@ -1614,11 +1652,10 @@ public class MainFrame extends javax.swing.JFrame {
             errorDialog.setVisible(true);
             return;
         }
-        
 
-        TargetNodesTree.setModel(new javax.swing.tree.DefaultTreeModel(commsTreeModel));
-        expandTreeAll();
-        mainTabbedPane.setSelectedIndex(2);    
+//        TargetNodesTree.setModel(new javax.swing.tree.DefaultTreeModel(commsTreeModel));
+//        expandTreeAll();
+        mainTabbedPane.setSelectedIndex(2);
         
         LinkedList<diff_match_patch.Diff> diffs = new LinkedList<diff_match_patch.Diff>();
         diff_match_patch dmp = new diff_match_patch();
@@ -1635,14 +1672,18 @@ public class MainFrame extends javax.swing.JFrame {
         highliter.highlightremove(po2TextArea);
         for (int i = diffs1.size() - 1; i >= 0; i--) {
             highlightDiffs(diffs1.get(i)[0], diffs1.get(i)[1], diffs2.get(i)[0], diffs2.get(i)[1], diffsColor);
-        }        
+        }
+        
+//        DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) TargetNodesTree
+//                .getLastSelectedPathComponent();
+
     }
     private void testBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_testBTNActionPerformed
         //MOD IXGKOAG
         //IXGKOAG - Update SelectedCommands ArrayList in Compare Object
         cmp.updateSelectedCommands(commList);
         cmp.prepareHashStructure();
-        
+
         createCommTree();
         doAnalysis();
 
@@ -1653,8 +1694,6 @@ public class MainFrame extends javax.swing.JFrame {
 //        for (int i = 0; i < compList1Model.size(); i++) {
 //            BaseNodesCombo.addItem(compList1Model.getElementAt(i).toString());
 //        }
-
-
 //        po1TextArea.setText("<PCORP:BLOCK=ALL;\n"
 //                + "PROGRAM CORRECTIONS\n"
 //                + " \n"
@@ -1708,7 +1747,6 @@ public class MainFrame extends javax.swing.JFrame {
 //                + "RNAFZ0999        C  CODE  H'0F59           45\n"
 //                + "RNAFZ0999        C  CODE  H'1234           48\n"
 //                + " ");
-
 
     }//GEN-LAST:event_testBTNActionPerformed
 
@@ -1845,6 +1883,7 @@ public class MainFrame extends javax.swing.JFrame {
                 highlightDiffs(diffs1.get(i)[0], diffs1.get(i)[1], diffs2.get(i)[0], diffs2.get(i)[1], diffsColor);
             }
         }
+        if (diffs1.isEmpty()) return;
         po1TextArea.select(diffs1.get(currDiff)[0], diffs1.get(currDiff)[1]);
         po2TextArea.select(diffs2.get(currDiff)[0], diffs2.get(currDiff)[1]);
 
@@ -1973,7 +2012,9 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_applyChooseRefBTNActionPerformed
 
     private void chooseRef(String selectedRef) {
-        if (selectedRef==null) return;
+        if (selectedRef == null) {
+            return;
+        }
         System.out.println("selectedRef is: " + selectedRef);
         if (chooseRefLBL1.getText().equals("Base")) {
             TimeStampBase.add(selectedRef);
@@ -2011,8 +2052,16 @@ public class MainFrame extends javax.swing.JFrame {
                 String base = BaseNodesCombo.getSelectedItem().toString();
                 String target = selectedNode.getParent().toString();
                 String command = selectedNode.toString();
-                cmp.nodeSelected(base, target, command,po1TextArea,po2TextArea);
+                cmp.nodeSelected(base, target, command, po1TextArea, po2TextArea);
                 doAnalysis();
+                if (diffs1.size()>0){
+                    validated.get(target).replace(command, 1);
+                }else{
+                    validated.get(target).replace(command, 2);
+                }
+                System.out.println("index of selected: "+selectedNode.getParent().getIndex(selectedNode));
+                int pos =  TargetNodesTree.getLeadSelectionRow();
+                System.out.println("pos is: "+pos);
             }
         }
     }//GEN-LAST:event_TargetNodesTreePropertyChange

@@ -7,14 +7,14 @@ SAE    BLOCK    CNTRTYP  NI          NIU         NIE         NIR
    2            CONS1          9657           0
    5            MANUAL         4096
    6            MANUAL         4999
-   7            MANUAL          750
+   7            MANUAL            0
    8            MANUAL          750
    9            MANUAL         7400
   10            MANUAL        20991
   11            MANUAL         8747
   12            MANUAL          270
   13            MANUAL        16384
-  16            MANUAL       150000      116659
+  16            MANUAL       180000      116659
   17            MANUAL       300000      259796
   19            MANUAL          256           0
   20            MANUAL          111
@@ -28,7 +28,7 @@ SAE    BLOCK    CNTRTYP  NI          NIU         NIE         NIR
   51            MANUAL         1000
   52            MANUAL            1           0
   58            MANUAL            0
-  61            MANUAL          200
+  61            MANUAL          100
   65            MANUAL          512
   77            MANUAL         3000
   78            MANUAL            0
@@ -193,7 +193,7 @@ SAE    BLOCK    CNTRTYP  NI          NIU         NIE         NIR
  500   TIMER    MANUAL         1000
  500   BTLB     MANUAL            0
  500   HSMRAP3  CONS1             0
- 500   BIMHR    MANUAL       330000           0
+ 500   BIMHR    MANUAL        10000           0
  500   CSREU    MANUAL            0
  500   MDR      MANUAL           10
  500   ETADEV2  MANUAL            0

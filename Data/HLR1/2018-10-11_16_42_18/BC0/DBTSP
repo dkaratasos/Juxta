@@ -20,7 +20,7 @@ SCLMGP          SCLMS                16382     0      SUPPLY  IMMED
                                 UPDATED FALSE        0 UNDEF      0
 
 NAME            SETNAME         PARID      VALUE UNIT CLASS   DISTRIB
-SCLMDASTCCID    SCLMS                16381     0      SUPPLY  IMMED
+SCLMDASTCCID    SCLMS                16381    12      SUPPLY  IMMED
                                 STATUS  FCVSET FCVALUE DCINFO FCODE
                                 UPDATED FALSE        0 UNDEF      0
 
@@ -35,7 +35,7 @@ SCLMBASTRU      SCLMS                16379     0      SUPPLY  IMMED
                                 UPDATED FALSE        0 UNDEF      0
 
 NAME            SETNAME         PARID      VALUE UNIT CLASS   DISTRIB
-SRVCCEMERGBO    GSMMSSC              16378   511      CUSTOM  IMMED
+SRVCCEMERGBO    GSMMSSC              16378   10       CUSTOM  IMMED
                                 STATUS  FCVSET FCVALUE DCINFO FCODE
                                 UPDATED FALSE        0 UNDEF      0
 
@@ -525,7 +525,7 @@ IMSC4XC4ILNB    CONRMILS             16281    13      SUPPLY  IMMED
                                 UPDATED FALSE        0 UNDEF      0
 
 NAME            SETNAME         PARID      VALUE UNIT CLASS   DISTRIB
-IMSC3XC6ILNB    CONRMILS             16280    11      SUPPLY  IMMED
+IMSC3XC6ILNB    CONRMILS             16280    16      SUPPLY  IMMED
                                 STATUS  FCVSET FCVALUE DCINFO FCODE
                                 UPDATED FALSE        0 UNDEF      0
 
@@ -741,11 +741,6 @@ C2XC20CODEC     CONRMILS             16238    20      SUPPLY  IMMED
 
 NAME            SETNAME         PARID      VALUE UNIT CLASS   DISTRIB
 C2XC19CODEC     CONRMILS             16237    19      SUPPLY  IMMED
-                                STATUS  FCVSET FCVALUE DCINFO FCODE
-                                UPDATED FALSE        0 UNDEF      0
-
-NAME            SETNAME         PARID      VALUE UNIT CLASS   DISTRIB
-MBANNEXBP       CONRMILS             16236     0      SUPPLY  IMMED
                                 STATUS  FCVSET FCVALUE DCINFO FCODE
                                 UPDATED FALSE        0 UNDEF      0
 
