@@ -100,7 +100,7 @@ public class MainFrame extends javax.swing.JFrame {
         discardSettingsBTN = new javax.swing.JButton();
         applySettingsBTN = new javax.swing.JButton();
         settingPanel1 = new javax.swing.JPanel();
-        jCheckBox1 = new javax.swing.JCheckBox();
+        lastTimeCheck = new javax.swing.JCheckBox();
         fontLBL = new javax.swing.JLabel();
         fontBTN = new javax.swing.JButton();
         settingPanel2 = new javax.swing.JPanel();
@@ -251,7 +251,7 @@ public class MainFrame extends javax.swing.JFrame {
         settingsDialog.setTitle("Settings");
         settingsDialog.setIconImage(new javax.swing.ImageIcon(getClass().getResource("/juxtanetwork/dual-mobile.png")).getImage());
         settingsDialog.setLocation(new java.awt.Point(800, 500));
-        settingsDialog.setMinimumSize(new java.awt.Dimension(410, 350));
+        settingsDialog.setMinimumSize(new java.awt.Dimension(440, 350));
 
         discardSettingsBTN.setText("Discard");
         discardSettingsBTN.addActionListener(new java.awt.event.ActionListener() {
@@ -267,7 +267,8 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        jCheckBox1.setText("Always use the last inserted data of a node to check");
+        lastTimeCheck.setSelected(true);
+        lastTimeCheck.setText("Always use the last inserted data (last timestamp) of a node to check");
 
         fontLBL.setText("Font:");
 
@@ -284,18 +285,18 @@ public class MainFrame extends javax.swing.JFrame {
             settingPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(settingPanel1Layout.createSequentialGroup()
                 .addGroup(settingPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jCheckBox1)
+                    .addComponent(lastTimeCheck)
                     .addGroup(settingPanel1Layout.createSequentialGroup()
                         .addComponent(fontLBL)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(fontBTN)))
-                .addGap(0, 78, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         settingPanel1Layout.setVerticalGroup(
             settingPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(settingPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jCheckBox1)
+                .addComponent(lastTimeCheck)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(settingPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(fontLBL)
@@ -1462,7 +1463,11 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void insertElem2BTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertElem2BTNActionPerformed
         chooseRefLBL1.setText("Target");
-        chooseFromRefDialog.setVisible(true);
+        if (lastTimeCheck.isSelected()) {
+            chooseRef(refChooseList.getModel().getElementAt(refChooseList.getModel().getSize() - 1));
+        } else {
+            chooseFromRefDialog.setVisible(true);
+        }
     }//GEN-LAST:event_insertElem2BTNActionPerformed
 
     private void clear2BTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clear2BTNActionPerformed
@@ -1473,7 +1478,11 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void insertElem1BTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertElem1BTNActionPerformed
         chooseRefLBL1.setText("Base");
-        chooseFromRefDialog.setVisible(true);
+        if (lastTimeCheck.isSelected()) {
+            chooseRef(refChooseList.getModel().getElementAt(refChooseList.getModel().getSize() - 1));
+        } else {
+            chooseFromRefDialog.setVisible(true);
+        }
     }//GEN-LAST:event_insertElem1BTNActionPerformed
 
     private void clear1BTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clear1BTNActionPerformed
@@ -1898,9 +1907,13 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_TargetNodesTreeValueChanged
 
     private void applyChooseRefBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_applyChooseRefBTNActionPerformed
-        String selectedRef = refChooseList.getSelectedValue();
-        System.out.println("selectedRef is: " + selectedRef);
+        chooseRef(refChooseList.getSelectedValue());
 
+        chooseFromRefDialog.setVisible(false);
+    }//GEN-LAST:event_applyChooseRefBTNActionPerformed
+
+    private void chooseRef(String selectedRef) {
+        System.out.println("selectedRef is: " + selectedRef);
         if (chooseRefLBL1.getText().equals("Base")) {
             insertElem(compList1Model);
             arrayCommList = cmp.updateBaseNodes(compList1);
@@ -1910,9 +1923,7 @@ public class MainFrame extends javax.swing.JFrame {
         }
         createCommsList();
 
-        chooseFromRefDialog.setVisible(false);
-    }//GEN-LAST:event_applyChooseRefBTNActionPerformed
-
+    }
     private void cancelChooseRefBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelChooseRefBTNActionPerformed
         chooseFromRefDialog.setVisible(false);
     }//GEN-LAST:event_cancelChooseRefBTNActionPerformed
@@ -2013,7 +2024,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton insertElem1BTN;
     private javax.swing.JButton insertElem2BTN;
     private javax.swing.JButton jButton1;
-    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JColorChooser jColorChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -2026,6 +2036,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JToolBar.Separator jSeparator2;
+    private javax.swing.JCheckBox lastTimeCheck;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JScrollPane mainScrollTab3;
     private javax.swing.JSplitPane mainSplitPane;
