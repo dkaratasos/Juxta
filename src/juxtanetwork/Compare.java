@@ -68,7 +68,7 @@ public class Compare {
             BaseNodes.add(compList1.getModel().getElementAt(i));
         }
         this.TimeStampBase = TimeStampBase;
-        System.out.println("Selected Base Nodes : " + BaseNodes);
+//        System.out.println("Selected Base Nodes : " + BaseNodes);
         prepareHashStructure();
 
         //CHMA-GGEW-SOVL -- Return the common command list
@@ -83,7 +83,7 @@ public class Compare {
             TargetNodes.add(compList2.getModel().getElementAt(i));
         }
         this.TimeStampTarget = TimeStampTarget;
-        System.out.println("Selected Target Nodes : " + TargetNodes);
+//        System.out.println("Selected Target Nodes : " + TargetNodes);
         prepareHashStructure();
         
         //CHMA-GGEW-SOVL -- Return the common command list
@@ -95,11 +95,13 @@ public class Compare {
         ArrayList<String> baseCommands = new ArrayList();
         ArrayList<String> targetCommands = new ArrayList();
         ArrayList<String> commands = new ArrayList();
-        
+        int iBase = 0;
+
         // Create Base nodes common commands
         for (String baseNode : BaseNodes) {
             commands.clear();
-            String basePath = getPath(baseNode, timeStampBase);
+//            String basePath = getPath(baseNode, timeStampBase);
+            String basePath = getPath(baseNode, TimeStampBase.get(iBase));
             File base = new File(basePath);
             for (File f : base.listFiles()){
                 int pos = f.getName().lastIndexOf(".");
@@ -110,12 +112,15 @@ public class Compare {
                 }
             }
             baseCommands = compareCommands(baseCommands, commands);
+            iBase++;
         }
         
+        int iTarget = 0;
         // Create Target nodes common commands
         for (String targetNode : TargetNodes) {
             commands.clear();
-            String targetPath = getPath(targetNode, timeStampTarget);
+//            String targetPath = getPath(targetNode, timeStampTarget);
+            String targetPath = getPath(targetNode, TimeStampTarget.get(iTarget));
             File target = new File(targetPath);
             for (File f : target.listFiles()){
                 int pos = f.getName().lastIndexOf(".");
@@ -126,6 +131,7 @@ public class Compare {
                 }
             }
             targetCommands = compareCommands(targetCommands, commands);
+            iTarget++;
         }
         
         // Return overall common command list
@@ -167,14 +173,14 @@ public class Compare {
     String getPath(String node, String time) {
         // check if node name contains / or slash or dash in case of cluster node, to be agreed
         String[] items = node.split("\\/");
-        System.out.println(items.toString());
+//        System.out.println(items.toString());
         String path = "";
         if (items.length > 1) {
-            path = "./" + LogsDirectory + fileSeperator + items[0] + fileSeperator + time + fileSeperator + items[1];
+            path = LogsDirectory + fileSeperator + items[0] + fileSeperator + time + fileSeperator + items[1];
         }else{
-        path = "./" + LogsDirectory + fileSeperator + node + fileSeperator + time + fileSeperator;
+        path = LogsDirectory + fileSeperator + node + fileSeperator + time + fileSeperator;
         }
-
+System.out.println("Current path: "+path);
         return path;
     }
 
@@ -202,12 +208,18 @@ public class Compare {
         Structure.clear();
 //--- Create Structure HashMap with All needed info to
 //    construct GUI items and Calculate Data
+        int iBase = 0;
+        
+        
         for (String baseNode : BaseNodes) {
-            String BasePath = getPath(baseNode, timeStampBase);
+//            String BasePath = getPath(baseNode, timeStampBase);
+            String BasePath = getPath(baseNode, TimeStampBase.get(iBase));
             HashMap<String, HashMap<String, Command>> TargetCommands = new HashMap<String, HashMap<String, Command>>();
 
+            int iTarget = 0;
             for (String targetNode : TargetNodes) {
-                String TargetPath = getPath(targetNode, timeStampTarget);
+//                String TargetPath = getPath(targetNode, timeStampTarget);
+                String TargetPath = getPath(targetNode, TimeStampTarget.get(iTarget));
                 HashMap<String, Command> Commands = new HashMap<String, Command>();
 
                 for (String command : selectedCommands) {
@@ -228,8 +240,10 @@ public class Compare {
                     }
                 }
                 TargetCommands.put(targetNode, Commands);
+                iTarget++;
             }
             Structure.put(baseNode, TargetCommands);
+            iBase++;
         }
         //Hash prepared do additional Stuff 
         updateBaseNodesCombo();

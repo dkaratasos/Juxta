@@ -1378,7 +1378,7 @@ public class MainFrame extends javax.swing.JFrame {
         DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) TargetNodesTree
                 .getLastSelectedPathComponent();
         String selectedNodeName = selectedNode.getParent() + "/" + selectedNode.toString();
-        System.out.println("parent: " + selectedNode.getParent());
+//        System.out.println("parent: " + selectedNode.getParent());
         System.out.println("selectedNodeName: " + selectedNodeName);
         if (selectedNode.isLeaf()) {
             if (!model.contains(selectedNodeName)) {
