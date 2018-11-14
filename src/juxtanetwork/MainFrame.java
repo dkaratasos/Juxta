@@ -124,6 +124,7 @@ public class MainFrame extends javax.swing.JFrame {
         errorDialog = new javax.swing.JDialog();
         errorMessageLBL = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
         mainPanel = new javax.swing.JPanel();
         nextBTN = new javax.swing.JButton();
         prevBTN = new javax.swing.JButton();
@@ -407,6 +408,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        chooseFromRefDialog.setIconImage(new javax.swing.ImageIcon(getClass().getResource("/juxtanetwork/dual-mobile.png")).getImage());
         chooseFromRefDialog.setMinimumSize(new java.awt.Dimension(180, 270));
 
         chooseRefLBL.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -483,7 +485,9 @@ public class MainFrame extends javax.swing.JFrame {
             .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
-        errorDialog.setMinimumSize(new java.awt.Dimension(400, 120));
+        errorDialog.setTitle("Notification");
+        errorDialog.setIconImage(new javax.swing.ImageIcon(getClass().getResource("/juxtanetwork/dual-mobile.png")).getImage());
+        errorDialog.setMinimumSize(new java.awt.Dimension(420, 150));
         errorDialog.setModal(true);
         errorDialog.setType(java.awt.Window.Type.POPUP);
 
@@ -496,6 +500,10 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/juxtanetwork/Exclamation-icon64.png"))); // NOI18N
+        jLabel4.setText("jLabel4");
+        jLabel4.setIconTextGap(1);
+
         javax.swing.GroupLayout errorDialogLayout = new javax.swing.GroupLayout(errorDialog.getContentPane());
         errorDialog.getContentPane().setLayout(errorDialogLayout);
         errorDialogLayout.setHorizontalGroup(
@@ -504,19 +512,25 @@ public class MainFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(errorDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, errorDialogLayout.createSequentialGroup()
-                        .addGap(0, 333, Short.MAX_VALUE)
-                        .addComponent(jButton1))
-                    .addComponent(errorMessageLBL, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(errorMessageLBL, javax.swing.GroupLayout.PREFERRED_SIZE, 315, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, errorDialogLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButton1)))
                 .addContainerGap())
         );
         errorDialogLayout.setVerticalGroup(
             errorDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(errorDialogLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(errorMessageLBL, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(errorDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, errorDialogLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(errorMessageLBL, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton1))
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -2004,6 +2018,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane1;
