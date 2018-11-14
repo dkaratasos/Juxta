@@ -1973,6 +1973,7 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_applyChooseRefBTNActionPerformed
 
     private void chooseRef(String selectedRef) {
+        if (selectedRef==null) return;
         System.out.println("selectedRef is: " + selectedRef);
         if (chooseRefLBL1.getText().equals("Base")) {
             TimeStampBase.add(selectedRef);
