@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import javax.swing.JComboBox;
 import javax.swing.JList;
-import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 public class Compare {
@@ -18,8 +17,8 @@ public class Compare {
 
     String fileSeperator = System.getProperty("file.separator");
     private String LogsDirectory = "Data";
-    private String timeStampBase = "2018-10-11_16_42_17";  // will be retrieved later
-    private String timeStampTarget = "2018-10-11_16_42_18";  // will be retrieved later
+//    private String timeStampBase = "2018-10-11_16_42_17";  // will be retrieved later
+//    private String timeStampTarget = "2018-10-11_16_42_18";  // will be retrieved later
     ArrayList<String> TimeStampBase = new ArrayList<String>();
     ArrayList<String> TimeStampTarget = new ArrayList<String>();
     
@@ -61,36 +60,32 @@ public class Compare {
     }
 
     //Update BaseNodes ArrayList
-    //CHMA-GGEW-SOVL -- Update to return the ArrayList to Mainframe
+    //Update to return the ArrayList to Mainframe
     ArrayList<String> updateBaseNodes(JList<String> compList1,ArrayList<String> TimeStampBase) {
         BaseNodes.clear();
         for (int i = 0; i < compList1.getModel().getSize(); i++) {
             BaseNodes.add(compList1.getModel().getElementAt(i));
         }
         this.TimeStampBase = TimeStampBase;
-//        System.out.println("Selected Base Nodes : " + BaseNodes);
         prepareHashStructure();
 
-        //CHMA-GGEW-SOVL -- Return the common command list
         return findCommonCommands();
     }
 
     //Update TargetNodes ArrayList
-    //CHMA-GGEW-SOVL -- Update to return the ArrayList to Mainframe
+    //Update to return the ArrayList to Mainframe
     ArrayList<String> updateTargetNodes(JList<String> compList2,ArrayList<String> TimeStampTarget) {
         TargetNodes.clear();
         for (int i = 0; i < compList2.getModel().getSize(); i++) {
             TargetNodes.add(compList2.getModel().getElementAt(i));
         }
         this.TimeStampTarget = TimeStampTarget;
-//        System.out.println("Selected Target Nodes : " + TargetNodes);
         prepareHashStructure();
         
-        //CHMA-GGEW-SOVL -- Return the common command list
         return findCommonCommands();
     }
     
-    //CHMA-GGEW-SOVL -- method for creating the overall common command list
+    //method for creating the overall common command list
     private ArrayList<String> findCommonCommands (){
         ArrayList<String> baseCommands = new ArrayList();
         ArrayList<String> targetCommands = new ArrayList();
@@ -138,7 +133,7 @@ public class Compare {
         return compareCommands(baseCommands, targetCommands);
     }
     
-    //CHMA-GGEW-SOVL -- method for comparing two Command lists and return the common list
+    //method for comparing two Command lists and return the common list
     private ArrayList<String> compareCommands (ArrayList<String> listOne, ArrayList<String> listTwo){
         ArrayList<String> similar = new ArrayList<String>();
         similar.clear();
@@ -173,7 +168,6 @@ public class Compare {
     String getPath(String node, String time) {
         // check if node name contains / or slash or dash in case of cluster node, to be agreed
         String[] items = node.split("\\/");
-//        System.out.println(items.toString());
         String path = "";
         if (items.length > 1) {
             path = LogsDirectory + fileSeperator + items[0] + fileSeperator + time + fileSeperator + items[1];
@@ -234,8 +228,6 @@ System.out.println("Current path: "+path);
                         //create CommandObject and appendit to the targetNode Commands
                         Command CommandObject = new Command(command, f1, f2);
                         // Perform Some Tasks in Command Object
-                        
-                        
                         Commands.put(command, CommandObject);
                     }
                 }
@@ -295,9 +287,6 @@ System.out.println("Current path: "+path);
     }
     
     public void nodeSelected(){
-    
-    
-    
     
     }
     
