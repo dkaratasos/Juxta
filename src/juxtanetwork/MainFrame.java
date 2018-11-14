@@ -171,10 +171,11 @@ public class MainFrame extends javax.swing.JFrame {
         toolBar = new javax.swing.JToolBar();
         openTLB = new javax.swing.JButton();
         saveTLB = new javax.swing.JButton();
+        saveAllBTN = new javax.swing.JButton();
         sidebarBTN = new javax.swing.JButton();
         aboutTLB = new javax.swing.JButton();
-        testBTN = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JToolBar.Separator();
+        testBTN = new javax.swing.JButton();
         jSeparator2 = new javax.swing.JToolBar.Separator();
         menuBar = new javax.swing.JMenuBar();
         fileMN = new javax.swing.JMenu();
@@ -562,14 +563,14 @@ public class MainFrame extends javax.swing.JFrame {
         javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("root");
         TargetNodesTree.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
         TargetNodesTree.setToggleClickCount(1);
-        TargetNodesTree.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                TargetNodesTreeMouseClicked(evt);
-            }
-        });
         TargetNodesTree.addTreeSelectionListener(new javax.swing.event.TreeSelectionListener() {
             public void valueChanged(javax.swing.event.TreeSelectionEvent evt) {
                 TargetNodesTreeValueChanged(evt);
+            }
+        });
+        TargetNodesTree.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                TargetNodesTreePropertyChange(evt);
             }
         });
         nodesScrollPane.setViewportView(TargetNodesTree);
@@ -942,7 +943,7 @@ public class MainFrame extends javax.swing.JFrame {
         toolBar.add(openTLB);
 
         saveTLB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/juxtanetwork/Save16.png"))); // NOI18N
-        saveTLB.setToolTipText("Save");
+        saveTLB.setToolTipText("Save current command");
         saveTLB.setFocusable(false);
         saveTLB.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         saveTLB.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -952,6 +953,18 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
         toolBar.add(saveTLB);
+
+        saveAllBTN.setIcon(new javax.swing.ImageIcon(getClass().getResource("/juxtanetwork/save-all16.png"))); // NOI18N
+        saveAllBTN.setToolTipText("Save all commands");
+        saveAllBTN.setFocusable(false);
+        saveAllBTN.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        saveAllBTN.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        saveAllBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveAllBTNActionPerformed(evt);
+            }
+        });
+        toolBar.add(saveAllBTN);
 
         sidebarBTN.setIcon(new javax.swing.ImageIcon(getClass().getResource("/juxtanetwork/sidebar16.png"))); // NOI18N
         sidebarBTN.setToolTipText("Toggle Sidebar");
@@ -976,6 +989,7 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
         toolBar.add(aboutTLB);
+        toolBar.add(jSeparator1);
 
         testBTN.setText("AnalysisBTN");
         testBTN.setFocusable(false);
@@ -987,7 +1001,6 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
         toolBar.add(testBTN);
-        toolBar.add(jSeparator1);
         toolBar.add(jSeparator2);
 
         fileMN.setText("File");
@@ -1585,8 +1598,7 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_sidebarBTNActionPerformed
 
-    private void testBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_testBTNActionPerformed
-
+    private void doAnalysis(){
         if (compList1Model.isEmpty()) {
             errorMessageLBL.setText("Please set Base Nodes for comparison");
             errorDialog.setVisible(true);
@@ -1602,77 +1614,12 @@ public class MainFrame extends javax.swing.JFrame {
             errorDialog.setVisible(true);
             return;
         }
-        //MOD IXGKOAG
-        //IXGKOAG - Update SelectedCommands ArrayList in Compare Object
-        cmp.updateSelectedCommands(commList);
-        cmp.prepareHashStructure();
+        
 
-        int[] test = commList.getSelectedIndices();
-        for (int i = 0; i < test.length; i++) {
-            System.out.println(test[i] + " " + commListModel.getElementAt(test[i]).toString());
-        }
-//        for (int i = 0; i < compList1Model.size(); i++) {
-//            BaseNodesCombo.addItem(compList1Model.getElementAt(i).toString());
-//        }
-        createCommTree();
         TargetNodesTree.setModel(new javax.swing.tree.DefaultTreeModel(commsTreeModel));
         expandTreeAll();
-        mainTabbedPane.setSelectedIndex(2);
-
-        po1TextArea.setText("<PCORP:BLOCK=ALL;\n"
-                + "PROGRAM CORRECTIONS\n"
-                + " \n"
-                + "BLOCK    SUID                               CA     CAF    ILEN\n"
-                + "GIPADA   8PXE/CAAW 107 0050/MQ5EG R1A05     380    0      32\n"
-                + " \n"
-                + "CI               S  TYPE  POSITION         SIZE\n"
-                + "SNAEM0119        C  CODE  H'047E           38\n"
-                + "SNAEM0119        C  CODE  H'057E           20\n"
-                + "SNAEM0119        C  CODE  H'0988           22\n"
-                + "SNAEM0119        C  CODE  H'1848           30\n"
-                + "SNAEM0119        C  CODE  H'1A6E           22\n"
-                + "SWAEM0123        C  CODE  H'1058           60\n"
-                + "SWAEM0123        C  CODE  H'0C66           60\n"
-                + "SWAEM0123        C  CODE  H'1C86           28\n"
-                + "SWAEM0121        C  CODE  H'0304           20\n"
-                + "SWAEM0121        C  CODE  H'0265           24\n"
-                + "SWAEM0121        C  CODE  H'0158           34\n"
-                + "SWAEM0121        C  CODE  H'01B2           22\n\n"
-                + "BLOCK    SUID                               CA     CAF    ILEN\n"
-                + "DQENUMC  7PXC/CAAZA 107 4993/MQ5EG R1A04    40     0      16\n"
-                + " \n"
-                + "CI               S  TYPE  POSITION         SIZE\n"
-                + "RNAFZ0436        C  CODE  H'0E8A           20\n"
-                + "RNAFZ0436        C  CODE  H'0F4B           20\n"
-                + " ");
-
-        po2TextArea.setText("<PCORP:BLOCK=ALL;\n"
-                + "PROGRAM CORRECTIONS\n"
-                + " \n"
-                + "BLOCK    SUID                               CA     CAF    ILEN\n"
-                + "GIPADA   8PXE/CAAW 107 0050/MQ5EG R1A05     380    0      32\n"
-                + " \n"
-                + "CI               S  TYPE  POSITION         SIZE\n"
-                + "SNAEM0119        C  CODE  H'044E           38\n"
-                + "SNAEM0119        C  CODE  H'057E           20\n"
-                + "SNAEM0119        C  CODE  H'0988           22\n"
-                + "SNAEM0119        C  CODE  H'1848           30\n"
-                + "SNAEM0119        C  CODE  H'1A6E           22\n"
-                + "SWAEM0121        C  CODE  H'0304           20\n"
-                + "SWAEM0121        C  CODE  H'0265           24\n"
-                + "SWAEM0121        C  CODE  H'0193           34\n"
-                + "S01EM0121        C  CODE  H'01B2           22\n\n"
-                + "BLOCK    SUID                               CA     CAF    ILEN\n"
-                + "DQENUMC  7PXC/CAAZA 107 4993/MQ5EG R1A04    40     0      16\n"
-                + " \n"
-                + "CI               S  TYPE  POSITION         SIZE\n"
-                + "RNAFZ0436        C  CODE  H'0E8A           20\n"
-                + "RNAFZ0436        C  CODE  H'0F4B           20\n"
-                + "RNAFZ0436        C  CODE  H'0F4B           20\n"
-                + "RNAFZ0999        C  CODE  H'0F59           45\n"
-                + "RNAFZ0999        C  CODE  H'1234           48\n"
-                + " ");
-
+        mainTabbedPane.setSelectedIndex(2);    
+        
         LinkedList<diff_match_patch.Diff> diffs = new LinkedList<diff_match_patch.Diff>();
         diff_match_patch dmp = new diff_match_patch();
         dmp.Diff_Timeout = 0;
@@ -1688,7 +1635,81 @@ public class MainFrame extends javax.swing.JFrame {
         highliter.highlightremove(po2TextArea);
         for (int i = diffs1.size() - 1; i >= 0; i--) {
             highlightDiffs(diffs1.get(i)[0], diffs1.get(i)[1], diffs2.get(i)[0], diffs2.get(i)[1], diffsColor);
-        }
+        }        
+    }
+    private void testBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_testBTNActionPerformed
+        //MOD IXGKOAG
+        //IXGKOAG - Update SelectedCommands ArrayList in Compare Object
+        cmp.updateSelectedCommands(commList);
+        cmp.prepareHashStructure();
+        
+        createCommTree();
+        doAnalysis();
+
+//        int[] test = commList.getSelectedIndices();
+//        for (int i = 0; i < test.length; i++) {
+//            System.out.println(test[i] + " " + commListModel.getElementAt(test[i]).toString());
+//        }
+//        for (int i = 0; i < compList1Model.size(); i++) {
+//            BaseNodesCombo.addItem(compList1Model.getElementAt(i).toString());
+//        }
+
+
+//        po1TextArea.setText("<PCORP:BLOCK=ALL;\n"
+//                + "PROGRAM CORRECTIONS\n"
+//                + " \n"
+//                + "BLOCK    SUID                               CA     CAF    ILEN\n"
+//                + "GIPADA   8PXE/CAAW 107 0050/MQ5EG R1A05     380    0      32\n"
+//                + " \n"
+//                + "CI               S  TYPE  POSITION         SIZE\n"
+//                + "SNAEM0119        C  CODE  H'047E           38\n"
+//                + "SNAEM0119        C  CODE  H'057E           20\n"
+//                + "SNAEM0119        C  CODE  H'0988           22\n"
+//                + "SNAEM0119        C  CODE  H'1848           30\n"
+//                + "SNAEM0119        C  CODE  H'1A6E           22\n"
+//                + "SWAEM0123        C  CODE  H'1058           60\n"
+//                + "SWAEM0123        C  CODE  H'0C66           60\n"
+//                + "SWAEM0123        C  CODE  H'1C86           28\n"
+//                + "SWAEM0121        C  CODE  H'0304           20\n"
+//                + "SWAEM0121        C  CODE  H'0265           24\n"
+//                + "SWAEM0121        C  CODE  H'0158           34\n"
+//                + "SWAEM0121        C  CODE  H'01B2           22\n\n"
+//                + "BLOCK    SUID                               CA     CAF    ILEN\n"
+//                + "DQENUMC  7PXC/CAAZA 107 4993/MQ5EG R1A04    40     0      16\n"
+//                + " \n"
+//                + "CI               S  TYPE  POSITION         SIZE\n"
+//                + "RNAFZ0436        C  CODE  H'0E8A           20\n"
+//                + "RNAFZ0436        C  CODE  H'0F4B           20\n"
+//                + " ");
+//
+//        po2TextArea.setText("<PCORP:BLOCK=ALL;\n"
+//                + "PROGRAM CORRECTIONS\n"
+//                + " \n"
+//                + "BLOCK    SUID                               CA     CAF    ILEN\n"
+//                + "GIPADA   8PXE/CAAW 107 0050/MQ5EG R1A05     380    0      32\n"
+//                + " \n"
+//                + "CI               S  TYPE  POSITION         SIZE\n"
+//                + "SNAEM0119        C  CODE  H'044E           38\n"
+//                + "SNAEM0119        C  CODE  H'057E           20\n"
+//                + "SNAEM0119        C  CODE  H'0988           22\n"
+//                + "SNAEM0119        C  CODE  H'1848           30\n"
+//                + "SNAEM0119        C  CODE  H'1A6E           22\n"
+//                + "SWAEM0121        C  CODE  H'0304           20\n"
+//                + "SWAEM0121        C  CODE  H'0265           24\n"
+//                + "SWAEM0121        C  CODE  H'0193           34\n"
+//                + "S01EM0121        C  CODE  H'01B2           22\n\n"
+//                + "BLOCK    SUID                               CA     CAF    ILEN\n"
+//                + "DQENUMC  7PXC/CAAZA 107 4993/MQ5EG R1A04    40     0      16\n"
+//                + " \n"
+//                + "CI               S  TYPE  POSITION         SIZE\n"
+//                + "RNAFZ0436        C  CODE  H'0E8A           20\n"
+//                + "RNAFZ0436        C  CODE  H'0F4B           20\n"
+//                + "RNAFZ0436        C  CODE  H'0F4B           20\n"
+//                + "RNAFZ0999        C  CODE  H'0F59           45\n"
+//                + "RNAFZ0999        C  CODE  H'1234           48\n"
+//                + " ");
+
+
     }//GEN-LAST:event_testBTNActionPerformed
 
     /**
@@ -1896,7 +1917,9 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void referenceCompBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_referenceCompBTNActionPerformed
         cmp.updateBaseNodes(compList1, TimeStampBase);
+
     }//GEN-LAST:event_referenceCompBTNActionPerformed
+
 
     private void referenceCompWithBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_referenceCompWithBTNActionPerformed
         cmp.updateTargetNodes(compList2, TimeStampTarget);
@@ -1927,14 +1950,20 @@ public class MainFrame extends javax.swing.JFrame {
     private void BaseNodesComboFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_BaseNodesComboFocusLost
     }//GEN-LAST:event_BaseNodesComboFocusLost
 
-    private void TargetNodesTreeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TargetNodesTreeMouseClicked
-
-    }//GEN-LAST:event_TargetNodesTreeMouseClicked
-
     private void TargetNodesTreeValueChanged(javax.swing.event.TreeSelectionEvent evt) {//GEN-FIRST:event_TargetNodesTreeValueChanged
         //IXGKOAG
         TreePath selectedPath = this.TargetNodesTree.getSelectionPath();
-        cmp.nodeSelected();
+
+//        DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) TargetNodesTree
+//                .getLastSelectedPathComponent();
+//        if (mainTabbedPane.getSelectedIndex() == 2) {
+//            if (commsTreeModel.getLevel() != 0) {
+//                String base = selectedNode.getParent().toString();
+//                String target = BaseNodesCombo.getSelectedItem().toString();
+//                String command = selectedNode.toString();
+//                cmp.nodeSelected(base, target, command);
+//            }
+//        }
     }//GEN-LAST:event_TargetNodesTreeValueChanged
 
     private void applyChooseRefBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_applyChooseRefBTNActionPerformed
@@ -1972,6 +2001,24 @@ public class MainFrame extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         errorDialog.setVisible(false);
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void TargetNodesTreePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_TargetNodesTreePropertyChange
+        DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) TargetNodesTree
+                .getLastSelectedPathComponent();
+        if (mainTabbedPane.getSelectedIndex() == 2) {
+            if (selectedNode != null) {
+                String base = BaseNodesCombo.getSelectedItem().toString();
+                String target = selectedNode.getParent().toString();
+                String command = selectedNode.toString();
+                cmp.nodeSelected(base, target, command,po1TextArea,po2TextArea);
+                doAnalysis();
+            }
+        }
+    }//GEN-LAST:event_TargetNodesTreePropertyChange
+
+    private void saveAllBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAllBTNActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_saveAllBTNActionPerformed
 
     /**
      * @param args the command line arguments
@@ -2091,6 +2138,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton removeElem1BTN;
     private javax.swing.JButton removeElem2BTN;
     private javax.swing.JPanel resultsPanel;
+    private javax.swing.JButton saveAllBTN;
     private javax.swing.JButton saveTLB;
     private javax.swing.JTextField searchField;
     private javax.swing.JPanel settingPanel1;

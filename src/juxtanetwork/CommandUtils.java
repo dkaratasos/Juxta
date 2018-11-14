@@ -46,9 +46,9 @@ public class CommandUtils {
      * Method getAllDiffs will fetch all differences for all commands in ArrayList comms
      * @param comms 
      */
-    public static void getAllDiffs(ArrayList<Command> comms){
-        ArrayList<int[]> diffs = new ArrayList<int[]>();
-        diffs = comms.get(0).diff(comms.get(1));
-    }
+//    public static void getAllDiffs(ArrayList<Command> comms){
+//        ArrayList<int[]> diffs = new ArrayList<int[]>();
+//        diffs = comms.get(0).diff(comms.get(1));
+//    }
     
 }

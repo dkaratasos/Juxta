@@ -5,7 +5,13 @@
  */
 package juxtanetwork;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 /**
@@ -151,8 +157,24 @@ public class Command {
      * @param comm
      * @return The pure final printout of the command, sorted if necessary
      */
-    public String getPOtext(Command comm) {
-        return "";
+    public void getPOtexts() {
+        StringBuilder po1 = new StringBuilder();
+        StringBuilder po2 = new StringBuilder();
+        
+        try {
+        BufferedReader scannerPO1 = new BufferedReader(new InputStreamReader(new FileInputStream(this.BaseFile), "UTF8"));
+        BufferedReader scannerPO2 = new BufferedReader(new InputStreamReader(new FileInputStream(this.TargetFile), "UTF8"));
+        while (scannerPO1.ready()) {
+            po1.append(scannerPO1.readLine() + "\n");
+        }
+        printOut=po1.toString();
+        while (scannerPO2.ready()) {
+            po2.append(scannerPO2.readLine() + "\n");
+        }
+        printOut2=po2.toString();
+        } catch (Exception e) {
+            System.out.println("Printout file not found for command: "+this.getName());
+        }
     }
 
     /**
@@ -164,17 +186,17 @@ public class Command {
      * from a start index in the printout string of the current command to an
      * end index.
      */
-    public ArrayList<int[]> diff(Command comm) {
-        ArrayList<int[]> differences = new ArrayList<int[]>();
-
-        String po1 = getPOtext(comm);
-        String po2 = getPOtext(this);
-
-        int startDiff = CommandUtils.getStartDiff(po1, po2, 0);
-        int endDiff = CommandUtils.getEndDiff(po1, po2, 0);
-
-        return differences;
-    }
+//    public ArrayList<int[]> diff(Command comm) {
+//        ArrayList<int[]> differences = new ArrayList<int[]>();
+//
+//        String po1 = getPOtext();
+//        String po2 = getPOtext();
+//
+//        int startDiff = CommandUtils.getStartDiff(po1, po2, 0);
+//        int endDiff = CommandUtils.getEndDiff(po1, po2, 0);
+//
+//        return differences;
+//    }
 
     //   SETTERS & GETTERS
     /**
@@ -202,6 +224,10 @@ public class Command {
      */
     public void setPrintOut(String printOut) {
         this.printOut = printOut;
+    }
+    
+    public void setPrintOut2(String printOut) { //target
+        this.printOut2 = printOut;
     }
 
     /**
@@ -269,6 +295,10 @@ public class Command {
     public String getPrintOut() {
         return this.printOut;
     }
+    
+    public String getPrintOut2() {  //target file
+        return this.printOut2;
+    }
 
     /**
      * get the Start of Sorting point
@@ -333,6 +363,7 @@ public class Command {
     private String nodeName;         // The node the command is given
     private Byte bc;                 // The blade number the command is given
     private String printOut;         // The printout of command as read from the input file
+    private String printOut2;         // The printout of command as read from the input file for target
     private String startSorting;     // The start string for sorting the printout of command
     private String endSorting;       // The end string for sorting the printout of command
     private nodeType type;           // The type of the node the command is given (MSC or HLR)

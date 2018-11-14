@@ -11,9 +11,6 @@ SNAEM0119        C  CODE  H'0988           22
 SNAEM0119        C  CODE  H'1848           30
 SNAEM0119        C  CODE  H'1A6E           22
 SWAEM0123        C  CODE  H'1058           60
-SWAEM0123        C  CODE  H'0C66           60
-SWAEM0123        C  CODE  H'1C86           28
-SWAEM0121        C  CODE  H'0264           20
 SWAEM0121        C  CODE  H'0265           24
 SWAEM0121        C  CODE  H'0158           34
 SWAEM0121        C  CODE  H'01B2           22
@@ -102,7 +99,7 @@ R01MCXJO2714     C  CODE  H'02CD           60
 R01MCXJO2714     C  CODE  H'02F2           24
 R01MCXJO2714     C  CODE  H'02F4           33
 R01MCXJO2714     C  CODE  H'3C7B           25
-R01MCXJO2714     C  CODE  H'3F90           33
+R01MCXJO2716     C  CODE  H'3F90           33
 R01MCXJO2714     C  CODE  H'4A14           28
 R01MCXJO2714     C  CODE  H'5667           44
  
@@ -112,7 +109,7 @@ MEVRE    7PWB/CAAZA 107 4750/MQ4EC R1A07    96     2      16
 CI               S  TYPE  POSITION         SIZE
 RWAXC2213        C  CODE  H'00F6           42
 RWAXC2213        C  CODE  H'0052           33
-RWAXC2213        C  CODE  H'0065           19
+RWAXC2213        C  CODE  H'0065           12
                  F                         2
  
 BLOCK    SUID                               CA     CAF    ILEN

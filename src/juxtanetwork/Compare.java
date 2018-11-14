@@ -3,11 +3,15 @@
 //2. 
 package juxtanetwork;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import javax.swing.JComboBox;
 import javax.swing.JList;
+import javax.swing.JTextArea;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 public class Compare {
@@ -249,6 +253,10 @@ System.out.println("Current path: "+path);
         }
         // this.BaseNodesCombo.setSelectedIndex(0);
     }
+    
+//public HashMap<String, HashMap<String, HashMap<String, Command>>> getStructure(){
+//    return Structure;
+//}
 
     public void updateTargetNodesTree(String selectedNode) {
         if (selectedNode.equals("")) {
@@ -286,10 +294,21 @@ System.out.println("Current path: "+path);
         }
     }
     
-    public void nodeSelected(){
     
+    
+    public void nodeSelected(String base, String target, String comm,JTextArea po1TextArea,JTextArea po2TextArea){
+    String test = Structure.get(base).get(target).get(comm).getName();
+        System.out.println("command name= "+test);
+        Command comm1 = Structure.get(base).get(target).get(comm);
+        comm1.getPOtexts();
+        String po1 = comm1.getPrintOut();
+        String po2 = comm1.getPrintOut2();
+        po1TextArea.setText(po1);
+        po2TextArea.setText(po2);
     }
     
-    
+    private void readPO(){
+        
+    }
     
 }
