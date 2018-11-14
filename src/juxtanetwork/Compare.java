@@ -16,11 +16,13 @@ public class Compare {
     JComboBox<String> BaseNodesCombo;
     DefaultMutableTreeNode commsTreeModel;
 
-    String fileSeperator = "/";
+    String fileSeperator = System.getProperty("file.separator");
     private String LogsDirectory = "Data";
     private String timeStampBase = "2018-10-11_16_42_17";  // will be retrieved later
     private String timeStampTarget = "2018-10-11_16_42_18";  // will be retrieved later
-
+    ArrayList<String> TimeStampBase = new ArrayList<String>();
+    ArrayList<String> TimeStampTarget = new ArrayList<String>();
+    
     private ArrayList<String> selectedCommands = new ArrayList<String>();
     private ArrayList<String> BaseNodes = new ArrayList<String>();
     private ArrayList<String> TargetNodes = new ArrayList<String>();
@@ -60,11 +62,12 @@ public class Compare {
 
     //Update BaseNodes ArrayList
     //CHMA-GGEW-SOVL -- Update to return the ArrayList to Mainframe
-    ArrayList<String> updateBaseNodes(JList<String> compList1) {
+    ArrayList<String> updateBaseNodes(JList<String> compList1,ArrayList<String> TimeStampBase) {
         BaseNodes.clear();
         for (int i = 0; i < compList1.getModel().getSize(); i++) {
             BaseNodes.add(compList1.getModel().getElementAt(i));
         }
+        this.TimeStampBase = TimeStampBase;
         System.out.println("Selected Base Nodes : " + BaseNodes);
         prepareHashStructure();
 
@@ -74,11 +77,12 @@ public class Compare {
 
     //Update TargetNodes ArrayList
     //CHMA-GGEW-SOVL -- Update to return the ArrayList to Mainframe
-    ArrayList<String> updateTargetNodes(JList<String> compList2) {
+    ArrayList<String> updateTargetNodes(JList<String> compList2,ArrayList<String> TimeStampTarget) {
         TargetNodes.clear();
         for (int i = 0; i < compList2.getModel().getSize(); i++) {
             TargetNodes.add(compList2.getModel().getElementAt(i));
         }
+        this.TimeStampTarget = TimeStampTarget;
         System.out.println("Selected Target Nodes : " + TargetNodes);
         prepareHashStructure();
         
@@ -185,10 +189,12 @@ public class Compare {
         if (TargetNodes.size() == 0) {
             return;
         }
-        if (timeStampBase.equals("")) {
+//        if (timeStampBase.equals("")) {
+        if (TimeStampBase.size() == 0) {
             return;
         }
-        if (timeStampTarget.equals("")) {
+//        if (timeStampTarget.equals("")) {
+        if (TimeStampTarget.size() == 0) {
             return;
         }
 //=============================================

@@ -44,6 +44,7 @@ public class MainFrame extends javax.swing.JFrame {
     final DefaultListModel compList1Model = new DefaultListModel();     // Compare nodes
     final DefaultListModel compList2Model = new DefaultListModel();     // CompareWith Nodes
     final DefaultListModel commListModel = new DefaultListModel();      // Command list for selectiona
+    DefaultListModel refListModel = new DefaultListModel();     // Compare nodes
 
     DefaultMutableTreeNode nodeTreeModel = new DefaultMutableTreeNode("Nodes");     // Nodes Tree Root TreeNode
     DefaultMutableTreeNode commsTreeModel = new DefaultMutableTreeNode("Commands"); // Commands Tree Root TreeNode
@@ -60,6 +61,8 @@ public class MainFrame extends javax.swing.JFrame {
     Highlight highliterSearch = new Highlight();
     ArrayList<int[]> diffs1 = new ArrayList<int[]>();
     ArrayList<int[]> diffs2 = new ArrayList<int[]>();
+    ArrayList<String> TimeStampBase = new ArrayList<String>();
+    ArrayList<String> TimeStampTarget = new ArrayList<String>();
     int currDiff = 0;
     Color diffsColor = Color.ORANGE;
     Color searchColor = Color.YELLOW;
@@ -267,7 +270,6 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        lastTimeCheck.setSelected(true);
         lastTimeCheck.setText("Always use the last inserted data (last timestamp) of a node to check");
 
         fontLBL.setText("Font:");
@@ -1056,6 +1058,7 @@ public class MainFrame extends javax.swing.JFrame {
         compList1.setModel(compList1Model);             // Set model for Compare nodes
         compList2.setModel(compList2Model);             // Set model for Compare With nodes
         commList.setModel(commListModel);
+        refChooseList.setModel(refListModel);
         //vaag
         nodeTreeModel.removeAllChildren();
         createNodesTree();                              // Create the Nodes Tree Model
@@ -1449,19 +1452,22 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void removeElem2BTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeElem2BTNActionPerformed
         compList2Model.removeElementAt(compList2.getSelectedIndex());
+        refListModel.clear();
 
-        arrayCommList = cmp.updateTargetNodes(compList2);
+        arrayCommList = cmp.updateTargetNodes(compList2, TimeStampTarget);
         createCommsList();
     }//GEN-LAST:event_removeElem2BTNActionPerformed
 
     private void removeElem1BTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeElem1BTNActionPerformed
         compList1Model.removeElementAt(compList1.getSelectedIndex());
+        refListModel.clear();
 
-        arrayCommList = cmp.updateBaseNodes(compList1);
+        arrayCommList = cmp.updateBaseNodes(compList1, TimeStampBase);
         createCommsList();
     }//GEN-LAST:event_removeElem1BTNActionPerformed
 
     private void insertElem2BTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertElem2BTNActionPerformed
+        constructRefList();
         chooseRefLBL1.setText("Target");
         if (lastTimeCheck.isSelected()) {
             chooseRef(refChooseList.getModel().getElementAt(refChooseList.getModel().getSize() - 1));
@@ -1472,11 +1478,13 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void clear2BTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clear2BTNActionPerformed
         compList2Model.clear();
-        arrayCommList = cmp.updateTargetNodes(compList2);
+        refListModel.clear();
+        arrayCommList = cmp.updateTargetNodes(compList2, TimeStampTarget);
         createCommsList();
     }//GEN-LAST:event_clear2BTNActionPerformed
 
     private void insertElem1BTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertElem1BTNActionPerformed
+        constructRefList();
         chooseRefLBL1.setText("Base");
         if (lastTimeCheck.isSelected()) {
             chooseRef(refChooseList.getModel().getElementAt(refChooseList.getModel().getSize() - 1));
@@ -1485,9 +1493,32 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_insertElem1BTNActionPerformed
 
+    private void constructRefList() {
+        DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) TargetNodesTree
+                .getLastSelectedPathComponent();
+        String selectedNodeName = selectedNode.getParent().toString();
+        refListModel.clear();
+        if (selectedNode.isLeaf()) {
+            File base = new File(getPath(selectedNodeName));
+            for (File f : base.listFiles()) {
+                if (f.isDirectory()) {
+                    refListModel.addElement(f.getName());
+                }
+            }
+        }
+    }
+
+    String getPath(String node) {
+        String fileSeperator = System.getProperty("file.separator");
+        String LogsDirectory = "Data";
+
+        return LogsDirectory + fileSeperator + node;
+    }
+
     private void clear1BTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clear1BTNActionPerformed
         compList1Model.clear();
-        arrayCommList = cmp.updateBaseNodes(compList1);
+        refListModel.clear();
+        arrayCommList = cmp.updateBaseNodes(compList1, TimeStampBase);
         createCommsList();
     }//GEN-LAST:event_clear1BTNActionPerformed
 
@@ -1864,11 +1895,11 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_commListFocusLost
 
     private void referenceCompBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_referenceCompBTNActionPerformed
-        cmp.updateBaseNodes(compList1);
+        cmp.updateBaseNodes(compList1, TimeStampBase);
     }//GEN-LAST:event_referenceCompBTNActionPerformed
 
     private void referenceCompWithBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_referenceCompWithBTNActionPerformed
-        cmp.updateTargetNodes(compList2);
+        cmp.updateTargetNodes(compList2, TimeStampTarget);
     }//GEN-LAST:event_referenceCompWithBTNActionPerformed
 
     private void BaseNodesComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BaseNodesComboActionPerformed
@@ -1915,11 +1946,13 @@ public class MainFrame extends javax.swing.JFrame {
     private void chooseRef(String selectedRef) {
         System.out.println("selectedRef is: " + selectedRef);
         if (chooseRefLBL1.getText().equals("Base")) {
+            TimeStampBase.add(selectedRef);
             insertElem(compList1Model);
-            arrayCommList = cmp.updateBaseNodes(compList1);
+            arrayCommList = cmp.updateBaseNodes(compList1, TimeStampBase);
         } else {
+            TimeStampTarget.add(selectedRef);
             insertElem(compList2Model);
-            arrayCommList = cmp.updateTargetNodes(compList2);
+            arrayCommList = cmp.updateTargetNodes(compList2, TimeStampTarget);
         }
         createCommsList();
 
