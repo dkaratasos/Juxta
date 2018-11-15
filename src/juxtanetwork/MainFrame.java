@@ -1248,9 +1248,7 @@ public class MainFrame extends javax.swing.JFrame {
             } else {
                 setIcon(comIcon);
                 try {
-                    int pos = TargetNodesTree.getLeadSelectionRow();
                     if (validated.get(row) == 1) {
-                        System.out.println("pos render is: " + pos + " and row is: " + row);
                         setForeground(Color.RED);
                     } else if (validated.get(row) == 2) {
                         setForeground(new Color(50,205,50));
@@ -1995,7 +1993,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void TargetNodesTreeValueChanged(javax.swing.event.TreeSelectionEvent evt) {//GEN-FIRST:event_TargetNodesTreeValueChanged
         //IXGKOAG
-        TreePath selectedPath = this.TargetNodesTree.getSelectionPath();
+//        TreePath selectedPath = this.TargetNodesTree.getSelectionPath();
 
         DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) TargetNodesTree
                 .getLastSelectedPathComponent();
@@ -2011,9 +2009,9 @@ public class MainFrame extends javax.swing.JFrame {
                 } else {
                     validated.replace(TargetNodesTree.getLeadSelectionRow(), 2);
                 }
-                System.out.println("index of selected: " + selectedNode.getParent().getIndex(selectedNode));
-                int pos = TargetNodesTree.getLeadSelectionRow();
-                System.out.println("pos is: " + pos);
+//                System.out.println("index of selected: " + selectedNode.getParent().getIndex(selectedNode));
+//                int pos = TargetNodesTree.getLeadSelectionRow();
+//                System.out.println("pos is: " + pos);
             }
         }
 //        DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) TargetNodesTree
