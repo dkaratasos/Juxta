@@ -24,7 +24,6 @@ import java.io.BufferedWriter;
 import javax.swing.JFileChooser;
 import java.util.HashMap;
 
-
 //VAAG-CHRE
 import java.util.*;
 import java.io.Reader;
@@ -66,7 +65,7 @@ public class MainFrame extends javax.swing.JFrame {
     ArrayList<int[]> diffs2 = new ArrayList<int[]>();
     ArrayList<String> TimeStampBase = new ArrayList<String>();
     ArrayList<String> TimeStampTarget = new ArrayList<String>();
-    HashMap <String, HashMap<String, Integer>> validated = new HashMap <String, HashMap<String, Integer>>();
+    HashMap<Integer, Integer> validated = new HashMap<Integer, Integer>();
     int currDiff = 0;
     Color diffsColor = Color.ORANGE;
     Color searchColor = Color.YELLOW;
@@ -1225,12 +1224,12 @@ public class MainFrame extends javax.swing.JFrame {
                     tree, value, sel,
                     expanded, leaf, row,
                     hasFocus);
-            
+
 //            setBackgroundSelectionColor(Color.BLACK);
 //            setBackgroundNonSelectionColor(Color.BLACK);
 //            setTextSelectionColor(Color.MAGENTA);
 //            setTextNonSelectionColor(Color.BLACK);
-            if (isHLR(value)) { 
+            if (isHLR(value)) {
                 setIcon(hlrIcon);
                 setToolTipText("HLR Node");
                 setTextSelectionColor(Color.WHITE);
@@ -1248,17 +1247,16 @@ public class MainFrame extends javax.swing.JFrame {
 //                setBackground(Color.WHITE);
             } else {
                 setIcon(comIcon);
-                try{
-//                   this.getName()
-                    System.out.println("this is "+this.getText());
-                    System.out.println("getParent is ");
-                if (validated.get("MSC1/BC1").get(value.toString()) == 1){
-                    setForeground(Color.RED); 
-                }else if(validated.get("MSC1/BC1").get(value.toString()) == 2){
-                    setForeground(Color.GREEN); 
-                }
-                } catch (Exception e){
-                    
+                try {
+                    int pos = TargetNodesTree.getLeadSelectionRow();
+                    if (validated.get(row) == 1) {
+                        System.out.println("pos render is: " + pos + " and row is: " + row);
+                        setForeground(Color.RED);
+                    } else if (validated.get(row) == 2) {
+                        setForeground(new Color(50,205,50));
+                    }
+                } catch (Exception e) {
+
                 }
             }
 
@@ -1304,7 +1302,7 @@ public class MainFrame extends javax.swing.JFrame {
      * command should validate to identical printout or not
      */
     private void createCommTree() {
-        DefaultMutableTreeNode[] commsTreeModelNode = new DefaultMutableTreeNode[20];
+        DefaultMutableTreeNode[] commsTreeModelNode = new DefaultMutableTreeNode[200];
         int countNodesSelected = 0;
         commsTreeModel.removeAllChildren();
         for (int i = 0; i < compList2Model.size(); i++) {
@@ -1313,16 +1311,15 @@ public class MainFrame extends javax.swing.JFrame {
             countNodesSelected++;
         }
         int[] comms = commList.getSelectedIndices();
-        HashMap<String, Integer> commands = new HashMap<String, Integer>();
         for (int i = 0; i < comms.length; i++) {
             for (int j = 0; j < countNodesSelected; j++) {
                 DefaultMutableTreeNode commandTreeModelComm = new DefaultMutableTreeNode(commListModel.getElementAt(comms[i]).toString());
-                commands.put(commandTreeModelComm.toString(), (Integer) 0);
-                validated.put(commsTreeModelNode[j].toString(),commands);
-                
+
                 commsTreeModelNode[j].add(commandTreeModelComm);
             }
         }
+        resetValidatePOs();
+
         TargetNodesTree.updateUI();
 
 //        this.TargetNodesTree.setModel(null);
@@ -1333,6 +1330,12 @@ public class MainFrame extends javax.swing.JFrame {
 //        this.TargetNodesTree.repaint();
     }
 
+    private void resetValidatePOs(){
+        validated.clear();
+        for (int i = 0; i < 200; i++) {
+            validated.put(i, 0);
+        }
+    }
     /**
      * Method getPrintouts opens a file chooser to select the data input folder.
      * Then calls createStructure to create the Data structure and copies input
@@ -1421,8 +1424,6 @@ public class MainFrame extends javax.swing.JFrame {
         DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) TargetNodesTree
                 .getLastSelectedPathComponent();
         String selectedNodeName = selectedNode.getParent() + "/" + selectedNode.toString();
-//        System.out.println("parent: " + selectedNode.getParent());
-        System.out.println("selectedNodeName: " + selectedNodeName);
         if (selectedNode.isLeaf()) {
             if (!model.contains(selectedNodeName)) {
                 model.addElement(selectedNodeName);
@@ -1515,7 +1516,7 @@ public class MainFrame extends javax.swing.JFrame {
             if (lastTimeCheck.isSelected()) {
                 chooseRef(refListModel.getElementAt(refListModel.getSize() - 1).toString());
             } else {
-                refChooseList.setSelectedIndex(refListModel.getSize() - 1);                
+                refChooseList.setSelectedIndex(refListModel.getSize() - 1);
                 chooseFromRefDialog.setVisible(true);
             }
         }
@@ -1656,7 +1657,7 @@ public class MainFrame extends javax.swing.JFrame {
 //        TargetNodesTree.setModel(new javax.swing.tree.DefaultTreeModel(commsTreeModel));
 //        expandTreeAll();
         mainTabbedPane.setSelectedIndex(2);
-        
+
         LinkedList<diff_match_patch.Diff> diffs = new LinkedList<diff_match_patch.Diff>();
         diff_match_patch dmp = new diff_match_patch();
         dmp.Diff_Timeout = 0;
@@ -1673,10 +1674,9 @@ public class MainFrame extends javax.swing.JFrame {
         for (int i = diffs1.size() - 1; i >= 0; i--) {
             highlightDiffs(diffs1.get(i)[0], diffs1.get(i)[1], diffs2.get(i)[0], diffs2.get(i)[1], diffsColor);
         }
-        
+
 //        DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) TargetNodesTree
 //                .getLastSelectedPathComponent();
-
     }
     private void testBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_testBTNActionPerformed
         //MOD IXGKOAG
@@ -1883,7 +1883,9 @@ public class MainFrame extends javax.swing.JFrame {
                 highlightDiffs(diffs1.get(i)[0], diffs1.get(i)[1], diffs2.get(i)[0], diffs2.get(i)[1], diffsColor);
             }
         }
-        if (diffs1.isEmpty()) return;
+        if (diffs1.isEmpty()) {
+            return;
+        }
         po1TextArea.select(diffs1.get(currDiff)[0], diffs1.get(currDiff)[1]);
         po2TextArea.select(diffs2.get(currDiff)[0], diffs2.get(currDiff)[1]);
 
@@ -1977,6 +1979,8 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_fontBTNActionPerformed
 
     private void BaseNodesComboItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_BaseNodesComboItemStateChanged
+         resetValidatePOs();
+
         //IXGKOAG
 //        this.TargetNodesTree.setModel(null);
 //        String item = this.BaseNodesCombo.getSelectedItem().toString();
@@ -1993,6 +1997,25 @@ public class MainFrame extends javax.swing.JFrame {
         //IXGKOAG
         TreePath selectedPath = this.TargetNodesTree.getSelectionPath();
 
+        DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) TargetNodesTree
+                .getLastSelectedPathComponent();
+        if (mainTabbedPane.getSelectedIndex() == 2) {
+            if (selectedNode != null) {
+                String base = BaseNodesCombo.getSelectedItem().toString();
+                String target = selectedNode.getParent().toString();
+                String command = selectedNode.toString();
+                cmp.nodeSelected(base, target, command, po1TextArea, po2TextArea);
+                doAnalysis();
+                if (diffs1.size() > 0) {
+                    validated.replace(TargetNodesTree.getLeadSelectionRow(), 1);
+                } else {
+                    validated.replace(TargetNodesTree.getLeadSelectionRow(), 2);
+                }
+                System.out.println("index of selected: " + selectedNode.getParent().getIndex(selectedNode));
+                int pos = TargetNodesTree.getLeadSelectionRow();
+                System.out.println("pos is: " + pos);
+            }
+        }
 //        DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) TargetNodesTree
 //                .getLastSelectedPathComponent();
 //        if (mainTabbedPane.getSelectedIndex() == 2) {
@@ -2045,25 +2068,7 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void TargetNodesTreePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_TargetNodesTreePropertyChange
-        DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) TargetNodesTree
-                .getLastSelectedPathComponent();
-        if (mainTabbedPane.getSelectedIndex() == 2) {
-            if (selectedNode != null) {
-                String base = BaseNodesCombo.getSelectedItem().toString();
-                String target = selectedNode.getParent().toString();
-                String command = selectedNode.toString();
-                cmp.nodeSelected(base, target, command, po1TextArea, po2TextArea);
-                doAnalysis();
-                if (diffs1.size()>0){
-                    validated.get(target).replace(command, 1);
-                }else{
-                    validated.get(target).replace(command, 2);
-                }
-                System.out.println("index of selected: "+selectedNode.getParent().getIndex(selectedNode));
-                int pos =  TargetNodesTree.getLeadSelectionRow();
-                System.out.println("pos is: "+pos);
-            }
-        }
+        
     }//GEN-LAST:event_TargetNodesTreePropertyChange
 
     private void saveAllBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAllBTNActionPerformed
