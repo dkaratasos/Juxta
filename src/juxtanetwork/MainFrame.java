@@ -2,6 +2,9 @@ package juxtanetwork;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -34,6 +37,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.text.DefaultEditorKit;
 
 /**
  *
@@ -133,9 +137,9 @@ public class MainFrame extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         textPopUpMN = new javax.swing.JPopupMenu();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
+        CopyPopUp = new javax.swing.JMenuItem(new DefaultEditorKit.CopyAction());
+        nextDiffMN = new javax.swing.JMenuItem();
+        prevDiffMN = new javax.swing.JMenuItem();
         mainPanel = new javax.swing.JPanel();
         nextBTN = new javax.swing.JButton();
         prevBTN = new javax.swing.JButton();
@@ -547,19 +551,28 @@ public class MainFrame extends javax.swing.JFrame {
                 .addComponent(jButton1))
         );
 
-        jMenuItem2.setText("jMenuItem2");
-        textPopUpMN.add(jMenuItem2);
-
-        jMenuItem1.setText("jMenuItem1");
-        textPopUpMN.add(jMenuItem1);
-
-        jMenuItem3.setText("jMenuItem3");
-        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+        CopyPopUp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/juxtanetwork/copy16.png"))); // NOI18N
+        CopyPopUp.setText("Copy");
+        CopyPopUp.setToolTipText("Copy text");
+        CopyPopUp.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem3ActionPerformed(evt);
+                CopyPopUpActionPerformed(evt);
             }
         });
-        textPopUpMN.add(jMenuItem3);
+        textPopUpMN.add(CopyPopUp);
+
+        nextDiffMN.setIcon(new javax.swing.ImageIcon(getClass().getResource("/juxtanetwork/Next16.png"))); // NOI18N
+        nextDiffMN.setText("Next Diff");
+        textPopUpMN.add(nextDiffMN);
+
+        prevDiffMN.setIcon(new javax.swing.ImageIcon(getClass().getResource("/juxtanetwork/Prev16.png"))); // NOI18N
+        prevDiffMN.setText("Prev Diff");
+        prevDiffMN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                prevDiffMNActionPerformed(evt);
+            }
+        });
+        textPopUpMN.add(prevDiffMN);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("JuxtaNetwork");
@@ -813,6 +826,11 @@ public class MainFrame extends javax.swing.JFrame {
 
         po2TextArea.setColumns(20);
         po2TextArea.setRows(5);
+        po2TextArea.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                po2TextAreaMouseReleased(evt);
+            }
+        });
         po2ScrollPane.setViewportView(po2TextArea);
 
         diffSplitPane.setRightComponent(po2ScrollPane);
@@ -836,16 +854,21 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        prevHiliteBTN.setText("<");
+        prevHiliteBTN.setIcon(new javax.swing.ImageIcon(getClass().getResource("/juxtanetwork/Prev24.png"))); // NOI18N
         prevHiliteBTN.setToolTipText("Previous Difference");
+        prevHiliteBTN.setBorder(null);
+        prevHiliteBTN.setMargin(new java.awt.Insets(0, 2, 0, 2));
         prevHiliteBTN.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 prevHiliteBTNActionPerformed(evt);
             }
         });
 
-        nextHiliteBTN.setText(">");
+        nextHiliteBTN.setIcon(new javax.swing.ImageIcon(getClass().getResource("/juxtanetwork/Next24.png"))); // NOI18N
         nextHiliteBTN.setToolTipText("Next Difference");
+        nextHiliteBTN.setBorder(null);
+        nextHiliteBTN.setBorderPainted(false);
+        nextHiliteBTN.setMargin(new java.awt.Insets(0, 2, 0, 2));
         nextHiliteBTN.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 nextHiliteBTNActionPerformed(evt);
@@ -917,7 +940,7 @@ public class MainFrame extends javax.swing.JFrame {
                         .addComponent(BackFindBTN)
                         .addComponent(ForFindBTN)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(diffSplitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 561, Short.MAX_VALUE))
+                .addComponent(diffSplitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 560, Short.MAX_VALUE))
         );
 
         mainTabbedPane.addTab("Results", resultsPanel);
@@ -2064,15 +2087,31 @@ public class MainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_saveAllBTNActionPerformed
 
-    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+    private void prevDiffMNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prevDiffMNActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem3ActionPerformed
+    }//GEN-LAST:event_prevDiffMNActionPerformed
 
     private void po1TextAreaMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_po1TextAreaMouseReleased
        if (evt.isPopupTrigger()){
-           textPopUpMN.show(this,evt.getX(),evt.getY());
+           textPopUpMN.show(evt.getComponent(),evt.getX(),evt.getY());
        }
     }//GEN-LAST:event_po1TextAreaMouseReleased
+
+    private void po2TextAreaMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_po2TextAreaMouseReleased
+        if (evt.isPopupTrigger()){
+           textPopUpMN.show(evt.getComponent(),evt.getX(),evt.getY());
+       }
+    }//GEN-LAST:event_po2TextAreaMouseReleased
+
+    private void CopyPopUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CopyPopUpActionPerformed
+        
+//        javax.swing.JTextArea source = (javax.swing.JTextArea) evt.getSource();
+//        Action actions = new DefaultEditorKit.CopyAction();
+//        String text = po1TextArea.getSelectedText();
+//        StringSelection stsel = new StringSelection(text);
+//        Clipboard system = Toolkit.getDefaultToolkit().getSystemClipboard();
+//        system.setContents(stsel, stsel);
+    }//GEN-LAST:event_CopyPopUpActionPerformed
 
     /**
      * @param args the command line arguments
@@ -2113,6 +2152,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton AnalysisBTN;
     private javax.swing.JButton BackFindBTN;
     private javax.swing.JComboBox<String> BaseNodesCombo;
+    private javax.swing.JMenuItem CopyPopUp;
     private javax.swing.JButton ForFindBTN;
     private javax.swing.JMenuItem OpenMN;
     private javax.swing.JMenuItem SaveMN;
@@ -2165,9 +2205,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane1;
@@ -2182,6 +2219,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JTabbedPane mainTabbedPane;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JButton nextBTN;
+    private javax.swing.JMenuItem nextDiffMN;
     private javax.swing.JButton nextHiliteBTN;
     private javax.swing.JScrollPane nodesScrollPane;
     private javax.swing.JButton openTLB;
@@ -2190,6 +2228,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane po2ScrollPane;
     private javax.swing.JTextArea po2TextArea;
     private javax.swing.JButton prevBTN;
+    private javax.swing.JMenuItem prevDiffMN;
     private javax.swing.JButton prevHiliteBTN;
     private javax.swing.JList<String> refChooseList;
     private javax.swing.JButton referenceCompBTN;
