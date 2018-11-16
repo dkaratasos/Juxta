@@ -183,6 +183,8 @@ public class MainFrame extends javax.swing.JFrame {
         menuBar = new javax.swing.JMenuBar();
         fileMN = new javax.swing.JMenu();
         OpenMN = new javax.swing.JMenuItem();
+        SaveMN = new javax.swing.JMenuItem();
+        saveAllMN = new javax.swing.JMenuItem();
         exitMN = new javax.swing.JMenuItem();
         editMN = new javax.swing.JMenu();
         settingsMN = new javax.swing.JMenuItem();
@@ -994,9 +996,11 @@ public class MainFrame extends javax.swing.JFrame {
         toolBar.add(aboutTLB);
         toolBar.add(jSeparator1);
 
-        AnalysisBTN.setText("AnalysisBTN");
+        AnalysisBTN.setIcon(new javax.swing.ImageIcon(getClass().getResource("/juxtanetwork/apply_execute16.png"))); // NOI18N
+        AnalysisBTN.setText("Analysis");
+        AnalysisBTN.setToolTipText("Run Analysis");
         AnalysisBTN.setFocusable(false);
-        AnalysisBTN.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        AnalysisBTN.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         AnalysisBTN.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         AnalysisBTN.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1016,6 +1020,14 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
         fileMN.add(OpenMN);
+
+        SaveMN.setIcon(new javax.swing.ImageIcon(getClass().getResource("/juxtanetwork/Save16.png"))); // NOI18N
+        SaveMN.setText("Save");
+        fileMN.add(SaveMN);
+
+        saveAllMN.setIcon(new javax.swing.ImageIcon(getClass().getResource("/juxtanetwork/save-all16.png"))); // NOI18N
+        saveAllMN.setText("SaveAll");
+        fileMN.add(saveAllMN);
 
         exitMN.setIcon(new javax.swing.ImageIcon(getClass().getResource("/juxtanetwork/exit16.png"))); // NOI18N
         exitMN.setText("exit");
@@ -1251,7 +1263,7 @@ public class MainFrame extends javax.swing.JFrame {
                     if (validated.get(row) == 1) {
                         setForeground(Color.RED);
                     } else if (validated.get(row) == 2) {
-                        setForeground(new Color(50,205,50));
+                        setForeground(new Color(50, 205, 50));
                     }
                 } catch (Exception e) {
 
@@ -1328,12 +1340,13 @@ public class MainFrame extends javax.swing.JFrame {
 //        this.TargetNodesTree.repaint();
     }
 
-    private void resetValidatePOs(){
+    private void resetValidatePOs() {
         validated.clear();
         for (int i = 0; i < 200; i++) {
             validated.put(i, 0);
         }
     }
+
     /**
      * Method getPrintouts opens a file chooser to select the data input folder.
      * Then calls createStructure to create the Data structure and copies input
@@ -1636,22 +1649,6 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_sidebarBTNActionPerformed
 
     private void doAnalysis() {
-        if (compList1Model.isEmpty()) {
-            errorMessageLBL.setText("Please set Base Nodes for comparison");
-            errorDialog.setVisible(true);
-            return;
-        }
-        if (compList2Model.isEmpty()) {
-            errorMessageLBL.setText("Please set Target Nodes for comparison");
-            errorDialog.setVisible(true);
-            return;
-        }
-        if (commList.getSelectedIndex() == -1) {
-            errorMessageLBL.setText("Please select 1 or more commands");
-            errorDialog.setVisible(true);
-            return;
-        }
-
         LinkedList<diff_match_patch.Diff> diffs = new LinkedList<diff_match_patch.Diff>();
         diff_match_patch dmp = new diff_match_patch();
         dmp.Diff_Timeout = 0;
@@ -1669,11 +1666,32 @@ public class MainFrame extends javax.swing.JFrame {
             highlightDiffs(diffs1.get(i)[0], diffs1.get(i)[1], diffs2.get(i)[0], diffs2.get(i)[1], diffsColor);
         }
     }
+    
     private void AnalysisBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AnalysisBTNActionPerformed
+            if (compList1Model.isEmpty()) {
+                errorMessageLBL.setText("Please set Base Nodes for comparison");
+                errorDialog.setVisible(true);
+                return;
+            }
+            if (compList2Model.isEmpty()) {
+                errorMessageLBL.setText("Please set Target Nodes for comparison");
+                errorDialog.setVisible(true);
+                return;
+            }
+            if (commList.getSelectedIndex() == -1) {
+                errorMessageLBL.setText("Please select 1 or more commands");
+                errorDialog.setVisible(true);
+                return;
+            }
+
         cmp.updateSelectedCommands(commList);
         cmp.prepareHashStructure();
         createCommTree();
+
+//        doAnalysis();
         mainTabbedPane.setSelectedIndex(2);
+        TargetNodesTree.setModel(new javax.swing.tree.DefaultTreeModel(commsTreeModel));
+        expandTreeAll();
     }//GEN-LAST:event_AnalysisBTNActionPerformed
 
     /**
@@ -1905,7 +1923,7 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_fontBTNActionPerformed
 
     private void BaseNodesComboItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_BaseNodesComboItemStateChanged
-         resetValidatePOs();
+        resetValidatePOs();
 
         //IXGKOAG
 //        this.TargetNodesTree.setModel(null);
@@ -1994,7 +2012,7 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void TargetNodesTreePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_TargetNodesTreePropertyChange
-        
+
     }//GEN-LAST:event_TargetNodesTreePropertyChange
 
     private void saveAllBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAllBTNActionPerformed
@@ -2042,6 +2060,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> BaseNodesCombo;
     private javax.swing.JButton ForFindBTN;
     private javax.swing.JMenuItem OpenMN;
+    private javax.swing.JMenuItem SaveMN;
     private javax.swing.JTree TargetNodesTree;
     private javax.swing.JFrame aboutFrame;
     private javax.swing.JButton aboutOkBTN;
@@ -2121,6 +2140,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton removeElem2BTN;
     private javax.swing.JPanel resultsPanel;
     private javax.swing.JButton saveAllBTN;
+    private javax.swing.JMenuItem saveAllMN;
     private javax.swing.JButton saveTLB;
     private javax.swing.JTextField searchField;
     private javax.swing.JPanel settingPanel1;
