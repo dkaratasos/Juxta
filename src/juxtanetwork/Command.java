@@ -353,6 +353,28 @@ public class Command {
     public boolean getFailed() {
         return this.failed;
     }
+    
+    // CHMA-GGEW-SOVL -- Method for getting the base node path
+    public String getBasePath(){
+        try {
+            String path = this.BaseFile.getParentFile().getCanonicalPath();
+            return path.substring(path.indexOf("Data")+5);
+        } catch (IOException ex) {
+            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    // CHMA-GGEW-SOVL -- Method for getting the target node path
+    public String getTargetPath(){
+        try {
+            String path = this.TargetFile.getParentFile().getCanonicalPath();
+            return path.substring(path.indexOf("Data")+5);
+        } catch (IOException ex) {
+            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        return null;
+    }
 
     //     VARIABLES
     //IXGKOAG 

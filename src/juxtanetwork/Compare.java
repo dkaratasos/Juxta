@@ -315,5 +315,14 @@ public class Compare {
             System.out.println("No command selected");
         }
     }
+    
+    // CHMA-GGEW-SOVL -- Method for getting the base and target node paths
+    public String[] getCommandReferences(String base, String target, String command){
+        Command comm = Structure.get(base).get(target).get(command);
+        String[] paths = new String [2];
+        paths[0] = comm.getBasePath();
+        paths[1] = comm.getTargetPath();
+        return paths;
+    }
 
 }

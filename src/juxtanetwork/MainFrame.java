@@ -18,8 +18,9 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreePath;
 
 // CHMA-GGEW-SOVL -- Imports needed for save functionality
-import java.nio.file.Files;
-import java.nio.file.Paths;
+//import java.nio.file.Files;
+//import java.nio.file.Paths;
+import java.io.FileWriter;
 import java.io.BufferedWriter;
 import javax.swing.JFileChooser;
 import java.util.HashMap;
@@ -1480,7 +1481,7 @@ public class MainFrame extends javax.swing.JFrame {
             writer.write(printout);
             writer.newLine();
             if (diffs[0] == diffs[1]) {
-                writer.write("line/s missing");
+                writer.write("line(s) missing");
             } else {
                 int line1 = poTextArea.getLineOfOffset(diffs[0]);
                 int line2 = poTextArea.getLineOfOffset(diffs[1] - 1);
@@ -1630,8 +1631,25 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void saveTLBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveTLBActionPerformed
 
+        DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) TargetNodesTree
+                .getLastSelectedPathComponent();
+        if (mainTabbedPane.getSelectedIndex() != 2) {
+            errorMessageLBL.setText("Go to results panel to save");
+            errorDialog.setVisible(true);
+            return;
+        }
+        if ((selectedNode == null) || (selectedNode.toString().contains("/"))) {
+            errorMessageLBL.setText("Please select a command for saving");
+            errorDialog.setVisible(true);
+            return;     
+        }
+        String command = selectedNode.toString();
+        String target = selectedNode.getParent().toString();
+        String base = BaseNodesCombo.getSelectedItem().toString();
+        String refs[] = cmp.getCommandReferences(base, target, command);
         JFileChooser fC = new JFileChooser();
         Component modalToComponent = null;
+        fC.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         if (fC.showSaveDialog(modalToComponent) == JFileChooser.APPROVE_OPTION) {
             //File file = fC.getSelectedFile();
 
@@ -1640,15 +1658,19 @@ public class MainFrame extends javax.swing.JFrame {
 
         // CHMA-GGEW-SOVL -- Code for saving the differences beween certain printouts
         try {
-            BufferedWriter writer = Files.newBufferedWriter(Paths.get(fC.getSelectedFile().getAbsolutePath()));
+            File f = new File(fC.getSelectedFile(),refs[0].replace('\\','_')+"_with_"+refs[1].replace('\\','_')+"_command_"+command+".txt");
+            BufferedWriter writer = new BufferedWriter(new FileWriter(f));
+            //BufferedWriter writer = Files.newBufferedWriter(Paths.get(fC.getSelectedFile().getAbsolutePath()));
             for (int i = 0; i < diffs1.size(); i++) {
                 int x = i + 1;
                 writer.write("Diff" + x);
                 writer.newLine();
                 writer.write("------");
                 writer.newLine();
-                writeDiffToFile(writer, diffs1.get(i), po1TextArea, "PO1");
-                writeDiffToFile(writer, diffs2.get(i), po2TextArea, "PO2");
+                //writeDiffToFile(writer, diffs1.get(i), po1TextArea, "PO1");
+                //writeDiffToFile(writer, diffs2.get(i), po2TextArea, "PO2");
+                writeDiffToFile(writer, diffs1.get(i), po1TextArea, refs[0]);
+                writeDiffToFile(writer, diffs2.get(i), po2TextArea, refs[1]);
                 writer.newLine();
             }
             writer.close();
