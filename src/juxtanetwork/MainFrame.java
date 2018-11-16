@@ -178,7 +178,7 @@ public class MainFrame extends javax.swing.JFrame {
         sidebarBTN = new javax.swing.JButton();
         aboutTLB = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JToolBar.Separator();
-        testBTN = new javax.swing.JButton();
+        AnalysisBTN = new javax.swing.JButton();
         jSeparator2 = new javax.swing.JToolBar.Separator();
         menuBar = new javax.swing.JMenuBar();
         fileMN = new javax.swing.JMenu();
@@ -946,7 +946,7 @@ public class MainFrame extends javax.swing.JFrame {
         toolBar.add(openTLB);
 
         saveTLB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/juxtanetwork/Save16.png"))); // NOI18N
-        saveTLB.setToolTipText("Save current command");
+        saveTLB.setToolTipText("Save current report");
         saveTLB.setFocusable(false);
         saveTLB.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         saveTLB.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -958,7 +958,7 @@ public class MainFrame extends javax.swing.JFrame {
         toolBar.add(saveTLB);
 
         saveAllBTN.setIcon(new javax.swing.ImageIcon(getClass().getResource("/juxtanetwork/save-all16.png"))); // NOI18N
-        saveAllBTN.setToolTipText("Save all commands");
+        saveAllBTN.setToolTipText("Save all reports");
         saveAllBTN.setFocusable(false);
         saveAllBTN.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         saveAllBTN.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -994,16 +994,16 @@ public class MainFrame extends javax.swing.JFrame {
         toolBar.add(aboutTLB);
         toolBar.add(jSeparator1);
 
-        testBTN.setText("AnalysisBTN");
-        testBTN.setFocusable(false);
-        testBTN.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        testBTN.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        testBTN.addActionListener(new java.awt.event.ActionListener() {
+        AnalysisBTN.setText("AnalysisBTN");
+        AnalysisBTN.setFocusable(false);
+        AnalysisBTN.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        AnalysisBTN.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        AnalysisBTN.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                testBTNActionPerformed(evt);
+                AnalysisBTNActionPerformed(evt);
             }
         });
-        toolBar.add(testBTN);
+        toolBar.add(AnalysisBTN);
         toolBar.add(jSeparator2);
 
         fileMN.setText("File");
@@ -1652,10 +1652,6 @@ public class MainFrame extends javax.swing.JFrame {
             return;
         }
 
-//        TargetNodesTree.setModel(new javax.swing.tree.DefaultTreeModel(commsTreeModel));
-//        expandTreeAll();
-        mainTabbedPane.setSelectedIndex(2);
-
         LinkedList<diff_match_patch.Diff> diffs = new LinkedList<diff_match_patch.Diff>();
         diff_match_patch dmp = new diff_match_patch();
         dmp.Diff_Timeout = 0;
@@ -1672,81 +1668,13 @@ public class MainFrame extends javax.swing.JFrame {
         for (int i = diffs1.size() - 1; i >= 0; i--) {
             highlightDiffs(diffs1.get(i)[0], diffs1.get(i)[1], diffs2.get(i)[0], diffs2.get(i)[1], diffsColor);
         }
-
-//        DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) TargetNodesTree
-//                .getLastSelectedPathComponent();
     }
-    private void testBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_testBTNActionPerformed
-        //MOD IXGKOAG
-        //IXGKOAG - Update SelectedCommands ArrayList in Compare Object
+    private void AnalysisBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AnalysisBTNActionPerformed
         cmp.updateSelectedCommands(commList);
         cmp.prepareHashStructure();
-
         createCommTree();
-        doAnalysis();
-
-//        int[] test = commList.getSelectedIndices();
-//        for (int i = 0; i < test.length; i++) {
-//            System.out.println(test[i] + " " + commListModel.getElementAt(test[i]).toString());
-//        }
-//        for (int i = 0; i < compList1Model.size(); i++) {
-//            BaseNodesCombo.addItem(compList1Model.getElementAt(i).toString());
-//        }
-//        po1TextArea.setText("<PCORP:BLOCK=ALL;\n"
-//                + "PROGRAM CORRECTIONS\n"
-//                + " \n"
-//                + "BLOCK    SUID                               CA     CAF    ILEN\n"
-//                + "GIPADA   8PXE/CAAW 107 0050/MQ5EG R1A05     380    0      32\n"
-//                + " \n"
-//                + "CI               S  TYPE  POSITION         SIZE\n"
-//                + "SNAEM0119        C  CODE  H'047E           38\n"
-//                + "SNAEM0119        C  CODE  H'057E           20\n"
-//                + "SNAEM0119        C  CODE  H'0988           22\n"
-//                + "SNAEM0119        C  CODE  H'1848           30\n"
-//                + "SNAEM0119        C  CODE  H'1A6E           22\n"
-//                + "SWAEM0123        C  CODE  H'1058           60\n"
-//                + "SWAEM0123        C  CODE  H'0C66           60\n"
-//                + "SWAEM0123        C  CODE  H'1C86           28\n"
-//                + "SWAEM0121        C  CODE  H'0304           20\n"
-//                + "SWAEM0121        C  CODE  H'0265           24\n"
-//                + "SWAEM0121        C  CODE  H'0158           34\n"
-//                + "SWAEM0121        C  CODE  H'01B2           22\n\n"
-//                + "BLOCK    SUID                               CA     CAF    ILEN\n"
-//                + "DQENUMC  7PXC/CAAZA 107 4993/MQ5EG R1A04    40     0      16\n"
-//                + " \n"
-//                + "CI               S  TYPE  POSITION         SIZE\n"
-//                + "RNAFZ0436        C  CODE  H'0E8A           20\n"
-//                + "RNAFZ0436        C  CODE  H'0F4B           20\n"
-//                + " ");
-//
-//        po2TextArea.setText("<PCORP:BLOCK=ALL;\n"
-//                + "PROGRAM CORRECTIONS\n"
-//                + " \n"
-//                + "BLOCK    SUID                               CA     CAF    ILEN\n"
-//                + "GIPADA   8PXE/CAAW 107 0050/MQ5EG R1A05     380    0      32\n"
-//                + " \n"
-//                + "CI               S  TYPE  POSITION         SIZE\n"
-//                + "SNAEM0119        C  CODE  H'044E           38\n"
-//                + "SNAEM0119        C  CODE  H'057E           20\n"
-//                + "SNAEM0119        C  CODE  H'0988           22\n"
-//                + "SNAEM0119        C  CODE  H'1848           30\n"
-//                + "SNAEM0119        C  CODE  H'1A6E           22\n"
-//                + "SWAEM0121        C  CODE  H'0304           20\n"
-//                + "SWAEM0121        C  CODE  H'0265           24\n"
-//                + "SWAEM0121        C  CODE  H'0193           34\n"
-//                + "S01EM0121        C  CODE  H'01B2           22\n\n"
-//                + "BLOCK    SUID                               CA     CAF    ILEN\n"
-//                + "DQENUMC  7PXC/CAAZA 107 4993/MQ5EG R1A04    40     0      16\n"
-//                + " \n"
-//                + "CI               S  TYPE  POSITION         SIZE\n"
-//                + "RNAFZ0436        C  CODE  H'0E8A           20\n"
-//                + "RNAFZ0436        C  CODE  H'0F4B           20\n"
-//                + "RNAFZ0436        C  CODE  H'0F4B           20\n"
-//                + "RNAFZ0999        C  CODE  H'0F59           45\n"
-//                + "RNAFZ0999        C  CODE  H'1234           48\n"
-//                + " ");
-
-    }//GEN-LAST:event_testBTNActionPerformed
+        mainTabbedPane.setSelectedIndex(2);
+    }//GEN-LAST:event_AnalysisBTNActionPerformed
 
     /**
      * If for a specific index difference both diff1 and diff2 lists have start
@@ -2109,6 +2037,7 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton AnalysisBTN;
     private javax.swing.JButton BackFindBTN;
     private javax.swing.JComboBox<String> BaseNodesCombo;
     private javax.swing.JButton ForFindBTN;
@@ -2199,7 +2128,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JDialog settingsDialog;
     private javax.swing.JMenuItem settingsMN;
     private javax.swing.JButton sidebarBTN;
-    private javax.swing.JButton testBTN;
     private javax.swing.JToolBar toolBar;
     // End of variables declaration//GEN-END:variables
 }
