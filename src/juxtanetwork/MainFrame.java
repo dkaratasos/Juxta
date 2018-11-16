@@ -131,7 +131,7 @@ public class MainFrame extends javax.swing.JFrame {
         errorMessageLBL = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
-        jPopupMenu1 = new javax.swing.JPopupMenu();
+        textPopUpMN = new javax.swing.JPopupMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
@@ -547,10 +547,10 @@ public class MainFrame extends javax.swing.JFrame {
         );
 
         jMenuItem2.setText("jMenuItem2");
-        jPopupMenu1.add(jMenuItem2);
+        textPopUpMN.add(jMenuItem2);
 
         jMenuItem1.setText("jMenuItem1");
-        jPopupMenu1.add(jMenuItem1);
+        textPopUpMN.add(jMenuItem1);
 
         jMenuItem3.setText("jMenuItem3");
         jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
@@ -558,7 +558,7 @@ public class MainFrame extends javax.swing.JFrame {
                 jMenuItem3ActionPerformed(evt);
             }
         });
-        jPopupMenu1.add(jMenuItem3);
+        textPopUpMN.add(jMenuItem3);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("JuxtaNetwork");
@@ -801,6 +801,11 @@ public class MainFrame extends javax.swing.JFrame {
 
         po1TextArea.setColumns(20);
         po1TextArea.setRows(5);
+        po1TextArea.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                po1TextAreaMouseReleased(evt);
+            }
+        });
         po1ScrollPane.setViewportView(po1TextArea);
 
         diffSplitPane.setTopComponent(po1ScrollPane);
@@ -2041,6 +2046,12 @@ public class MainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
+    private void po1TextAreaMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_po1TextAreaMouseReleased
+       if (evt.isPopupTrigger()){
+           textPopUpMN.show(this,evt.getX(),evt.getY());
+       }
+    }//GEN-LAST:event_po1TextAreaMouseReleased
+
     /**
      * @param args the command line arguments
      */
@@ -2136,7 +2147,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
@@ -2174,6 +2184,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JDialog settingsDialog;
     private javax.swing.JMenuItem settingsMN;
     private javax.swing.JButton sidebarBTN;
+    private javax.swing.JPopupMenu textPopUpMN;
     private javax.swing.JToolBar toolBar;
     // End of variables declaration//GEN-END:variables
 }
