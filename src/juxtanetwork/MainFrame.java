@@ -2,11 +2,7 @@ package juxtanetwork;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Toolkit;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.StringSelection;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.LinkedList;
@@ -18,28 +14,18 @@ import javax.swing.JFrame;
 import javax.swing.ToolTipManager;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
-import javax.swing.tree.TreePath;
 
 // CHMA-GGEW-SOVL -- Imports needed for save functionality
-//import java.nio.file.Files;
-//import java.nio.file.Paths;
 import java.io.FileWriter;
 import java.io.BufferedWriter;
 import javax.swing.JFileChooser;
 import java.util.HashMap;
 
 //VAAG-CHRE
-import java.util.*;
-import java.io.Reader;
 import java.io.FileReader;
 import java.io.BufferedReader;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.prefs.Preferences;
 import javax.swing.text.DefaultEditorKit;
 
@@ -1195,13 +1181,14 @@ public class MainFrame extends javax.swing.JFrame {
         nextHiliteBTN.setEnabled(false);
         prevDiffMN.setEnabled(false);
         nextDiffMN.setEnabled(false);
+        lastTimeCheck.setSelected(prefs.getBoolean("lastTimeCheck", false));
 
         //IXGKOAG --  Initialize Compare Object
         this.cmp = new Compare(BaseNodesCombo, commsTreeModel);
     }
 
     private void setRootOutFolder() {
-        rootDataPath = getRootPathFromFile();
+        rootDataPath = getRootPathFromPrefs();
         try {
             rootOutFolder = new File(rootDataPath + System.getProperty("file.separator") + "Data");
             if (!rootOutFolder.exists()) {
@@ -1213,7 +1200,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     }
 
-    private String getRootPathFromFile() {
+    private String getRootPathFromPrefs() {
         String rootPathInfoTmp = prefs.get("rootDataPath", "");
         chooseDataFolderTxt.setText(rootPathInfoTmp);
 
@@ -1610,7 +1597,6 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void settingsMNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_settingsMNActionPerformed
         settingsDialog.setVisible(true);
-        lastTimeCheck.setSelected(prefs.getBoolean("lastTimeCheck", false));        
     }//GEN-LAST:event_settingsMNActionPerformed
 
     private void aboutOkBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutOkBTNActionPerformed
