@@ -130,7 +130,7 @@ DASCCDELAY      OMSRS                16360    72 HRS  SUPPLY  IMMED
                                 UPDATED FALSE        0 UNDEF      0
 
 NAME            SETNAME         PARID      VALUE UNIT CLASS   DISTRIB
-DASCCID         OMSRS                16359     1      SUPPLY  IMMED
+DASCCID         OMSRS                16359     3      SUPPLY  IMMED
                                 STATUS  FCVSET FCVALUE DCINFO FCODE
                                 UPDATED FALSE        0 UNDEF      0
 
@@ -14750,7 +14750,7 @@ CONTMONECT      AMCRESS              13436     0      SUPPLY  IMMED
                                 UPDATED FALSE        0 UNDEF      0
 
 NAME            SETNAME         PARID      VALUE UNIT CLASS   DISTRIB
-AMCRESFCSCC     AMCRESF              13435     0      FEATURE IMMED
+AMCRESFCSCC     AMCRESF              13435     1      FEATURE IMMED
                                 STATUS  FCVSET FCVALUE DCINFO FCODE
                                 UPDATED FALSE        0 UNDEF      0
 
@@ -19410,7 +19410,7 @@ INAPDEFAULTCESS AMCSSFC              12504     1      CUSTOM  IMMED
                                 UPDATED FALSE        0 UNDEF      0
 
 NAME            SETNAME         PARID      VALUE UNIT CLASS   DISTRIB
-INAPDEFAULTIST  AMCSSFC              12503     0      CUSTOM  IMMED
+INAPDEFAULTIST  AMCSSFC              12503  2067      CUSTOM  IMMED
                                 STATUS  FCVSET FCVALUE DCINFO FCODE
                                 UPDATED FALSE        0 UNDEF      0
 
@@ -40230,7 +40230,7 @@ CISSM           AMCRESF               8340     0      FEATURE IMMED
                                 UPDATED FALSE        0 UNDEF      0
 
 NAME            SETNAME         PARID      VALUE UNIT CLASS   DISTRIB
-CRSSM           AMCRESF               8339     0      FEATURE IMMED
+CRSSM           AMCRESF               8339     1      FEATURE IMMED
                                 STATUS  FCVSET FCVALUE DCINFO FCODE
                                 UPDATED FALSE        0 UNDEF      0
 
@@ -44980,7 +44980,7 @@ MTNBMCC         GSMMMSC               7390     0      CUSTOM  IMMED
                                 UPDATED FALSE        0 UNDEF      0
 
 NAME            SETNAME         PARID      VALUE UNIT CLASS   DISTRIB
-NBLAC           GSMMMSC               7389    24      CUSTOM  IMMED
+NBLAC           GSMMMSC               7389    28      CUSTOM  IMMED
                                 STATUS  FCVSET FCVALUE DCINFO FCODE
                                 UPDATED FALSE        0 UNDEF      0
 
@@ -51220,7 +51220,7 @@ ADDSUPPGS       GSMMMSC               6142     0      CUSTOM  IMMED
                                 UPDATED FALSE        0 UNDEF      0
 
 NAME            SETNAME         PARID      VALUE UNIT CLASS   DISTRIB
-OWNCNID         GSMMMSC               6141  1009      CUSTOM  IMMED
+OWNCNID         GSMMMSC               6141  1013      CUSTOM  IMMED
                                 STATUS  FCVSET FCVALUE DCINFO FCODE
                                 UPDATED FALSE        0 UNDEF      0
 
