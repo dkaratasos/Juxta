@@ -36,9 +36,11 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.prefs.Preferences;
 import javax.swing.text.DefaultEditorKit;
 
 /**
@@ -79,6 +81,8 @@ public class MainFrame extends javax.swing.JFrame {
     Color searchColor = Color.YELLOW;
     Color searchFoundColor = Color.CYAN;
     Color diffsCurrColor = Color.MAGENTA;
+    
+    private Preferences prefs = Preferences.userRoot().node(this.getClass().getName());
 
     //IXGKOAG --  DEFINE and Initialize Compare Object
     Compare cmp;
@@ -1210,19 +1214,8 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     private String getRootPathFromFile() {
-        File rootPathFile = new File(getClass().getResource("/juxtanetwork/rootPath.jn").getPath());
-        System.out.println("rootPath File is: " + rootPathFile.getPath());
-        String rootPathInfoTmp = "";
-        try {
-            BufferedReader rootPathInfo = new BufferedReader(new InputStreamReader(new FileInputStream(rootPathFile), "UTF8"));
-            while (rootPathInfo.ready()) {
-                rootPathInfoTmp = rootPathInfo.readLine();
-            }
-            chooseDataFolderTxt.setText(rootPathInfoTmp);
-
-        } catch (Exception e) {
-            System.out.println("rootPath.jn file not found");
-        }
+        String rootPathInfoTmp = prefs.get("rootDataPath", "");
+        chooseDataFolderTxt.setText(rootPathInfoTmp);
 
         return rootPathInfoTmp;
     }
@@ -1629,29 +1622,21 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void applySettingsBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_applySettingsBTNActionPerformed
         settingsDialog.setVisible(false);
+        String rootDataPathTmp = chooseDataFolderTxt.getText();
         if (!chooseDataFolderTxt.getText().isEmpty()) {
-            File rootPathFile = new File(getClass().getResource("/juxtanetwork/rootPath.jn").getPath());
-            try {
-                FileWriter writer = new FileWriter(rootPathFile);
-                String rootDataPathTmp = chooseDataFolderTxt.getText();
-                try {
-                    rootOutFolder = new File(rootDataPathTmp + System.getProperty("file.separator") + "Data");
-                    if (!rootOutFolder.exists()) {
-                        rootOutFolder = new File("Data");       // set default value to current directory
-                        rootDataPathTmp = rootDataPath;
-                    }
-                    rootDataPath = rootDataPathTmp;
-                    writer.write(chooseDataFolderTxt.getText());
-                } catch (Exception e) {
-                    rootOutFolder = new File("Data");
-                }
-                writer.flush();
-                writer.close();
-                createNodesTree();
-                expandTreeAll();
-            } catch (Exception e) {
-                System.out.println("rootPath.jn file not found");
+            System.out.println("pref init: "+prefs.get("rootDataPath", ""));
+
+            rootOutFolder = new File(rootDataPathTmp + System.getProperty("file.separator") + "Data");
+            if (!rootOutFolder.exists()) {
+                rootOutFolder = new File("Data");       // set default value to current directory
+                rootDataPathTmp = "";
             }
+            rootDataPath = rootDataPathTmp;
+            prefs.put("rootDataPath", rootDataPathTmp);
+            System.out.println("pref final: "+prefs.get("rootDataPath", ""));
+            createNodesTree();
+            expandTreeAll();
+
         }
     }//GEN-LAST:event_applySettingsBTNActionPerformed
 
@@ -1801,8 +1786,7 @@ public class MainFrame extends javax.swing.JFrame {
                 writer.newLine();
                 writer.write("------");
                 writer.newLine();
-                //writeDiffToFile(writer, diffs1.get(i), po1TextArea, "PO1");
-                //writeDiffToFile(writer, diffs2.get(i), po2TextArea, "PO2");
+
                 writeDiffToFile(writer, diffs1.get(i), po1TextArea, refs[0]);
                 writeDiffToFile(writer, diffs2.get(i), po2TextArea, refs[1]);
                 writer.newLine();
