@@ -1610,6 +1610,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void settingsMNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_settingsMNActionPerformed
         settingsDialog.setVisible(true);
+        lastTimeCheck.setSelected(prefs.getBoolean("lastTimeCheck", false));        
     }//GEN-LAST:event_settingsMNActionPerformed
 
     private void aboutOkBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutOkBTNActionPerformed
@@ -1636,8 +1637,8 @@ public class MainFrame extends javax.swing.JFrame {
             System.out.println("pref final: "+prefs.get("rootDataPath", ""));
             createNodesTree();
             expandTreeAll();
-
         }
+        prefs.putBoolean("lastTimeCheck", lastTimeCheck.isSelected());
     }//GEN-LAST:event_applySettingsBTNActionPerformed
 
     private void mainTabbedPaneStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_mainTabbedPaneStateChanged
