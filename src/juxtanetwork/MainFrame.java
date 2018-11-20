@@ -452,6 +452,11 @@ public class MainFrame extends javax.swing.JFrame {
                 applyChooseRefBTNActionPerformed(evt);
             }
         });
+        applyChooseRefBTN.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                applyChooseRefBTNKeyPressed(evt);
+            }
+        });
 
         chooseRefLBL1.setFont(new java.awt.Font("Tahoma", 3, 12)); // NOI18N
         chooseRefLBL1.setText("Base");
@@ -563,6 +568,11 @@ public class MainFrame extends javax.swing.JFrame {
 
         nextDiffMN.setIcon(new javax.swing.ImageIcon(getClass().getResource("/juxtanetwork/Next16.png"))); // NOI18N
         nextDiffMN.setText("Next Diff");
+        nextDiffMN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nextDiffMNActionPerformed(evt);
+            }
+        });
         textPopUpMN.add(nextDiffMN);
 
         prevDiffMN.setIcon(new javax.swing.ImageIcon(getClass().getResource("/juxtanetwork/Prev16.png"))); // NOI18N
@@ -1142,6 +1152,12 @@ public class MainFrame extends javax.swing.JFrame {
         TargetNodesTree.setCellRenderer(new MyRenderer());    // Assign icons and tooltips per type of node in TargetNodesTree
         ToolTipManager.sharedInstance().registerComponent(TargetNodesTree); // Tooltips on Nodes Tree enabled
         managePrevNextBTN();
+        
+        prevHiliteBTN.setEnabled(false);
+        nextHiliteBTN.setEnabled(false);
+        prevDiffMN.setEnabled(false);
+        nextDiffMN.setEnabled(false);
+        
         //IXGKOAG --  Initialize Compare Object
         this.cmp = new Compare(BaseNodesCombo, commsTreeModel);
     }
@@ -1576,6 +1592,8 @@ public class MainFrame extends javax.swing.JFrame {
             } else {
                 refChooseList.setSelectedIndex(refListModel.getSize() - 1);
                 chooseFromRefDialog.setVisible(true);
+                chooseFromRefDialog.requestFocus();
+                applyChooseRefBTN.requestFocus();
             }
         }
     }//GEN-LAST:event_insertElem2BTNActionPerformed
@@ -1595,6 +1613,8 @@ public class MainFrame extends javax.swing.JFrame {
             } else {
                 refChooseList.setSelectedIndex(refListModel.getSize() - 1);
                 chooseFromRefDialog.setVisible(true);
+                chooseFromRefDialog.requestFocus();
+                applyChooseRefBTN.requestFocus();
             }
         }
     }//GEN-LAST:event_insertElem1BTNActionPerformed
@@ -1664,7 +1684,7 @@ public class MainFrame extends javax.swing.JFrame {
         if ((selectedNode == null) || (selectedNode.toString().contains("/"))) {
             errorMessageLBL.setText("Please select a command for saving");
             errorDialog.setVisible(true);
-            return;     
+            return;
         }
         String command = selectedNode.toString();
         String target = selectedNode.getParent().toString();
@@ -1681,7 +1701,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         // CHMA-GGEW-SOVL -- Code for saving the differences beween certain printouts
         try {
-            File f = new File(fC.getSelectedFile(),refs[0].replace('\\','_')+"_with_"+refs[1].replace('\\','_')+"_command_"+command+".txt");
+            File f = new File(fC.getSelectedFile(), refs[0].replace('\\', '_') + "_with_" + refs[1].replace('\\', '_') + "_command_" + command + ".txt");
             BufferedWriter writer = new BufferedWriter(new FileWriter(f));
             //BufferedWriter writer = Files.newBufferedWriter(Paths.get(fC.getSelectedFile().getAbsolutePath()));
             for (int i = 0; i < diffs1.size(); i++) {
@@ -1733,29 +1753,44 @@ public class MainFrame extends javax.swing.JFrame {
         for (int i = diffs1.size() - 1; i >= 0; i--) {
             highlightDiffs(diffs1.get(i)[0], diffs1.get(i)[1], diffs2.get(i)[0], diffs2.get(i)[1], diffsColor);
         }
+
+        if (diffs1.size() > 0) {
+            validated.replace(TargetNodesTree.getLeadSelectionRow(), 1);
+            prevHiliteBTN.setEnabled(true);
+            nextHiliteBTN.setEnabled(true);
+            prevDiffMN.setEnabled(true);
+            nextDiffMN.setEnabled(true);
+        } else {
+            validated.replace(TargetNodesTree.getLeadSelectionRow(), 2);
+            prevHiliteBTN.setEnabled(false);
+            nextHiliteBTN.setEnabled(false);
+            prevDiffMN.setEnabled(false);
+            nextDiffMN.setEnabled(false);
+        }
     }
-    
+
     private void AnalysisBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AnalysisBTNActionPerformed
-            if (compList1Model.isEmpty()) {
-                errorMessageLBL.setText("Please set Base Nodes for comparison");
-                errorDialog.setVisible(true);
-                return;
-            }
-            if (compList2Model.isEmpty()) {
-                errorMessageLBL.setText("Please set Target Nodes for comparison");
-                errorDialog.setVisible(true);
-                return;
-            }
-            if (commList.getSelectedIndex() == -1) {
-                errorMessageLBL.setText("Please select 1 or more commands");
-                errorDialog.setVisible(true);
-                return;
-            }
+        if (compList1Model.isEmpty()) {
+            errorMessageLBL.setText("Please set Base Nodes for comparison");
+            errorDialog.setVisible(true);
+            return;
+        }
+        if (compList2Model.isEmpty()) {
+            errorMessageLBL.setText("Please set Target Nodes for comparison");
+            errorDialog.setVisible(true);
+            return;
+        }
+        if (commList.getSelectedIndex() == -1) {
+            errorMessageLBL.setText("Please select 1 or more commands");
+            errorDialog.setVisible(true);
+            return;
+        }
 
         cmp.updateSelectedCommands(commList);
         cmp.prepareHashStructure();
         createCommTree();
 
+            
 //        doAnalysis();
         mainTabbedPane.setSelectedIndex(2);
         TargetNodesTree.setModel(new javax.swing.tree.DefaultTreeModel(commsTreeModel));
@@ -2018,26 +2053,8 @@ public class MainFrame extends javax.swing.JFrame {
                 String command = selectedNode.toString();
                 cmp.nodeSelected(base, target, command, po1TextArea, po2TextArea);
                 doAnalysis();
-                if (diffs1.size() > 0) {
-                    validated.replace(TargetNodesTree.getLeadSelectionRow(), 1);
-                } else {
-                    validated.replace(TargetNodesTree.getLeadSelectionRow(), 2);
-                }
-//                System.out.println("index of selected: " + selectedNode.getParent().getIndex(selectedNode));
-//                int pos = TargetNodesTree.getLeadSelectionRow();
-//                System.out.println("pos is: " + pos);
             }
         }
-//        DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) TargetNodesTree
-//                .getLastSelectedPathComponent();
-//        if (mainTabbedPane.getSelectedIndex() == 2) {
-//            if (commsTreeModel.getLevel() != 0) {
-//                String base = selectedNode.getParent().toString();
-//                String target = BaseNodesCombo.getSelectedItem().toString();
-//                String command = selectedNode.toString();
-//                cmp.nodeSelected(base, target, command);
-//            }
-//        }
     }//GEN-LAST:event_TargetNodesTreeValueChanged
 
     private void applyChooseRefBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_applyChooseRefBTNActionPerformed
@@ -2088,23 +2105,23 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_saveAllBTNActionPerformed
 
     private void prevDiffMNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prevDiffMNActionPerformed
-        // TODO add your handling code here:
+        moveHighlight(false);
     }//GEN-LAST:event_prevDiffMNActionPerformed
 
     private void po1TextAreaMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_po1TextAreaMouseReleased
-       if (evt.isPopupTrigger()){
-           textPopUpMN.show(evt.getComponent(),evt.getX(),evt.getY());
-       }
+        if (evt.isPopupTrigger()) {
+            textPopUpMN.show(evt.getComponent(), evt.getX(), evt.getY());
+        }
     }//GEN-LAST:event_po1TextAreaMouseReleased
 
     private void po2TextAreaMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_po2TextAreaMouseReleased
-        if (evt.isPopupTrigger()){
-           textPopUpMN.show(evt.getComponent(),evt.getX(),evt.getY());
-       }
+        if (evt.isPopupTrigger()) {
+            textPopUpMN.show(evt.getComponent(), evt.getX(), evt.getY());
+        }
     }//GEN-LAST:event_po2TextAreaMouseReleased
 
     private void CopyPopUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CopyPopUpActionPerformed
-        
+
 //        javax.swing.JTextArea source = (javax.swing.JTextArea) evt.getSource();
 //        Action actions = new DefaultEditorKit.CopyAction();
 //        String text = po1TextArea.getSelectedText();
@@ -2112,6 +2129,17 @@ public class MainFrame extends javax.swing.JFrame {
 //        Clipboard system = Toolkit.getDefaultToolkit().getSystemClipboard();
 //        system.setContents(stsel, stsel);
     }//GEN-LAST:event_CopyPopUpActionPerformed
+
+    private void nextDiffMNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextDiffMNActionPerformed
+        moveHighlight(true);
+    }//GEN-LAST:event_nextDiffMNActionPerformed
+
+    private void applyChooseRefBTNKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_applyChooseRefBTNKeyPressed
+        if (evt.getKeyCode()==10){
+            chooseRef(refChooseList.getSelectedValue());
+            chooseFromRefDialog.setVisible(false);
+        }
+    }//GEN-LAST:event_applyChooseRefBTNKeyPressed
 
     /**
      * @param args the command line arguments
