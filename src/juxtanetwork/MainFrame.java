@@ -33,8 +33,10 @@ import java.util.*;
 import java.io.Reader;
 import java.io.FileReader;
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.text.DefaultEditorKit;
@@ -46,7 +48,8 @@ import javax.swing.text.DefaultEditorKit;
 public class MainFrame extends javax.swing.JFrame {
 
     File rootInputFolder;
-    File rootOutFolder = new File("Data");                              // Name of the Audits folder
+    String rootDataPath;
+    File rootOutFolder;// = new File("Data");                              // Name of the Audits folder
     final DefaultListModel compList1Model = new DefaultListModel();     // Compare nodes
     final DefaultListModel compList2Model = new DefaultListModel();     // CompareWith Nodes
     final DefaultListModel commListModel = new DefaultListModel();      // Command list for selectiona
@@ -114,6 +117,9 @@ public class MainFrame extends javax.swing.JFrame {
         lastTimeCheck = new javax.swing.JCheckBox();
         fontLBL = new javax.swing.JLabel();
         fontBTN = new javax.swing.JButton();
+        chooseDataFolderTxt = new javax.swing.JTextField();
+        chooseDataFolderLBL = new javax.swing.JLabel();
+        chooseDataFolderBTN = new javax.swing.JButton();
         settingPanel2 = new javax.swing.JPanel();
         colorDifBTN = new javax.swing.JButton();
         colorDifLBL = new javax.swing.JLabel();
@@ -269,7 +275,8 @@ public class MainFrame extends javax.swing.JFrame {
         settingsDialog.setTitle("Settings");
         settingsDialog.setIconImage(new javax.swing.ImageIcon(getClass().getResource("/juxtanetwork/dual-mobile.png")).getImage());
         settingsDialog.setLocation(new java.awt.Point(800, 500));
-        settingsDialog.setMinimumSize(new java.awt.Dimension(440, 350));
+        settingsDialog.setMinimumSize(new java.awt.Dimension(440, 400));
+        settingsDialog.setPreferredSize(new java.awt.Dimension(440, 400));
 
         discardSettingsBTN.setText("Discard");
         discardSettingsBTN.addActionListener(new java.awt.event.ActionListener() {
@@ -296,6 +303,17 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
+        chooseDataFolderTxt.setFont(new java.awt.Font("Lucida Console", 0, 10)); // NOI18N
+
+        chooseDataFolderLBL.setText("Define new  root path for Data Folder");
+
+        chooseDataFolderBTN.setText("Choose");
+        chooseDataFolderBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chooseDataFolderBTNActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout settingPanel1Layout = new javax.swing.GroupLayout(settingPanel1);
         settingPanel1.setLayout(settingPanel1Layout);
         settingPanel1Layout.setHorizontalGroup(
@@ -308,6 +326,17 @@ public class MainFrame extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(fontBTN)))
                 .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(settingPanel1Layout.createSequentialGroup()
+                .addGroup(settingPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(settingPanel1Layout.createSequentialGroup()
+                        .addGap(22, 22, 22)
+                        .addComponent(chooseDataFolderTxt))
+                    .addGroup(settingPanel1Layout.createSequentialGroup()
+                        .addComponent(chooseDataFolderLBL)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(chooseDataFolderBTN)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         settingPanel1Layout.setVerticalGroup(
             settingPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -315,10 +344,15 @@ public class MainFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(lastTimeCheck)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(settingPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(chooseDataFolderLBL)
+                    .addComponent(chooseDataFolderBTN))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(chooseDataFolderTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
                 .addGroup(settingPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(fontLBL)
-                    .addComponent(fontBTN))
-                .addContainerGap(19, Short.MAX_VALUE))
+                    .addComponent(fontBTN)))
         );
 
         colorDifBTN.setBackground(getDiffsColor());
@@ -1144,22 +1178,53 @@ public class MainFrame extends javax.swing.JFrame {
         compList2.setModel(compList2Model);             // Set model for Compare With nodes
         commList.setModel(commListModel);
         refChooseList.setModel(refListModel);
+        setRootOutFolder();
         //vaag
-        nodeTreeModel.removeAllChildren();
         createNodesTree();                              // Create the Nodes Tree Model
         createCommTree();                               // Create the Commands Tree Model
         TargetNodesTree.setRootVisible(false);                // Do not diaplsy the Name of the root of the tree
         TargetNodesTree.setCellRenderer(new MyRenderer());    // Assign icons and tooltips per type of node in TargetNodesTree
         ToolTipManager.sharedInstance().registerComponent(TargetNodesTree); // Tooltips on Nodes Tree enabled
         managePrevNextBTN();
-        
+
         prevHiliteBTN.setEnabled(false);
         nextHiliteBTN.setEnabled(false);
         prevDiffMN.setEnabled(false);
         nextDiffMN.setEnabled(false);
-        
+
         //IXGKOAG --  Initialize Compare Object
         this.cmp = new Compare(BaseNodesCombo, commsTreeModel);
+    }
+
+    private void setRootOutFolder() {
+        rootDataPath = getRootPathFromFile();
+        try {
+            rootOutFolder = new File(rootDataPath + System.getProperty("file.separator") + "Data");
+            if (!rootOutFolder.exists()) {
+                rootOutFolder = new File("Data");       // set default value to current directory
+            }
+        } catch (Exception e) {
+            rootOutFolder = new File("Data");
+        }
+
+    }
+
+    private String getRootPathFromFile() {
+        File rootPathFile = new File(getClass().getResource("/juxtanetwork/rootPath.jn").getPath());
+        System.out.println("rootPath File is: " + rootPathFile.getPath());
+        String rootPathInfoTmp = "";
+        try {
+            BufferedReader rootPathInfo = new BufferedReader(new InputStreamReader(new FileInputStream(rootPathFile), "UTF8"));
+            while (rootPathInfo.ready()) {
+                rootPathInfoTmp = rootPathInfo.readLine();
+            }
+            chooseDataFolderTxt.setText(rootPathInfoTmp);
+
+        } catch (Exception e) {
+            System.out.println("rootPath.jn file not found");
+        }
+
+        return rootPathInfoTmp;
     }
 
     /**
@@ -1167,9 +1232,11 @@ public class MainFrame extends javax.swing.JFrame {
      * and calls updateNodesTree to put the node leafs on the tree
      */
     private void createNodesTree() {
+        nodeTreeModel.removeAllChildren();
+        nodeTreeModelMSC.removeAllChildren();
+        nodeTreeModelHLR.removeAllChildren();
         nodeTreeModel.add(nodeTreeModelMSC);
         nodeTreeModel.add(nodeTreeModelHLR);
-//        nodeTreeModel.add(nodeTreeModelPool);
         updateNodesTree();
     }
 
@@ -1562,6 +1629,30 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void applySettingsBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_applySettingsBTNActionPerformed
         settingsDialog.setVisible(false);
+        if (!chooseDataFolderTxt.getText().isEmpty()) {
+            File rootPathFile = new File(getClass().getResource("/juxtanetwork/rootPath.jn").getPath());
+            try {
+                FileWriter writer = new FileWriter(rootPathFile);
+                String rootDataPathTmp = chooseDataFolderTxt.getText();
+                try {
+                    rootOutFolder = new File(rootDataPathTmp + System.getProperty("file.separator") + "Data");
+                    if (!rootOutFolder.exists()) {
+                        rootOutFolder = new File("Data");       // set default value to current directory
+                        rootDataPathTmp = rootDataPath;
+                    }
+                    rootDataPath = rootDataPathTmp;
+                    writer.write(chooseDataFolderTxt.getText());
+                } catch (Exception e) {
+                    rootOutFolder = new File("Data");
+                }
+                writer.flush();
+                writer.close();
+                createNodesTree();
+                expandTreeAll();
+            } catch (Exception e) {
+                System.out.println("rootPath.jn file not found");
+            }
+        }
     }//GEN-LAST:event_applySettingsBTNActionPerformed
 
     private void mainTabbedPaneStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_mainTabbedPaneStateChanged
@@ -1790,7 +1881,6 @@ public class MainFrame extends javax.swing.JFrame {
         cmp.prepareHashStructure();
         createCommTree();
 
-            
 //        doAnalysis();
         mainTabbedPane.setSelectedIndex(2);
         TargetNodesTree.setModel(new javax.swing.tree.DefaultTreeModel(commsTreeModel));
@@ -2135,11 +2225,33 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_nextDiffMNActionPerformed
 
     private void applyChooseRefBTNKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_applyChooseRefBTNKeyPressed
-        if (evt.getKeyCode()==10){
+        if (evt.getKeyCode() == 10) {
             chooseRef(refChooseList.getSelectedValue());
             chooseFromRefDialog.setVisible(false);
         }
     }//GEN-LAST:event_applyChooseRefBTNKeyPressed
+
+    private void chooseDataFolderBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chooseDataFolderBTNActionPerformed
+        fileChooser.setDialogTitle("Select the Data Folder");
+        fileChooser.setMultiSelectionEnabled(false);
+        fileChooser.setFileSelectionMode(1);
+
+        fileChooser.showOpenDialog(this);
+        try {
+            File parentFile = fileChooser.getSelectedFile();
+            if (parentFile.getName().equals("Data")) {
+                chooseDataFolderTxt.setText(parentFile.getParent());
+                return;
+            }
+            errorMessageLBL.setText("Data folder not found");
+            errorDialog.setVisible(true);
+            return;
+        } catch (Exception e) {
+            if (rootInputFolder.getName() == "") {
+                System.out.println("No folder selected!");
+            }
+        }
+    }//GEN-LAST:event_chooseDataFolderBTNActionPerformed
 
     /**
      * @param args the command line arguments
@@ -2194,6 +2306,9 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton applyChooseRefBTN;
     private javax.swing.JButton applySettingsBTN;
     private javax.swing.JButton cancelChooseRefBTN;
+    private javax.swing.JButton chooseDataFolderBTN;
+    private javax.swing.JLabel chooseDataFolderLBL;
+    private javax.swing.JTextField chooseDataFolderTxt;
     private javax.swing.JDialog chooseFromRefDialog;
     private javax.swing.JLabel chooseRefLBL;
     private javax.swing.JLabel chooseRefLBL1;
