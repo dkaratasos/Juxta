@@ -192,8 +192,10 @@ public class MainFrame extends javax.swing.JFrame {
         saveAllMN = new javax.swing.JMenuItem();
         exitMN = new javax.swing.JMenuItem();
         editMN = new javax.swing.JMenu();
+        analysisMN = new javax.swing.JMenuItem();
         settingsMN = new javax.swing.JMenuItem();
         helpMN = new javax.swing.JMenu();
+        aboutMN = new javax.swing.JMenuItem();
 
         fileChooser.setDialogTitle("");
         fileChooser.setFileSelectionMode(javax.swing.JFileChooser.DIRECTORIES_ONLY);
@@ -1123,6 +1125,15 @@ public class MainFrame extends javax.swing.JFrame {
 
         editMN.setText("Edit");
 
+        analysisMN.setIcon(new javax.swing.ImageIcon(getClass().getResource("/juxtanetwork/apply_execute16.png"))); // NOI18N
+        analysisMN.setText("Analysis");
+        analysisMN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                analysisMNActionPerformed(evt);
+            }
+        });
+        editMN.add(analysisMN);
+
         settingsMN.setIcon(new javax.swing.ImageIcon(getClass().getResource("/juxtanetwork/settings16.png"))); // NOI18N
         settingsMN.setText("Settings");
         settingsMN.addActionListener(new java.awt.event.ActionListener() {
@@ -1135,6 +1146,16 @@ public class MainFrame extends javax.swing.JFrame {
         menuBar.add(editMN);
 
         helpMN.setText("Help");
+
+        aboutMN.setIcon(new javax.swing.ImageIcon(getClass().getResource("/juxtanetwork/about16.png"))); // NOI18N
+        aboutMN.setText("About");
+        aboutMN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                aboutMNActionPerformed(evt);
+            }
+        });
+        helpMN.add(aboutMN);
+
         menuBar.add(helpMN);
 
         setJMenuBar(menuBar);
@@ -1832,6 +1853,10 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     private void AnalysisBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AnalysisBTNActionPerformed
+        performAnalysis();
+    }//GEN-LAST:event_AnalysisBTNActionPerformed
+
+    private void performAnalysis(){
         if (compList1Model.isEmpty()) {
             errorMessageLBL.setText("Please set Base Nodes for comparison");
             errorDialog.setVisible(true);
@@ -1856,8 +1881,7 @@ public class MainFrame extends javax.swing.JFrame {
         mainTabbedPane.setSelectedIndex(2);
         TargetNodesTree.setModel(new javax.swing.tree.DefaultTreeModel(commsTreeModel));
         expandTreeAll();
-    }//GEN-LAST:event_AnalysisBTNActionPerformed
-
+    }
     /**
      * If for a specific index difference both diff1 and diff2 lists have start
      * point equal to end point then this difference should be deleted from both
@@ -2224,6 +2248,14 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_chooseDataFolderBTNActionPerformed
 
+    private void analysisMNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_analysisMNActionPerformed
+        performAnalysis();
+    }//GEN-LAST:event_analysisMNActionPerformed
+
+    private void aboutMNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutMNActionPerformed
+        aboutFrame.setVisible(true);
+    }//GEN-LAST:event_aboutMNActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -2269,11 +2301,13 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem SaveMN;
     private javax.swing.JTree TargetNodesTree;
     private javax.swing.JFrame aboutFrame;
+    private javax.swing.JMenuItem aboutMN;
     private javax.swing.JButton aboutOkBTN;
     private javax.swing.JPanel aboutPanel;
     private javax.swing.JScrollPane aboutScrollPane;
     private javax.swing.JButton aboutTLB;
     private javax.swing.JTextArea aboutTextArea;
+    private javax.swing.JMenuItem analysisMN;
     private javax.swing.JButton applyChooseRefBTN;
     private javax.swing.JButton applySettingsBTN;
     private javax.swing.JButton cancelChooseRefBTN;
