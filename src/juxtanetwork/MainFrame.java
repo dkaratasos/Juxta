@@ -105,6 +105,7 @@ public class MainFrame extends javax.swing.JFrame {
         applySettingsBTN = new javax.swing.JButton();
         settingPanel1 = new javax.swing.JPanel();
         lastTimeCheck = new javax.swing.JCheckBox();
+        concurrentScroll = new javax.swing.JCheckBox();
         fontLBL = new javax.swing.JLabel();
         fontBTN = new javax.swing.JButton();
         chooseDataFolderTxt = new javax.swing.JTextField();
@@ -267,8 +268,7 @@ public class MainFrame extends javax.swing.JFrame {
         settingsDialog.setTitle("Settings");
         settingsDialog.setIconImage(new javax.swing.ImageIcon(getClass().getResource("/juxtanetwork/dual-mobile.png")).getImage());
         settingsDialog.setLocation(new java.awt.Point(800, 500));
-        settingsDialog.setMinimumSize(new java.awt.Dimension(440, 400));
-        settingsDialog.setPreferredSize(new java.awt.Dimension(440, 400));
+        settingsDialog.setMinimumSize(new java.awt.Dimension(500, 400));
 
         discardSettingsBTN.setText("Discard");
         discardSettingsBTN.addActionListener(new java.awt.event.ActionListener() {
@@ -285,6 +285,18 @@ public class MainFrame extends javax.swing.JFrame {
         });
 
         lastTimeCheck.setText("Always use the last inserted data (last timestamp) of a node to check");
+        lastTimeCheck.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                lastTimeCheckActionPerformed(evt);
+            }
+        });
+
+        concurrentScroll.setText("Concurrent Scrolling");
+        concurrentScroll.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                concurrentScrollActionPerformed(evt);
+            }
+        });
 
         fontLBL.setText("Font:");
 
@@ -311,30 +323,28 @@ public class MainFrame extends javax.swing.JFrame {
         settingPanel1Layout.setHorizontalGroup(
             settingPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(settingPanel1Layout.createSequentialGroup()
-                .addGroup(settingPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lastTimeCheck)
-                    .addGroup(settingPanel1Layout.createSequentialGroup()
-                        .addComponent(fontLBL)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(fontBTN)))
+                .addComponent(fontLBL)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(fontBTN)
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(settingPanel1Layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(settingPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(settingPanel1Layout.createSequentialGroup()
-                        .addGap(22, 22, 22)
-                        .addComponent(chooseDataFolderTxt))
+                    .addComponent(chooseDataFolderTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 656, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(concurrentScroll)
                     .addGroup(settingPanel1Layout.createSequentialGroup()
                         .addComponent(chooseDataFolderLBL)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(chooseDataFolderBTN)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addComponent(chooseDataFolderBTN))
+                    .addComponent(lastTimeCheck))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         settingPanel1Layout.setVerticalGroup(
             settingPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(settingPanel1Layout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(lastTimeCheck)
+                .addGap(9, 9, 9)
+                .addComponent(concurrentScroll)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(settingPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(chooseDataFolderLBL)
@@ -429,14 +439,17 @@ public class MainFrame extends javax.swing.JFrame {
             settingsDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(settingsDialogLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(settingsDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                .addGroup(settingsDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(settingPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(settingsDialogLayout.createSequentialGroup()
-                        .addComponent(applySettingsBTN)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(discardSettingsBTN))
-                    .addComponent(settingPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(settingPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(settingsDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(settingsDialogLayout.createSequentialGroup()
+                                .addComponent(applySettingsBTN)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(discardSettingsBTN))
+                            .addComponent(settingPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         settingsDialogLayout.setVerticalGroup(
             settingsDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -445,7 +458,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addComponent(settingPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(settingPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
                 .addGroup(settingsDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(discardSettingsBTN)
                     .addComponent(applySettingsBTN))
@@ -849,6 +862,16 @@ public class MainFrame extends javax.swing.JFrame {
         diffSplitPane.setDividerLocation(200);
         diffSplitPane.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
 
+        po1ScrollPane.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                po1ScrollPaneMouseReleased(evt);
+            }
+        });
+        //IXGKOAG
+        if(prefs.getBoolean("concurrentScroll", false)){
+            po1ScrollPane.getVerticalScrollBar().setModel(po2ScrollPane.getVerticalScrollBar().getModel());
+        }
+
         po1TextArea.setColumns(20);
         po1TextArea.setRows(5);
         po1TextArea.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -870,6 +893,10 @@ public class MainFrame extends javax.swing.JFrame {
         po2ScrollPane.setViewportView(po2TextArea);
 
         diffSplitPane.setRightComponent(po2ScrollPane);
+        //IXGKOAG
+        if(prefs.getBoolean("concurrentScroll", false)){
+            po2ScrollPane.getVerticalScrollBar().setModel(po1ScrollPane.getVerticalScrollBar().getModel());
+        }
 
         BaseNodesCombo.setToolTipText("Compared Elements");
         BaseNodesCombo.setMaximumSize(new java.awt.Dimension(100, 20));
@@ -1203,7 +1230,9 @@ public class MainFrame extends javax.swing.JFrame {
         prevDiffMN.setEnabled(false);
         nextDiffMN.setEnabled(false);
         lastTimeCheck.setSelected(prefs.getBoolean("lastTimeCheck", false));
-
+        //IXGKOAG -- Get concurentScroll property
+        concurrentScroll.setSelected(prefs.getBoolean("concurrentScroll", false));
+       
         //IXGKOAG --  Initialize Compare Object
         this.cmp = new Compare(BaseNodesCombo, commsTreeModel);
     }
@@ -1646,6 +1675,9 @@ public class MainFrame extends javax.swing.JFrame {
             expandTreeAll();
         }
         prefs.putBoolean("lastTimeCheck", lastTimeCheck.isSelected());
+        //IXGKOAG -SetProperty
+        prefs.putBoolean("concurrentScroll", concurrentScroll.isSelected());
+        
     }//GEN-LAST:event_applySettingsBTNActionPerformed
 
     private void mainTabbedPaneStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_mainTabbedPaneStateChanged
@@ -2203,6 +2235,7 @@ public class MainFrame extends javax.swing.JFrame {
         if (evt.isPopupTrigger()) {
             textPopUpMN.show(evt.getComponent(), evt.getX(), evt.getY());
         }
+
     }//GEN-LAST:event_po2TextAreaMouseReleased
 
     private void CopyPopUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CopyPopUpActionPerformed
@@ -2255,6 +2288,19 @@ public class MainFrame extends javax.swing.JFrame {
     private void aboutMNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutMNActionPerformed
         aboutFrame.setVisible(true);
     }//GEN-LAST:event_aboutMNActionPerformed
+
+    private void po1ScrollPaneMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_po1ScrollPaneMouseReleased
+po1ScrollPane.getVerticalScrollBar().setModel(po1ScrollPane.getVerticalScrollBar().getModel());
+    }//GEN-LAST:event_po1ScrollPaneMouseReleased
+
+    private void concurrentScrollActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_concurrentScrollActionPerformed
+       //IXGKOAG -- update system property
+        prefs.putBoolean("concurrentScroll", concurrentScroll.isSelected());
+    }//GEN-LAST:event_concurrentScrollActionPerformed
+
+    private void lastTimeCheckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lastTimeCheckActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_lastTimeCheckActionPerformed
 
     /**
      * @param args the command line arguments
@@ -2331,6 +2377,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JList<String> compList1;
     private javax.swing.JList<String> compList2;
     private javax.swing.JPanel comparePanel;
+    private javax.swing.JCheckBox concurrentScroll;
     private javax.swing.JSplitPane diffSplitPane;
     private javax.swing.JButton discardSettingsBTN;
     private javax.swing.JMenu editMN;
