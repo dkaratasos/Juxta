@@ -324,5 +324,5 @@ public class Compare {
         paths[1] = comm.getTargetPath();
         return paths;
     }
-
+    
 }
