@@ -1924,22 +1924,22 @@ public class MainFrame extends javax.swing.JFrame {
      * INSERT(end,end) for both texts
      */
     private void cleanUpDiffs() {
-        for (int i = 0; i < diffs1.size(); i++) {
-            if(i==diffs2.size()) break;
-            System.out.println("diffs1: "+diffs1.get(i)[0]);
-            System.out.println("diffs2: "+diffs2.get(i)[0]);
-             if ((diffs1.get(i)[0] != diffs2.get(i)[0])) {
-                diffs1.remove(i);
-            }
-        }
-        for (int i = 0; i < diffs2.size(); i++) {
-            if(i==diffs1.size()) break;
-            System.out.println("diffs1: "+diffs1.get(i)[0]);
-            System.out.println("diffs2: "+diffs2.get(i)[0]);
-            if ((diffs2.get(i)[0] != diffs1.get(i)[0])) {
-                diffs2.remove(i);
-            }
-        }
+//        for (int i = 0; i < diffs1.size(); i++) {
+//            if(i==diffs2.size()) break;
+//            System.out.println("diffs1: "+diffs1.get(i)[0]);
+//            System.out.println("diffs2: "+diffs2.get(i)[0]);
+//             if ((diffs1.get(i)[0] != diffs2.get(i)[0])) {
+//                diffs1.remove(i);
+//            }
+//        }
+//        for (int i = 0; i < diffs2.size(); i++) {
+//            if(i==diffs1.size()) break;
+//            System.out.println("diffs1: "+diffs1.get(i)[0]);
+//            System.out.println("diffs2: "+diffs2.get(i)[0]);
+//            if ((diffs2.get(i)[0] != diffs1.get(i)[0])) {
+//                diffs2.remove(i);
+//            }
+//        }
         if (diffs1.size()!=diffs2.size()) return;
         for (int i = diffs1.size() - 1; i >= 0; i--) {
             if ((diffs1.get(i)[0] == diffs1.get(i)[1]) && (diffs2.get(i)[0] == diffs2.get(i)[1])) {
@@ -1967,18 +1967,29 @@ public class MainFrame extends javax.swing.JFrame {
     private static ArrayList<int[]> diff_Fortext(List<diff_match_patch.Diff> diffs) {
         ArrayList<int[]> diffsList = new ArrayList<int[]>();
         StringBuilder text = new StringBuilder();
+        int prevSize = 0;
         for (diff_match_patch.Diff aDiff : diffs) {
             int[] diffIndexes = {0, 0};
+            prevSize=0;
             if (aDiff.operation != diff_match_patch.Operation.EQUAL) {
                 diffIndexes[0] = text.length();
+                if (aDiff.operation == diff_match_patch.Operation.DELETE) {
+                    if (diffsList.size()!=0 && diffIndexes[0]==diffsList.get(diffsList.size()-1)[1]){
+                        prevSize = diffIndexes[0]-diffsList.get(diffsList.size()-1)[0];
+                        diffIndexes[0] = diffsList.get(diffsList.size()-1)[0];
+                        diffsList.remove(diffsList.size()-1);
+                    }
+                }
             }
             if (aDiff.operation != diff_match_patch.Operation.INSERT) {
                 text.append(aDiff.text);
             }
             if (aDiff.operation != diff_match_patch.Operation.EQUAL) {
-                diffIndexes[1] = text.length();
+                diffIndexes[1] = text.length()+prevSize;
                 diffsList.add(diffIndexes);
             }
+                 System.out.println("diffs: "+aDiff.operation+"]"+diffIndexes[0]+" "+diffIndexes[1]);
+
         }
         return diffsList;
     }
