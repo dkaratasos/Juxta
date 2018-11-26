@@ -268,7 +268,8 @@ public class MainFrame extends javax.swing.JFrame {
         settingsDialog.setTitle("Settings");
         settingsDialog.setIconImage(new javax.swing.ImageIcon(getClass().getResource("/juxtanetwork/dual-mobile.png")).getImage());
         settingsDialog.setLocation(new java.awt.Point(800, 500));
-        settingsDialog.setMinimumSize(new java.awt.Dimension(500, 400));
+        settingsDialog.setMinimumSize(new java.awt.Dimension(558, 400));
+        settingsDialog.setPreferredSize(new java.awt.Dimension(538, 400));
 
         discardSettingsBTN.setText("Discard");
         discardSettingsBTN.addActionListener(new java.awt.event.ActionListener() {
@@ -330,13 +331,13 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(settingPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(settingPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(chooseDataFolderTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 656, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(concurrentScroll)
                     .addGroup(settingPanel1Layout.createSequentialGroup()
                         .addComponent(chooseDataFolderLBL)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(chooseDataFolderBTN))
-                    .addComponent(lastTimeCheck))
+                    .addComponent(lastTimeCheck)
+                    .addComponent(chooseDataFolderTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 501, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         settingPanel1Layout.setVerticalGroup(
@@ -440,14 +441,15 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(settingsDialogLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(settingsDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(settingPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, settingsDialogLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(applySettingsBTN)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(discardSettingsBTN))
                     .addGroup(settingsDialogLayout.createSequentialGroup()
-                        .addGroup(settingsDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(settingsDialogLayout.createSequentialGroup()
-                                .addComponent(applySettingsBTN)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(discardSettingsBTN))
-                            .addComponent(settingPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(settingsDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(settingPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(settingPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 518, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -1922,6 +1924,23 @@ public class MainFrame extends javax.swing.JFrame {
      * INSERT(end,end) for both texts
      */
     private void cleanUpDiffs() {
+        for (int i = 0; i < diffs1.size(); i++) {
+            if(i==diffs2.size()) break;
+            System.out.println("diffs1: "+diffs1.get(i)[0]);
+            System.out.println("diffs2: "+diffs2.get(i)[0]);
+             if ((diffs1.get(i)[0] != diffs2.get(i)[0])) {
+                diffs1.remove(i);
+            }
+        }
+        for (int i = 0; i < diffs2.size(); i++) {
+            if(i==diffs1.size()) break;
+            System.out.println("diffs1: "+diffs1.get(i)[0]);
+            System.out.println("diffs2: "+diffs2.get(i)[0]);
+            if ((diffs2.get(i)[0] != diffs1.get(i)[0])) {
+                diffs2.remove(i);
+            }
+        }
+        if (diffs1.size()!=diffs2.size()) return;
         for (int i = diffs1.size() - 1; i >= 0; i--) {
             if ((diffs1.get(i)[0] == diffs1.get(i)[1]) && (diffs2.get(i)[0] == diffs2.get(i)[1])) {
                 diffs1.remove(i);
