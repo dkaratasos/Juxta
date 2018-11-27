@@ -1617,32 +1617,34 @@ public class MainFrame extends javax.swing.JFrame {
      * @param poTextArea
      * @param printout
      */
-    private void writeDiffToFile(BufferedWriter writer, int[] diffs,int x, javax.swing.JTextArea poTextArea, String printout) {
+    private int writeDiffToFile(BufferedWriter writer, int[] diffs, int lastDiffLine, int diffNum, javax.swing.JTextArea poTextArea, String printout) {
         try {
-            writer.write(printout + "\n");
-//            if (diffs[0] == diffs[1]) {
-            if (diffs[1] == 0) {
-                writer.write("line(s) missing");
-            } else {
-                writer.write("Difference: " + x + "\n");
+            int line1 = poTextArea.getLineOfOffset(diffs[0]);
+            if (line1 != lastDiffLine) {      
+                writer.write("Difference: " + diffNum + "\n");
                 writer.write("-------------\n");
-                    
-                int line1 = poTextArea.getLineOfOffset(diffs[0]);
-                int line2 = poTextArea.getLineOfOffset(diffs[1] - 1);
-                int actualLine1 = line1 + 1;
-                int actualLine2 = line2 + 1;
-                if (line1 == line2) {
-                    writer.write("line " + actualLine1 + ":\n");
-                    writer.write(poTextArea.getText(poTextArea.getLineStartOffset(line1), poTextArea.getLineEndOffset(line1) - poTextArea.getLineStartOffset(line1) - 1));
-                } else {
-                    writer.write("lines " + actualLine1 + "-" + actualLine2 + ":\n");
-                    writer.write(poTextArea.getText(poTextArea.getLineStartOffset(line1), poTextArea.getLineEndOffset(line2) - poTextArea.getLineStartOffset(line1) - 1));
+                writer.write(printout + "\n");
+                lastDiffLine = line1;
+                if ((diffs[0] == diffs[1]) && (diffs[0] == poTextArea.getLineStartOffset(line1))) {
+                    writer.write("line(s) missing");
+                } else {                   
+                    int line2 = poTextArea.getLineOfOffset(diffs[1] - 1);
+                    int actualLine1 = line1 + 1;
+                    int actualLine2 = line2 + 1;
+                    if (line1 == line2) {
+                        writer.write("line " + actualLine1 + ":\n");
+                        writer.write(poTextArea.getText(poTextArea.getLineStartOffset(line1), poTextArea.getLineEndOffset(line1) - poTextArea.getLineStartOffset(line1) - 1));
+                    } else {
+                        writer.write("lines " + actualLine1 + "-" + actualLine2 + ":\n");
+                        writer.write(poTextArea.getText(poTextArea.getLineStartOffset(line1), poTextArea.getLineEndOffset(line2) - poTextArea.getLineStartOffset(line1) - 1));
+                    }
                 }
+                writer.newLine();
             }
-            writer.newLine();
         } catch (javax.swing.text.BadLocationException | IOException ex) {
             java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        return lastDiffLine;
     }
 
     private void OpenMNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OpenMNActionPerformed
