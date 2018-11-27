@@ -2359,10 +2359,9 @@ public class MainFrame extends javax.swing.JFrame {
                             for (int k = 0; k < diffs1.size(); k++) {
                                 if (!((diffs1.get(k)[0] == diffs1.get(k)[1])&&(diffs2.get(k)[0] == diffs2.get(k)[1]))){
                                     int x = k + 1;
-                                    writer.write("Difference" + x + "\n");
-                                    writer.write("-------------\n");
-                                    writeDiffToFile(writer, diffs1.get(k), po1TextArea, refs[0]);
-                                    writeDiffToFile(writer, diffs2.get(k), po2TextArea, refs[1]);
+
+                                    writeDiffToFile(writer, diffs1.get(k),x, po1TextArea, refs[0]);
+                                    writeDiffToFile(writer, diffs2.get(k),x, po2TextArea, refs[1]);
                                     writer.newLine();
                                 }
                             }
