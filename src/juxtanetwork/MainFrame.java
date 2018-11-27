@@ -1623,6 +1623,7 @@ public class MainFrame extends javax.swing.JFrame {
             int line1po2 = po2TextArea.getLineOfOffset(diffs2[0]);
             if (!((diffs1[0] == diffs1[1]) && (diffs2[0] == diffs2[1]))){
                 if ((line1po1 != lastDiffLine[0]) || (line1po2 != lastDiffLine[1])) { 
+                    writer.write("\n"); 
                     writer.write("Difference: " + diffCount + "\n");
                     writer.write("-------------\n");
                     writer.write(printout[0] + "\n");
@@ -1645,7 +1646,9 @@ public class MainFrame extends javax.swing.JFrame {
                         writer.write("lines " + actualLine1po1 + "-" + actualLine2po1 + ":\n");
                         writer.write(po1TextArea.getText(po1TextArea.getLineStartOffset(line1po1), po1TextArea.getLineEndOffset(line2po1) - po1TextArea.getLineStartOffset(line1po1) - 1));
                     }
-                    writer.newLine();
+//                    writer.newLine();
+                    writer.write("\n\n"); 
+                    writer.write(printout[1] + "\n");
                     int actualLine1po2 = line1po2 + 1;
                     int actualLine2po2 = line2po2 + 1;
                     if (line1po2 >= line2po2) {
@@ -2419,15 +2422,18 @@ public class MainFrame extends javax.swing.JFrame {
                             int[] lastLine = new int[]{-1,-1};
                             int diffCount = 1;
                             for (int k = 0; k < diffs1.size(); k++) {
-                                if (!((diffs1.get(k)[0] == diffs1.get(k)[1])&&(diffs2.get(k)[0] == diffs2.get(k)[1]))){
+//                                if (!((diffs1.get(k)[0] == diffs1.get(k)[1])&&(diffs2.get(k)[0] == diffs2.get(k)[1]))){
                                     int tempLine[] = writeDiffToFile(writer, diffs1.get(k), diffs2.get(k), lastLine, diffCount, refs);
 //                                    int tempLine2 = writeDiffToFile(writer, diffs2.get(k), lastLine2, po2TextArea, refs[1]);
                                     if ((tempLine[0] != lastLine[0]) || (tempLine[1] != lastLine[1])){
+                                        
                                         diffCount++;
                                     }
+                                        diffCount++;
+                                  
                                     lastLine = tempLine;
 
-                                }
+//                                }
                             }
                             writer.close();
                         } catch (IOException ex) {
