@@ -1617,12 +1617,16 @@ public class MainFrame extends javax.swing.JFrame {
      * @param poTextArea
      * @param printout
      */
-    private void writeDiffToFile(BufferedWriter writer, int[] diffs, javax.swing.JTextArea poTextArea, String printout) {
+    private void writeDiffToFile(BufferedWriter writer, int[] diffs,int x, javax.swing.JTextArea poTextArea, String printout) {
         try {
             writer.write(printout + "\n");
-            if (diffs[0] == diffs[1]) {
+//            if (diffs[0] == diffs[1]) {
+            if (diffs[1] == 0) {
                 writer.write("line(s) missing");
             } else {
+                writer.write("Difference: " + x + "\n");
+                writer.write("-------------\n");
+                    
                 int line1 = poTextArea.getLineOfOffset(diffs[0]);
                 int line2 = poTextArea.getLineOfOffset(diffs[1] - 1);
                 int actualLine1 = line1 + 1;
@@ -1827,10 +1831,9 @@ public class MainFrame extends javax.swing.JFrame {
             for (int i = 0; i < diffs1.size(); i++) {
                 if (!((diffs1.get(i)[0] == diffs1.get(i)[1])&&(diffs2.get(i)[0] == diffs2.get(i)[1]))){
                     int x = i + 1;
-                    writer.write("Difference" + x + "\n");
-                    writer.write("-------------\n");
-                    writeDiffToFile(writer, diffs1.get(i), po1TextArea, refs[0]);
-                    writeDiffToFile(writer, diffs2.get(i), po2TextArea, refs[1]);
+
+                    writeDiffToFile(writer, diffs1.get(i),x, po1TextArea, refs[0]);
+                    writeDiffToFile(writer, diffs2.get(i),x, po2TextArea, refs[1]);
                     writer.newLine();
                 }
             }
@@ -1991,8 +1994,10 @@ public class MainFrame extends javax.swing.JFrame {
             if (aDiff.operation != diff_match_patch.Operation.EQUAL) {
                 diffIndexes[1] = text.length()+prevSize;
                 diffsList.add(diffIndexes);
+                 System.out.println("diff: "+diffsList.size()+"-"+aDiff.operation+"]"+diffIndexes[0]+" "+diffIndexes[1]+
+                         "  text="+aDiff.text);
             }
-                 System.out.println("diffs: "+aDiff.operation+"]"+diffIndexes[0]+" "+diffIndexes[1]);
+
 
         }
         return diffsList;
