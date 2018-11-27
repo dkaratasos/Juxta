@@ -1617,35 +1617,93 @@ public class MainFrame extends javax.swing.JFrame {
      * @param poTextArea
      * @param printout
      */
-    private int writeDiffToFile(BufferedWriter writer, int[] diffs, int lastDiffLine, int diffNum, javax.swing.JTextArea poTextArea, String printout) {
+    private int[] writeDiffToFile(BufferedWriter writer, int[] diffs1, int[] diffs2, int[] lastDiffLine, int diffCount, String[] printout) {
         try {
-            int line1 = poTextArea.getLineOfOffset(diffs[0]);
-            if (line1 != lastDiffLine) {      
-                writer.write("Difference: " + diffNum + "\n");
-                writer.write("-------------\n");
-                writer.write(printout + "\n");
-                lastDiffLine = line1;
-                if ((diffs[0] == diffs[1]) && (diffs[0] == poTextArea.getLineStartOffset(line1))) {
-                    writer.write("line(s) missing");
-                } else {                   
-                    int line2 = poTextArea.getLineOfOffset(diffs[1] - 1);
-                    int actualLine1 = line1 + 1;
-                    int actualLine2 = line2 + 1;
-                    if (line1 == line2) {
-                        writer.write("line " + actualLine1 + ":\n");
-                        writer.write(poTextArea.getText(poTextArea.getLineStartOffset(line1), poTextArea.getLineEndOffset(line1) - poTextArea.getLineStartOffset(line1) - 1));
-                    } else {
-                        writer.write("lines " + actualLine1 + "-" + actualLine2 + ":\n");
-                        writer.write(poTextArea.getText(poTextArea.getLineStartOffset(line1), poTextArea.getLineEndOffset(line2) - poTextArea.getLineStartOffset(line1) - 1));
+            int line1po1 = po1TextArea.getLineOfOffset(diffs1[0]);
+            int line1po2 = po2TextArea.getLineOfOffset(diffs2[0]);
+            if (!((diffs1[0] == diffs1[1]) && (diffs2[0] == diffs2[1]))){
+                if ((line1po1 != lastDiffLine[0]) || (line1po2 != lastDiffLine[1])) { 
+                    writer.write("Difference: " + diffCount + "\n");
+                    writer.write("-------------\n");
+                    writer.write(printout[0] + "\n");
+                    lastDiffLine[0] = line1po1;
+                    lastDiffLine[1] = line1po2;
+                    int line2po1 = po1TextArea.getLineOfOffset(diffs1[1]);
+                    int line2po2 = po1TextArea.getLineOfOffset(diffs2[1]);
+                    if (po1TextArea.getLineStartOffset(line2po1) == diffs1[1]){
+                        line2po1 -=1;
                     }
+                    if (po2TextArea.getLineStartOffset(line2po2) == diffs2[1]){
+                        line2po2 -=1;
+                    }
+                    int actualLine1po1 = line1po1 + 1;
+                    int actualLine2po1 = line2po1 + 1;
+                    if (line1po1 >= line2po1) {
+                        writer.write("line " + actualLine1po1 + ":\n");
+                        writer.write(po1TextArea.getText(po1TextArea.getLineStartOffset(line1po1), po1TextArea.getLineEndOffset(line1po1) - po1TextArea.getLineStartOffset(line1po1) - 1));
+                    } else {
+                        writer.write("lines " + actualLine1po1 + "-" + actualLine2po1 + ":\n");
+                        writer.write(po1TextArea.getText(po1TextArea.getLineStartOffset(line1po1), po1TextArea.getLineEndOffset(line2po1) - po1TextArea.getLineStartOffset(line1po1) - 1));
+                    }
+                    writer.newLine();
+                    int actualLine1po2 = line1po2 + 1;
+                    int actualLine2po2 = line2po2 + 1;
+                    if (line1po2 >= line2po2) {
+                        writer.write("line " + actualLine1po2 + ":\n");
+                        writer.write(po2TextArea.getText(po2TextArea.getLineStartOffset(line1po2), po2TextArea.getLineEndOffset(line1po2) - po2TextArea.getLineStartOffset(line1po2) - 1));
+                    } else {
+                        writer.write("lines " + actualLine1po2 + "-" + actualLine2po2 + ":\n");
+                        writer.write(po2TextArea.getText(po2TextArea.getLineStartOffset(line1po2), po2TextArea.getLineEndOffset(line2po2) - po2TextArea.getLineStartOffset(line1po2) - 1));
+                    }
+                    writer.newLine();
                 }
-                writer.newLine();
             }
         } catch (javax.swing.text.BadLocationException | IOException ex) {
             java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         return lastDiffLine;
     }
+    
+    
+//    private int writeDiffToFile(BufferedWriter writer, int[] diffs1, int[] diffs2, int lastDiffLine1, int lastDiffLine2, javax.swing.JTextArea poTextArea, String[] printout) {
+//        try {
+//            int line1po1 = poTextArea.getLineOfOffset(diffs1[0]);
+//            int line1po2 = poTextArea.getLineOfOffset(diffs2[0]);
+//            if ((line1po1 != lastDiffLine1) && (line1po2 != lastDiffLine2)) { 
+//                writer.write("Difference: " + diffCount + "\n");
+//                writer.write("-------------\n");
+//                writer.write(printout[0] + "\n");
+//                lastDiffLine1 = line1po1;
+////                if ((diffs[0] == diffs[1]) && (poTextArea.getLineEndOffset(line1) == poTextArea.getLineStartOffset(line1))) {
+////                    writer.write("line(s) missing");
+////                } else { 
+//                int line2 = poTextArea.getLineOfOffset(diffs[1]);
+//                if (poTextArea.getLineStartOffset(line2) == diffs[1]){
+//                    line2 -=1;
+//                }
+//                    
+//                    int actualLine1 = line1 + 1;
+//                    int actualLine2 = line2 + 1;
+//                    System.out.println("diffs[0] "+diffs[0]);
+//                    System.out.println("diffs[1] "+diffs[1]);
+//                    System.out.println("getLineStartOffset "+poTextArea.getLineStartOffset(line1));
+//                    System.out.println("getLineEndOffset "+poTextArea.getLineEndOffset(line1));
+//                    System.out.println("line2 "+line2);
+//                    if (line1 >= line2) {
+//                        writer.write("line " + actualLine1 + ":\n");
+//                        writer.write(poTextArea.getText(poTextArea.getLineStartOffset(line1), poTextArea.getLineEndOffset(line1) - poTextArea.getLineStartOffset(line1) - 1));
+//                    } else {
+//                        writer.write("lines " + actualLine1 + "-" + actualLine2 + ":\n");
+//                        writer.write(poTextArea.getText(poTextArea.getLineStartOffset(line1), poTextArea.getLineEndOffset(line2) - poTextArea.getLineStartOffset(line1) - 1));
+//                    }
+////                }
+//                writer.newLine();
+//            }
+//        } catch (javax.swing.text.BadLocationException | IOException ex) {
+//            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        }
+//        return lastDiffLine;
+//    }
 
     private void OpenMNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OpenMNActionPerformed
         getPrintouts();
@@ -1830,14 +1888,14 @@ public class MainFrame extends javax.swing.JFrame {
             //File f = new File(fC.getSelectedFile(), refs[0].replace('\\', '_') + "_with_" + refs[1].replace('\\', '_') + "_command_" + command + ".txt");
             //BufferedWriter writer = new BufferedWriter(new FileWriter(f));
             BufferedWriter writer = Files.newBufferedWriter(Paths.get(fC.getSelectedFile().getAbsolutePath()));
+            int[] lastLine = new int[]{-1, -1};
+            int diffCount = 1;
             for (int i = 0; i < diffs1.size(); i++) {
-                if (!((diffs1.get(i)[0] == diffs1.get(i)[1])&&(diffs2.get(i)[0] == diffs2.get(i)[1]))){
-                    int x = i + 1;
-
-                    writeDiffToFile(writer, diffs1.get(i),x, po1TextArea, refs[0]);
-                    writeDiffToFile(writer, diffs2.get(i),x, po2TextArea, refs[1]);
-                    writer.newLine();
+                int tempLine[] = writeDiffToFile(writer, diffs1.get(i), diffs2.get(i), lastLine, diffCount, refs);
+                if ((tempLine[0] != lastLine[0]) || (tempLine[1] != lastLine[1])){
+                    diffCount++;
                 }
+                lastLine = tempLine;
             }
             writer.close();
         } catch (IOException ex) {
@@ -2358,13 +2416,17 @@ public class MainFrame extends javax.swing.JFrame {
                             File f = new File(chooser.getSelectedFile(), refs[0].replace('\\', '_') + "__" + refs[1].replace('\\', '_') + "_" + command + ".txt");
                             BufferedWriter writer = new BufferedWriter(new FileWriter(f));
                             //BufferedWriter writer = Files.newBufferedWriter(Paths.get(fC.getSelectedFile().getAbsolutePath()));
+                            int[] lastLine = new int[]{-1,-1};
+                            int diffCount = 1;
                             for (int k = 0; k < diffs1.size(); k++) {
                                 if (!((diffs1.get(k)[0] == diffs1.get(k)[1])&&(diffs2.get(k)[0] == diffs2.get(k)[1]))){
-                                    int x = k + 1;
+                                    int tempLine[] = writeDiffToFile(writer, diffs1.get(k), diffs2.get(k), lastLine, diffCount, refs);
+//                                    int tempLine2 = writeDiffToFile(writer, diffs2.get(k), lastLine2, po2TextArea, refs[1]);
+                                    if ((tempLine[0] != lastLine[0]) || (tempLine[1] != lastLine[1])){
+                                        diffCount++;
+                                    }
+                                    lastLine = tempLine;
 
-                                    writeDiffToFile(writer, diffs1.get(k),x, po1TextArea, refs[0]);
-                                    writeDiffToFile(writer, diffs2.get(k),x, po2TextArea, refs[1]);
-                                    writer.newLine();
                                 }
                             }
                             writer.close();
