@@ -145,13 +145,11 @@ public class Compare {
             if (!listTwo.isEmpty()) {
                 similar.addAll(listTwo);
             }
+        } else if (listTwo.isEmpty()) {
+            similar.addAll(listOne);
         } else {
-            if (listTwo.isEmpty()) {
-                similar.addAll(listOne);
-            } else {
-                listOne.retainAll(listTwo);
-                similar = listOne;
-            }
+            listOne.retainAll(listTwo);
+            similar = listOne;
         }
 
         return similar;
@@ -232,6 +230,31 @@ public class Compare {
                         Command CommandObject = new Command(command, f1, f2);
                         // Perform Some Tasks in Command Object
                         Commands.put(command, CommandObject);
+                        //==========================================================
+                        // IXGKOAG - MOD AFTER COMMENT FOR CONCURRENT SCROLLING
+                        CommandObject.getPOtexts();
+                        int diff = CommandObject.getPrintOutLines() - CommandObject.getPrintOut2Lines();
+
+                        if (diff > 0) {
+                            String po2 = CommandObject.getPrintOut2();
+                            while (diff > 0) {
+                                po2 = po2 + "\n";
+                                //po2.concat("\n");
+                                diff--;
+                            }
+                            CommandObject.setPrintOut2(po2);
+                        }
+                        if (diff < 0) {
+                            String po1 = CommandObject.getPrintOut();
+                            while (0 >= diff) {
+                                po1 = po1 + "\n";
+                                //po1.concat("\n"); 
+                                diff++;
+                            }
+                            CommandObject.setPrintOut(po1);
+                        }
+                        // END MOD  
+
                     }
                 }
                 TargetCommands.put(targetNode, Commands);
@@ -306,7 +329,7 @@ public class Compare {
         }
         try {
             Command comm1 = Structure.get(base).get(target).get(comm);
-            comm1.getPOtexts();
+            // comm1.getPOtexts(); Moved to prepareHashStructure()
             String po1 = comm1.getPrintOut();
             String po2 = comm1.getPrintOut2();
             po1TextArea.setText(po1);
@@ -315,14 +338,14 @@ public class Compare {
             System.out.println("No command selected");
         }
     }
-    
+
     // CHMA-GGEW-SOVL -- Method for getting the base and target node paths
-    public String[] getCommandReferences(String base, String target, String command){
+    public String[] getCommandReferences(String base, String target, String command) {
         Command comm = Structure.get(base).get(target).get(command);
-        String[] paths = new String [2];
+        String[] paths = new String[2];
         paths[0] = comm.getBasePath();
         paths[1] = comm.getTargetPath();
         return paths;
     }
-    
+
 }

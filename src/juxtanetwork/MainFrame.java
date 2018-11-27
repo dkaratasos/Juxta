@@ -30,6 +30,9 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.prefs.Preferences;
+import javax.swing.BoundedRangeModel;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.text.DefaultEditorKit;
 
 /**
@@ -70,11 +73,13 @@ public class MainFrame extends javax.swing.JFrame {
     Color searchColor = Color.YELLOW;
     Color searchFoundColor = Color.CYAN;
     Color diffsCurrColor = Color.MAGENTA;
-    
+
     private Preferences prefs = Preferences.userRoot().node(this.getClass().getName());
 
     //IXGKOAG --  DEFINE and Initialize Compare Object
     Compare cmp;
+    boolean concurendScroll = false;
+    BoundedRangeModel DefaultScrollmodel;
 
     //CHMA-GGEW-SOVL  -- Define Common Command List
     ArrayList<String> arrayCommList = new ArrayList<String>();
@@ -83,8 +88,10 @@ public class MainFrame extends javax.swing.JFrame {
      * Creates new form MainFrame
      */
     public MainFrame() {
+
         initComponents();
         initializations();
+        DefaultScrollmodel = this.po1ScrollPane.getVerticalScrollBar().getModel();
     }
 
     /**
@@ -108,7 +115,6 @@ public class MainFrame extends javax.swing.JFrame {
         applySettingsBTN = new javax.swing.JButton();
         settingPanel1 = new javax.swing.JPanel();
         lastTimeCheck = new javax.swing.JCheckBox();
-        concurrentScroll = new javax.swing.JCheckBox();
         fontLBL = new javax.swing.JLabel();
         fontBTN = new javax.swing.JButton();
         chooseDataFolderTxt = new javax.swing.JTextField();
@@ -179,6 +185,7 @@ public class MainFrame extends javax.swing.JFrame {
         searchField = new javax.swing.JTextField();
         BackFindBTN = new javax.swing.JButton();
         ForFindBTN = new javax.swing.JButton();
+        concurendScrollButton = new javax.swing.JToggleButton();
         jProgressBar1 = new javax.swing.JProgressBar();
         toolBar = new javax.swing.JToolBar();
         openTLB = new javax.swing.JButton();
@@ -272,7 +279,6 @@ public class MainFrame extends javax.swing.JFrame {
         settingsDialog.setIconImage(new javax.swing.ImageIcon(getClass().getResource("/juxtanetwork/dual-mobile.png")).getImage());
         settingsDialog.setLocation(new java.awt.Point(800, 500));
         settingsDialog.setMinimumSize(new java.awt.Dimension(558, 400));
-        settingsDialog.setPreferredSize(new java.awt.Dimension(538, 400));
 
         discardSettingsBTN.setText("Discard");
         discardSettingsBTN.addActionListener(new java.awt.event.ActionListener() {
@@ -292,13 +298,6 @@ public class MainFrame extends javax.swing.JFrame {
         lastTimeCheck.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 lastTimeCheckActionPerformed(evt);
-            }
-        });
-
-        concurrentScroll.setText("Concurrent Scrolling");
-        concurrentScroll.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                concurrentScrollActionPerformed(evt);
             }
         });
 
@@ -334,7 +333,6 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(settingPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(settingPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(concurrentScroll)
                     .addGroup(settingPanel1Layout.createSequentialGroup()
                         .addComponent(chooseDataFolderLBL)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -346,19 +344,19 @@ public class MainFrame extends javax.swing.JFrame {
         settingPanel1Layout.setVerticalGroup(
             settingPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(settingPanel1Layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(lastTimeCheck)
-                .addGap(9, 9, 9)
-                .addComponent(concurrentScroll)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addGroup(settingPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(chooseDataFolderLBL)
                     .addComponent(chooseDataFolderBTN))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(chooseDataFolderTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
-                .addGroup(settingPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
+                .addGroup(settingPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(fontLBL)
-                    .addComponent(fontBTN)))
+                    .addComponent(fontBTN))
+                .addGap(6, 6, 6))
         );
 
         colorDifBTN.setBackground(getDiffsColor());
@@ -414,7 +412,7 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(colorDifBTN)
                     .addComponent(colorSearchBTN)
                     .addComponent(colorSearchFoundBTN))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(244, Short.MAX_VALUE))
         );
         settingPanel2Layout.setVerticalGroup(
             settingPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -444,26 +442,26 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(settingsDialogLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(settingsDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(settingsDialogLayout.createSequentialGroup()
+                        .addComponent(settingPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, settingsDialogLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(applySettingsBTN)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(discardSettingsBTN))
-                    .addGroup(settingsDialogLayout.createSequentialGroup()
-                        .addGroup(settingsDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(settingPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(settingPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 518, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGroup(settingsDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, settingsDialogLayout.createSequentialGroup()
+                                .addComponent(applySettingsBTN)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(discardSettingsBTN))
+                            .addComponent(settingPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 518, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap())
         );
         settingsDialogLayout.setVerticalGroup(
             settingsDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, settingsDialogLayout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(settingPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addComponent(settingPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(settingsDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(discardSettingsBTN)
                     .addComponent(applySettingsBTN))
@@ -872,10 +870,6 @@ public class MainFrame extends javax.swing.JFrame {
                 po1ScrollPaneMouseReleased(evt);
             }
         });
-        //IXGKOAG
-        if(prefs.getBoolean("concurrentScroll", false)){
-            po1ScrollPane.getVerticalScrollBar().setModel(po2ScrollPane.getVerticalScrollBar().getModel());
-        }
 
         po1TextArea.setColumns(20);
         po1TextArea.setRows(5);
@@ -888,6 +882,12 @@ public class MainFrame extends javax.swing.JFrame {
 
         diffSplitPane.setTopComponent(po1ScrollPane);
 
+        po2ScrollPane.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                po2ScrollPaneMouseReleased(evt);
+            }
+        });
+
         po2TextArea.setColumns(20);
         po2TextArea.setRows(5);
         po2TextArea.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -898,10 +898,6 @@ public class MainFrame extends javax.swing.JFrame {
         po2ScrollPane.setViewportView(po2TextArea);
 
         diffSplitPane.setRightComponent(po2ScrollPane);
-        //IXGKOAG
-        if(prefs.getBoolean("concurrentScroll", false)){
-            po2ScrollPane.getVerticalScrollBar().setModel(po1ScrollPane.getVerticalScrollBar().getModel());
-        }
 
         BaseNodesCombo.setToolTipText("Compared Elements");
         BaseNodesCombo.setMaximumSize(new java.awt.Dimension(100, 20));
@@ -977,6 +973,13 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
+        concurendScrollButton.setText("Concurrent Scroll");
+        concurendScrollButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                concurendScrollButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout resultsPanelLayout = new javax.swing.GroupLayout(resultsPanel);
         resultsPanel.setLayout(resultsPanelLayout);
         resultsPanelLayout.setHorizontalGroup(
@@ -990,7 +993,9 @@ public class MainFrame extends javax.swing.JFrame {
                 .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(ForFindBTN)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(concurendScrollButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 101, Short.MAX_VALUE)
                 .addComponent(prevHiliteBTN)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(nextHiliteBTN)
@@ -1006,9 +1011,10 @@ public class MainFrame extends javax.swing.JFrame {
                         .addComponent(nextHiliteBTN)
                         .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(BackFindBTN)
-                        .addComponent(ForFindBTN)))
+                        .addComponent(ForFindBTN)
+                        .addComponent(concurendScrollButton)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(diffSplitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 560, Short.MAX_VALUE))
+                .addComponent(diffSplitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 559, Short.MAX_VALUE))
         );
 
         mainTabbedPane.addTab("Results", resultsPanel);
@@ -1236,8 +1242,8 @@ public class MainFrame extends javax.swing.JFrame {
         nextDiffMN.setEnabled(false);
         lastTimeCheck.setSelected(prefs.getBoolean("lastTimeCheck", false));
         //IXGKOAG -- Get concurentScroll property
-        concurrentScroll.setSelected(prefs.getBoolean("concurrentScroll", false));
-       
+        //concurrentScroll.setSelected(prefs.getBoolean("concurrentScroll", false));
+
         //IXGKOAG --  Initialize Compare Object
         this.cmp = new Compare(BaseNodesCombo, commsTreeModel);
     }
@@ -1324,20 +1330,17 @@ public class MainFrame extends javax.swing.JFrame {
                             } catch (FileNotFoundException ex) {
                                 System.out.println("Unable to open file '" + subnode.getName() + "'");
                             }
-                        } else {
-                            if (subnode.isDirectory()) {                         //more recent timestamp 
-                                subcurrIndex = 0;
-                                for (File subsubnode : subnode.listFiles()) {
-                                    if (subsubnode.isDirectory()) {
-                                        subnodesTreeModel[subcurrIndex] = new DefaultMutableTreeNode(subsubnode.getName());
-                                        if (subsubnode.getName().startsWith("BC") && isNotIncluded(nodesTreeModel[currIndex], subsubnode.getName())) {
-                                            nodesTreeModel[currIndex].add(subnodesTreeModel[subcurrIndex]);
-                                        }
+                        } else if (subnode.isDirectory()) {                         //more recent timestamp 
+                            subcurrIndex = 0;
+                            for (File subsubnode : subnode.listFiles()) {
+                                if (subsubnode.isDirectory()) {
+                                    subnodesTreeModel[subcurrIndex] = new DefaultMutableTreeNode(subsubnode.getName());
+                                    if (subsubnode.getName().startsWith("BC") && isNotIncluded(nodesTreeModel[currIndex], subsubnode.getName())) {
+                                        nodesTreeModel[currIndex].add(subnodesTreeModel[subcurrIndex]);
                                     }
-                                    subcurrIndex++;
                                 }
+                                subcurrIndex++;
                             }
-
                         }
 
                     }
@@ -1621,9 +1624,9 @@ public class MainFrame extends javax.swing.JFrame {
         try {
             int line1po1 = po1TextArea.getLineOfOffset(diffs1[0]);
             int line1po2 = po2TextArea.getLineOfOffset(diffs2[0]);
-            if (!((diffs1[0] == diffs1[1]) && (diffs2[0] == diffs2[1]))){
-                if ((line1po1 != lastDiffLine[0]) || (line1po2 != lastDiffLine[1])) { 
-                    writer.write("\n"); 
+            if (!((diffs1[0] == diffs1[1]) && (diffs2[0] == diffs2[1]))) {
+                if ((line1po1 != lastDiffLine[0]) || (line1po2 != lastDiffLine[1])) {
+                    writer.write("\n");
                     writer.write("Difference: " + diffCount + "\n");
                     writer.write("-------------\n");
                     writer.write(printout[0] + "\n");
@@ -1631,11 +1634,11 @@ public class MainFrame extends javax.swing.JFrame {
                     lastDiffLine[1] = line1po2;
                     int line2po1 = po1TextArea.getLineOfOffset(diffs1[1]);
                     int line2po2 = po1TextArea.getLineOfOffset(diffs2[1]);
-                    if (po1TextArea.getLineStartOffset(line2po1) == diffs1[1]){
-                        line2po1 -=1;
+                    if (po1TextArea.getLineStartOffset(line2po1) == diffs1[1]) {
+                        line2po1 -= 1;
                     }
-                    if (po2TextArea.getLineStartOffset(line2po2) == diffs2[1]){
-                        line2po2 -=1;
+                    if (po2TextArea.getLineStartOffset(line2po2) == diffs2[1]) {
+                        line2po2 -= 1;
                     }
                     int actualLine1po1 = line1po1 + 1;
                     int actualLine2po1 = line2po1 + 1;
@@ -1647,7 +1650,7 @@ public class MainFrame extends javax.swing.JFrame {
                         writer.write(po1TextArea.getText(po1TextArea.getLineStartOffset(line1po1), po1TextArea.getLineEndOffset(line2po1) - po1TextArea.getLineStartOffset(line1po1) - 1));
                     }
 //                    writer.newLine();
-                    writer.write("\n\n"); 
+                    writer.write("\n\n");
                     writer.write(printout[1] + "\n");
                     int actualLine1po2 = line1po2 + 1;
                     int actualLine2po2 = line2po2 + 1;
@@ -1666,8 +1669,7 @@ public class MainFrame extends javax.swing.JFrame {
         }
         return lastDiffLine;
     }
-    
-    
+
 //    private int writeDiffToFile(BufferedWriter writer, int[] diffs1, int[] diffs2, int lastDiffLine1, int lastDiffLine2, javax.swing.JTextArea poTextArea, String[] printout) {
 //        try {
 //            int line1po1 = poTextArea.getLineOfOffset(diffs1[0]);
@@ -1732,7 +1734,7 @@ public class MainFrame extends javax.swing.JFrame {
         settingsDialog.setVisible(false);
         String rootDataPathTmp = chooseDataFolderTxt.getText();
         if (!chooseDataFolderTxt.getText().isEmpty()) {
-            System.out.println("pref init: "+prefs.get("rootDataPath", ""));
+            System.out.println("pref init: " + prefs.get("rootDataPath", ""));
 
             rootOutFolder = new File(rootDataPathTmp + System.getProperty("file.separator") + "Data");
             if (!rootOutFolder.exists()) {
@@ -1741,14 +1743,14 @@ public class MainFrame extends javax.swing.JFrame {
             }
             rootDataPath = rootDataPathTmp;
             prefs.put("rootDataPath", rootDataPathTmp);
-            System.out.println("pref final: "+prefs.get("rootDataPath", ""));
+            System.out.println("pref final: " + prefs.get("rootDataPath", ""));
             createNodesTree();
             expandTreeAll();
         }
         prefs.putBoolean("lastTimeCheck", lastTimeCheck.isSelected());
         //IXGKOAG -SetProperty
-        prefs.putBoolean("concurrentScroll", concurrentScroll.isSelected());
-        
+//        prefs.putBoolean("concurrentScroll", concurrentScroll.isSelected());
+
     }//GEN-LAST:event_applySettingsBTNActionPerformed
 
     private void mainTabbedPaneStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_mainTabbedPaneStateChanged
@@ -1895,7 +1897,7 @@ public class MainFrame extends javax.swing.JFrame {
             int diffCount = 1;
             for (int i = 0; i < diffs1.size(); i++) {
                 int tempLine[] = writeDiffToFile(writer, diffs1.get(i), diffs2.get(i), lastLine, diffCount, refs);
-                if ((tempLine[0] != lastLine[0]) || (tempLine[1] != lastLine[1])){
+                if ((tempLine[0] != lastLine[0]) || (tempLine[1] != lastLine[1])) {
                     diffCount++;
                 }
                 lastLine = tempLine;
@@ -1921,9 +1923,9 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_sidebarBTNActionPerformed
 
     private void doAnalysis() {
-        
+
         findDiffs();
-        
+
 //        LinkedList<diff_match_patch.Diff> diffs = new LinkedList<diff_match_patch.Diff>();
 //        diff_match_patch dmp = new diff_match_patch();
 //        dmp.Diff_Timeout = 0;
@@ -1934,7 +1936,6 @@ public class MainFrame extends javax.swing.JFrame {
 //        dmp.diff_cleanupSemantic(diffs);
 //        diffs2 = diff_Fortext(diffs);
 //        cleanUpDiffs();
-
         highliter.highlightremove(po1TextArea);
         highliter.highlightremove(po2TextArea);
         for (int i = diffs1.size() - 1; i >= 0; i--) {
@@ -1960,7 +1961,7 @@ public class MainFrame extends javax.swing.JFrame {
         performAnalysis();
     }//GEN-LAST:event_AnalysisBTNActionPerformed
 
-    private void performAnalysis(){
+    private void performAnalysis() {
         if (compList1Model.isEmpty()) {
             errorMessageLBL.setText("Please set Base Nodes for comparison");
             errorDialog.setVisible(true);
@@ -1986,6 +1987,7 @@ public class MainFrame extends javax.swing.JFrame {
         TargetNodesTree.setModel(new javax.swing.tree.DefaultTreeModel(commsTreeModel));
         expandTreeAll();
     }
+
     /**
      * If for a specific index difference both diff1 and diff2 lists have start
      * point equal to end point then this difference should be deleted from both
@@ -2010,7 +2012,9 @@ public class MainFrame extends javax.swing.JFrame {
 //                diffs2.remove(i);
 //            }
 //        }
-        if (diffs1.size()!=diffs2.size()) return;
+        if (diffs1.size() != diffs2.size()) {
+            return;
+        }
         for (int i = diffs1.size() - 1; i >= 0; i--) {
             if ((diffs1.get(i)[0] == diffs1.get(i)[1]) && (diffs2.get(i)[0] == diffs2.get(i)[1])) {
                 diffs1.remove(i);
@@ -2040,14 +2044,14 @@ public class MainFrame extends javax.swing.JFrame {
         int prevSize = 0;
         for (diff_match_patch.Diff aDiff : diffs) {
             int[] diffIndexes = {0, 0};
-            prevSize=0;
+            prevSize = 0;
             if (aDiff.operation != diff_match_patch.Operation.EQUAL) {
                 diffIndexes[0] = text.length();
                 if (aDiff.operation == diff_match_patch.Operation.DELETE) {
-                    if (diffsList.size()!=0 && diffIndexes[0]==diffsList.get(diffsList.size()-1)[1]){
-                        prevSize = diffIndexes[0]-diffsList.get(diffsList.size()-1)[0];
-                        diffIndexes[0] = diffsList.get(diffsList.size()-1)[0];
-                        diffsList.remove(diffsList.size()-1);
+                    if (diffsList.size() != 0 && diffIndexes[0] == diffsList.get(diffsList.size() - 1)[1]) {
+                        prevSize = diffIndexes[0] - diffsList.get(diffsList.size() - 1)[0];
+                        diffIndexes[0] = diffsList.get(diffsList.size() - 1)[0];
+                        diffsList.remove(diffsList.size() - 1);
                     }
                 }
             }
@@ -2055,12 +2059,11 @@ public class MainFrame extends javax.swing.JFrame {
                 text.append(aDiff.text);
             }
             if (aDiff.operation != diff_match_patch.Operation.EQUAL) {
-                diffIndexes[1] = text.length()+prevSize;
+                diffIndexes[1] = text.length() + prevSize;
                 diffsList.add(diffIndexes);
-                 System.out.println("diff: "+diffsList.size()+"-"+aDiff.operation+"]"+diffIndexes[0]+" "+diffIndexes[1]+
-                         "  text="+aDiff.text);
+                System.out.println("diff: " + diffsList.size() + "-" + aDiff.operation + "]" + diffIndexes[0] + " " + diffIndexes[1]
+                        + "  text=" + aDiff.text);
             }
-
 
         }
         return diffsList;
@@ -2135,10 +2138,8 @@ public class MainFrame extends javax.swing.JFrame {
             if (currDiff < diffs1.size() - 1) {
                 currDiff++;
             }
-        } else {
-            if (currDiff > 0) {
-                currDiff--;
-            }
+        } else if (currDiff > 0) {
+            currDiff--;
         }
         highliter.highlightremove(po1TextArea);
         highliter.highlightremove(po2TextArea);
@@ -2325,18 +2326,18 @@ public class MainFrame extends javax.swing.JFrame {
             errorDialog.setVisible(true);
             return;
         }
-        
+
         JFileChooser fC = new JFileChooser();
         Component modalToComponent = null;
         fC.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         if (fC.showSaveDialog(modalToComponent) == JFileChooser.APPROVE_OPTION) {
 
-                    // save to file
+            // save to file
         }
         Object root = TargetNodesTree.getModel().getRoot();
-        traverseTree(fC,TargetNodesTree.getModel(),root);
-            //}
-            
+        traverseTree(fC, TargetNodesTree.getModel(), root);
+        //}
+
     }//GEN-LAST:event_saveAllBTNActionPerformed
 
     private void prevDiffMNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prevDiffMNActionPerformed
@@ -2399,13 +2400,13 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_chooseDataFolderBTNActionPerformed
 
-   private void traverseTree(JFileChooser chooser, TreeModel model, Object object){
-        int  cc;
+    private void traverseTree(JFileChooser chooser, TreeModel model, Object object) {
+        int cc;
         cc = model.getChildCount(object);
-        for( int i=0; i < cc; i++) {
-            Object child = model.getChild(object, i );
+        for (int i = 0; i < cc; i++) {
+            Object child = model.getChild(object, i);
             if (model.isLeaf(child)) {
-                for (int j=0; j<BaseNodesCombo.getItemCount(); j++){
+                for (int j = 0; j < BaseNodesCombo.getItemCount(); j++) {
                     String base = BaseNodesCombo.getItemAt(j);
                     String target = object.toString();
                     String command = child.toString();
@@ -2419,19 +2420,19 @@ public class MainFrame extends javax.swing.JFrame {
                             File f = new File(chooser.getSelectedFile(), refs[0].replace('\\', '_') + "__" + refs[1].replace('\\', '_') + "_" + command + ".txt");
                             BufferedWriter writer = new BufferedWriter(new FileWriter(f));
                             //BufferedWriter writer = Files.newBufferedWriter(Paths.get(fC.getSelectedFile().getAbsolutePath()));
-                            int[] lastLine = new int[]{-1,-1};
+                            int[] lastLine = new int[]{-1, -1};
                             int diffCount = 1;
                             for (int k = 0; k < diffs1.size(); k++) {
 //                                if (!((diffs1.get(k)[0] == diffs1.get(k)[1])&&(diffs2.get(k)[0] == diffs2.get(k)[1]))){
-                                    int tempLine[] = writeDiffToFile(writer, diffs1.get(k), diffs2.get(k), lastLine, diffCount, refs);
+                                int tempLine[] = writeDiffToFile(writer, diffs1.get(k), diffs2.get(k), lastLine, diffCount, refs);
 //                                    int tempLine2 = writeDiffToFile(writer, diffs2.get(k), lastLine2, po2TextArea, refs[1]);
-                                    if ((tempLine[0] != lastLine[0]) || (tempLine[1] != lastLine[1])){
-                                        
-                                        diffCount++;
-                                    }
-                                        diffCount++;
-                                  
-                                    lastLine = tempLine;
+                                if ((tempLine[0] != lastLine[0]) || (tempLine[1] != lastLine[1])) {
+
+                                    diffCount++;
+                                }
+                                diffCount++;
+
+                                lastLine = tempLine;
 
 //                                }
                             }
@@ -2441,15 +2442,14 @@ public class MainFrame extends javax.swing.JFrame {
                         }
                     }
                 }
-            }
-            else {
+            } else {
                 System.out.println(child.toString());
-                traverseTree(chooser,model,child ); 
+                traverseTree(chooser, model, child);
             }
         }
-    } 
+    }
 
-    private void findDiffs () {
+    private void findDiffs() {
         LinkedList<diff_match_patch.Diff> diffs = new LinkedList<diff_match_patch.Diff>();
         diff_match_patch dmp = new diff_match_patch();
         dmp.Diff_Timeout = 0;
@@ -2461,7 +2461,7 @@ public class MainFrame extends javax.swing.JFrame {
         diffs2 = diff_Fortext(diffs);
         cleanUpDiffs();
     }
-    
+
     private void analysisMNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_analysisMNActionPerformed
         performAnalysis();
     }//GEN-LAST:event_analysisMNActionPerformed
@@ -2471,17 +2471,37 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_aboutMNActionPerformed
 
     private void po1ScrollPaneMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_po1ScrollPaneMouseReleased
-po1ScrollPane.getVerticalScrollBar().setModel(po1ScrollPane.getVerticalScrollBar().getModel());
-    }//GEN-LAST:event_po1ScrollPaneMouseReleased
+//po1ScrollPane.getVerticalScrollBar().setModel(po1ScrollPane.getVerticalScrollBar().getModel());
 
-    private void concurrentScrollActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_concurrentScrollActionPerformed
-       //IXGKOAG -- update system property
-        prefs.putBoolean("concurrentScroll", concurrentScroll.isSelected());
-    }//GEN-LAST:event_concurrentScrollActionPerformed
+
+    }//GEN-LAST:event_po1ScrollPaneMouseReleased
 
     private void lastTimeCheckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lastTimeCheckActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_lastTimeCheckActionPerformed
+
+    private void concurendScrollButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_concurendScrollButtonActionPerformed
+        this.concurendScroll = concurendScrollButton.isSelected();
+  /*   
+        System.out.println("concurendScroll is " + this.concurendScroll);
+        System.out.println(po2ScrollPane.getVerticalScrollBar().getModel());
+        System.out.println(po1ScrollPane.getVerticalScrollBar().getModel());
+
+        if (this.concurendScroll) {
+            po2ScrollPane.getVerticalScrollBar().setModel(po1ScrollPane.getVerticalScrollBar().getModel());
+            po1ScrollPane.getVerticalScrollBar().setModel(po2ScrollPane.getVerticalScrollBar().getModel());
+        } else {
+            po1ScrollPane.getVerticalScrollBar().setValue(0);
+            po2ScrollPane.getVerticalScrollBar().setValue(0);
+
+        }
+*/
+    }//GEN-LAST:event_concurendScrollButtonActionPerformed
+
+
+    private void po2ScrollPaneMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_po2ScrollPaneMouseReleased
+
+    }//GEN-LAST:event_po2ScrollPaneMouseReleased
 
     /**
      * @param args the command line arguments
@@ -2558,7 +2578,7 @@ po1ScrollPane.getVerticalScrollBar().setModel(po1ScrollPane.getVerticalScrollBar
     private javax.swing.JList<String> compList1;
     private javax.swing.JList<String> compList2;
     private javax.swing.JPanel comparePanel;
-    private javax.swing.JCheckBox concurrentScroll;
+    private javax.swing.JToggleButton concurendScrollButton;
     private javax.swing.JSplitPane diffSplitPane;
     private javax.swing.JButton discardSettingsBTN;
     private javax.swing.JMenu editMN;

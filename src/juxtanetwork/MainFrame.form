@@ -136,18 +136,20 @@
               <Group type="102" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <Component id="settingPanel2" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      </Group>
                       <Group type="102" alignment="1" attributes="0">
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                          <Component id="applySettingsBTN" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="discardSettingsBTN" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                              <Component id="settingPanel2" alignment="0" max="32767" attributes="0"/>
-                              <Component id="settingPanel1" min="-2" pref="518" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" alignment="1" attributes="0">
+                                  <Component id="applySettingsBTN" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="discardSettingsBTN" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <Component id="settingPanel1" alignment="1" min="-2" pref="518" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
@@ -157,11 +159,10 @@
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace max="-2" attributes="0"/>
                   <Component id="settingPanel1" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                   <Component id="settingPanel2" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="13" max="32767" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="discardSettingsBTN" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="applySettingsBTN" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -202,7 +203,6 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="concurrentScroll" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="chooseDataFolderLBL" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
@@ -218,21 +218,21 @@
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
-                      <Component id="lastTimeCheck" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
-                      <Component id="concurrentScroll" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
+                      <Component id="lastTimeCheck" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="chooseDataFolderLBL" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="chooseDataFolderBTN" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="chooseDataFolderTxt" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="14" max="32767" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="fontLBL" min="-2" max="-2" attributes="0"/>
-                          <Component id="fontBTN" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace pref="29" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="fontLBL" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="fontBTN" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
+                      <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -244,14 +244,6 @@
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="lastTimeCheckActionPerformed"/>
-              </Events>
-            </Component>
-            <Component class="javax.swing.JCheckBox" name="concurrentScroll">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Concurrent Scrolling"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="concurrentScrollActionPerformed"/>
               </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="fontLBL">
@@ -309,7 +301,7 @@
                           <Component id="colorSearchBTN" alignment="2" min="-2" max="-2" attributes="0"/>
                           <Component id="colorSearchFoundBTN" alignment="2" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace pref="244" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -1237,7 +1229,9 @@
                               <Component id="searchField" min="-2" pref="134" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="ForFindBTN" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="32767" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="concurendScrollButton" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace pref="101" max="32767" attributes="0"/>
                               <Component id="prevHiliteBTN" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="nextHiliteBTN" min="-2" max="-2" attributes="0"/>
@@ -1256,10 +1250,11 @@
                                       <Component id="searchField" alignment="3" min="-2" max="-2" attributes="0"/>
                                       <Component id="BackFindBTN" alignment="3" min="-2" max="-2" attributes="0"/>
                                       <Component id="ForFindBTN" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="concurendScrollButton" alignment="3" min="-2" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="diffSplitPane" pref="560" max="32767" attributes="0"/>
+                              <Component id="diffSplitPane" pref="559" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -1278,7 +1273,6 @@
                             <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="po1ScrollPaneMouseReleased"/>
                           </Events>
                           <AuxValues>
-                            <AuxValue name="JavaCodeGenerator_ListenersCodePost" type="java.lang.String" value="//IXGKOAG&#xa;if(prefs.getBoolean(&quot;concurrentScroll&quot;, false)){&#xa;po1ScrollPane.getVerticalScrollBar().setModel(po2ScrollPane.getVerticalScrollBar().getModel());&#xa;}"/>
                             <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
                           </AuxValues>
                           <Constraints>
@@ -1301,8 +1295,10 @@
                           </SubComponents>
                         </Container>
                         <Container class="javax.swing.JScrollPane" name="po2ScrollPane">
+                          <Events>
+                            <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="po2ScrollPaneMouseReleased"/>
+                          </Events>
                           <AuxValues>
-                            <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="//IXGKOAG&#xa;if(prefs.getBoolean(&quot;concurrentScroll&quot;, false)){&#xa;po2ScrollPane.getVerticalScrollBar().setModel(po1ScrollPane.getVerticalScrollBar().getModel());&#xa;}"/>
                             <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
                           </AuxValues>
                           <Constraints>
@@ -1424,6 +1420,14 @@
                       </Properties>
                       <Events>
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ForFindBTNActionPerformed"/>
+                      </Events>
+                    </Component>
+                    <Component class="javax.swing.JToggleButton" name="concurendScrollButton">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="Concurrent Scroll"/>
+                      </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="concurendScrollButtonActionPerformed"/>
                       </Events>
                     </Component>
                   </SubComponents>
