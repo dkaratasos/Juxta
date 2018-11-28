@@ -1618,16 +1618,17 @@ public class MainFrame extends javax.swing.JFrame {
      * @param printout
      */
     private int[] writeDiffToFile(BufferedWriter writer, int[] diffs1, int[] diffs2, int[] lastDiffLine, int diffCount, String[] printout) {
+        int[] temps = new int[2];
         try {
             int line1po1 = po1TextArea.getLineOfOffset(diffs1[0]);
             int line1po2 = po2TextArea.getLineOfOffset(diffs2[0]);
+            temps[0] = line1po1;
+            temps[0] = line1po2;
             if (!((diffs1[0] == diffs1[1]) && (diffs2[0] == diffs2[1]))){
                 if ((line1po1 != lastDiffLine[0]) || (line1po2 != lastDiffLine[1])) { 
                     writer.write("Difference: " + diffCount + "\n");
                     writer.write("-------------\n");
                     writer.write(printout[0] + "\n");
-                    lastDiffLine[0] = line1po1;
-                    lastDiffLine[1] = line1po2;
                     int line2po1 = po1TextArea.getLineOfOffset(diffs1[1]);
                     int line2po2 = po1TextArea.getLineOfOffset(diffs2[1]);
                     if (po1TextArea.getLineStartOffset(line2po1) == diffs1[1]){
@@ -1646,6 +1647,7 @@ public class MainFrame extends javax.swing.JFrame {
                         writer.write(po1TextArea.getText(po1TextArea.getLineStartOffset(line1po1), po1TextArea.getLineEndOffset(line2po1) - po1TextArea.getLineStartOffset(line1po1) - 1));
                     }
                     writer.newLine();
+                    writer.write(printout[1] + "\n");
                     int actualLine1po2 = line1po2 + 1;
                     int actualLine2po2 = line2po2 + 1;
                     if (line1po2 >= line2po2) {
@@ -1661,7 +1663,7 @@ public class MainFrame extends javax.swing.JFrame {
         } catch (javax.swing.text.BadLocationException | IOException ex) {
             java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        return lastDiffLine;
+        return temps;
     }
     
     
@@ -2419,15 +2421,12 @@ public class MainFrame extends javax.swing.JFrame {
                             int[] lastLine = new int[]{-1,-1};
                             int diffCount = 1;
                             for (int k = 0; k < diffs1.size(); k++) {
-                                if (!((diffs1.get(k)[0] == diffs1.get(k)[1])&&(diffs2.get(k)[0] == diffs2.get(k)[1]))){
-                                    int tempLine[] = writeDiffToFile(writer, diffs1.get(k), diffs2.get(k), lastLine, diffCount, refs);
+                                int tempLine[] = writeDiffToFile(writer, diffs1.get(k), diffs2.get(k), lastLine, diffCount, refs);
 //                                    int tempLine2 = writeDiffToFile(writer, diffs2.get(k), lastLine2, po2TextArea, refs[1]);
-                                    if ((tempLine[0] != lastLine[0]) || (tempLine[1] != lastLine[1])){
-                                        diffCount++;
-                                    }
-                                    lastLine = tempLine;
-
+                                if ((tempLine[0] != lastLine[0]) || (tempLine[1] != lastLine[1])){
+                                    diffCount++;
                                 }
+                                lastLine = tempLine;
                             }
                             writer.close();
                         } catch (IOException ex) {
