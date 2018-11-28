@@ -15,7 +15,7 @@ import javax.swing.ToolTipManager;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
-// CHMA-GGEW-SOVL -- Imports needed for save functionality
+// CHMA-GGEW-SOVL
 import java.io.FileWriter;
 import java.io.BufferedWriter;
 import javax.swing.JFileChooser;
@@ -1613,12 +1613,15 @@ public class MainFrame extends javax.swing.JFrame {
     // CHMA-GGEW-SOVL
     /**
      * This method writes the line number and whole line of a difference for
-     * printout poTextArea to file created from writer.
+     * the two poTextAreas to file created from writer.
      *
-     * @param writer
-     * @param diffs
-     * @param poTextArea
-     * @param printout
+     * @param writer is the writer to the file where differences are written
+     * @param diffs1 are the start and end of a difference for po1textArea
+     * @param diffs2 are the start and end of a difference for po2textArea
+     * @param lastDiffLine are the last lines of potextAreas where a difference is found
+     * @param diffCount is the number of the current difference to be stored in the file
+     * @param printout is the name of the node where each printout is taken
+     * @return the new lines of the two potextAreas where the new difference is found 
      */
     private int[] writeDiffToFile(BufferedWriter writer, int[] diffs1, int[] diffs2, int[] lastDiffLine, int diffCount, String[] printout) {
         int[] temps = new int[2];
@@ -1649,7 +1652,6 @@ public class MainFrame extends javax.swing.JFrame {
                         writer.write("lines " + actualLine1po1 + "-" + actualLine2po1 + ":\n");
                         writer.write(po1TextArea.getText(po1TextArea.getLineStartOffset(line1po1), po1TextArea.getLineEndOffset(line2po1) - po1TextArea.getLineStartOffset(line1po1) - 1));
                     }
-//                    writer.newLine();
                     writer.write("\n\n");
                     writer.write(printout[1] + "\n");
                     int actualLine1po2 = line1po2 + 1;
@@ -1661,7 +1663,7 @@ public class MainFrame extends javax.swing.JFrame {
                         writer.write("lines " + actualLine1po2 + "-" + actualLine2po2 + ":\n");
                         writer.write(po2TextArea.getText(po2TextArea.getLineStartOffset(line1po2), po2TextArea.getLineEndOffset(line2po2) - po2TextArea.getLineStartOffset(line1po2) - 1));
                     }
-                    writer.newLine();
+                    writer.write("\n\n");
                 }
             }
         } catch (javax.swing.text.BadLocationException | IOException ex) {
@@ -1670,45 +1672,6 @@ public class MainFrame extends javax.swing.JFrame {
         return temps;
     }
 
-//    private int writeDiffToFile(BufferedWriter writer, int[] diffs1, int[] diffs2, int lastDiffLine1, int lastDiffLine2, javax.swing.JTextArea poTextArea, String[] printout) {
-//        try {
-//            int line1po1 = poTextArea.getLineOfOffset(diffs1[0]);
-//            int line1po2 = poTextArea.getLineOfOffset(diffs2[0]);
-//            if ((line1po1 != lastDiffLine1) && (line1po2 != lastDiffLine2)) { 
-//                writer.write("Difference: " + diffCount + "\n");
-//                writer.write("-------------\n");
-//                writer.write(printout[0] + "\n");
-//                lastDiffLine1 = line1po1;
-////                if ((diffs[0] == diffs[1]) && (poTextArea.getLineEndOffset(line1) == poTextArea.getLineStartOffset(line1))) {
-////                    writer.write("line(s) missing");
-////                } else { 
-//                int line2 = poTextArea.getLineOfOffset(diffs[1]);
-//                if (poTextArea.getLineStartOffset(line2) == diffs[1]){
-//                    line2 -=1;
-//                }
-//                    
-//                    int actualLine1 = line1 + 1;
-//                    int actualLine2 = line2 + 1;
-//                    System.out.println("diffs[0] "+diffs[0]);
-//                    System.out.println("diffs[1] "+diffs[1]);
-//                    System.out.println("getLineStartOffset "+poTextArea.getLineStartOffset(line1));
-//                    System.out.println("getLineEndOffset "+poTextArea.getLineEndOffset(line1));
-//                    System.out.println("line2 "+line2);
-//                    if (line1 >= line2) {
-//                        writer.write("line " + actualLine1 + ":\n");
-//                        writer.write(poTextArea.getText(poTextArea.getLineStartOffset(line1), poTextArea.getLineEndOffset(line1) - poTextArea.getLineStartOffset(line1) - 1));
-//                    } else {
-//                        writer.write("lines " + actualLine1 + "-" + actualLine2 + ":\n");
-//                        writer.write(poTextArea.getText(poTextArea.getLineStartOffset(line1), poTextArea.getLineEndOffset(line2) - poTextArea.getLineStartOffset(line1) - 1));
-//                    }
-////                }
-//                writer.newLine();
-//            }
-//        } catch (javax.swing.text.BadLocationException | IOException ex) {
-//            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        }
-//        return lastDiffLine;
-//    }
 
     private void OpenMNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OpenMNActionPerformed
         getPrintouts();
@@ -1863,6 +1826,8 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void saveTLBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveTLBActionPerformed
 
+        // CHMA-GGEW-SOVL -- Code for saving the differences beween certain printouts
+        
         DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) TargetNodesTree
                 .getLastSelectedPathComponent();
         if (mainTabbedPane.getSelectedIndex() != 2) {
@@ -1881,17 +1846,9 @@ public class MainFrame extends javax.swing.JFrame {
         String refs[] = cmp.getCommandReferences(base, target, command);
         JFileChooser fC = new JFileChooser();
         Component modalToComponent = null;
-        //fC.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         if (fC.showSaveDialog(modalToComponent) == JFileChooser.APPROVE_OPTION) {
-            //File file = fC.getSelectedFile();
-
-            // save to file
         }
-
-        // CHMA-GGEW-SOVL -- Code for saving the differences beween certain printouts
         try {
-            //File f = new File(fC.getSelectedFile(), refs[0].replace('\\', '_') + "_with_" + refs[1].replace('\\', '_') + "_command_" + command + ".txt");
-            //BufferedWriter writer = new BufferedWriter(new FileWriter(f));
             BufferedWriter writer = Files.newBufferedWriter(Paths.get(fC.getSelectedFile().getAbsolutePath()));
             int[] lastLine = new int[]{-1, -1};
             int diffCount = 1;
@@ -1925,17 +1882,7 @@ public class MainFrame extends javax.swing.JFrame {
     private void doAnalysis() {
 
         findDiffs();
-
-//        LinkedList<diff_match_patch.Diff> diffs = new LinkedList<diff_match_patch.Diff>();
-//        diff_match_patch dmp = new diff_match_patch();
-//        dmp.Diff_Timeout = 0;
-//        diffs = dmp.diff_main(po1TextArea.getText(), po2TextArea.getText());
-//        dmp.diff_cleanupSemantic(diffs);
-//        diffs1 = diff_Fortext(diffs);
-//        diffs = dmp.diff_main(po2TextArea.getText(), po1TextArea.getText());
-//        dmp.diff_cleanupSemantic(diffs);
-//        diffs2 = diff_Fortext(diffs);
-//        cleanUpDiffs();
+        
         highliter.highlightremove(po1TextArea);
         highliter.highlightremove(po2TextArea);
         for (int i = diffs1.size() - 1; i >= 0; i--) {
@@ -1986,6 +1933,25 @@ public class MainFrame extends javax.swing.JFrame {
         mainTabbedPane.setSelectedIndex(2);
         TargetNodesTree.setModel(new javax.swing.tree.DefaultTreeModel(commsTreeModel));
         expandTreeAll();
+    }
+    
+    // CHMA-GGEW-SOVL
+    /**
+     * Is for creating the list of differences in means of INSERT, DELETE 
+     * and store indices of start and end of the difference in diff1 and diff2 
+     * lists. 
+     */
+    private void findDiffs() {
+        LinkedList<diff_match_patch.Diff> diffs = new LinkedList<diff_match_patch.Diff>();
+        diff_match_patch dmp = new diff_match_patch();
+        dmp.Diff_Timeout = 0;
+        diffs = dmp.diff_main(po1TextArea.getText(), po2TextArea.getText());
+        dmp.diff_cleanupSemantic(diffs);
+        diffs1 = diff_Fortext(diffs);
+        diffs = dmp.diff_main(po2TextArea.getText(), po1TextArea.getText());
+        dmp.diff_cleanupSemantic(diffs);
+        diffs2 = diff_Fortext(diffs);
+        cleanUpDiffs();
     }
 
     /**
@@ -2061,8 +2027,6 @@ public class MainFrame extends javax.swing.JFrame {
             if (aDiff.operation != diff_match_patch.Operation.EQUAL) {
                 diffIndexes[1] = text.length() + prevSize;
                 diffsList.add(diffIndexes);
-                System.out.println("diff: " + diffsList.size() + "-" + aDiff.operation + "]" + diffIndexes[0] + " " + diffIndexes[1]
-                        + "  text=" + aDiff.text);
             }
 
         }
@@ -2287,7 +2251,6 @@ public class MainFrame extends javax.swing.JFrame {
         if (selectedRef == null) {
             return;
         }
-        System.out.println("selectedRef is: " + selectedRef);
         if (chooseRefLBL1.getText().equals("Base")) {
             TimeStampBase.add(selectedRef);
             insertElem(compList1Model);
@@ -2321,6 +2284,7 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_TargetNodesTreePropertyChange
 
     private void saveAllBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAllBTNActionPerformed
+           
         if (mainTabbedPane.getSelectedIndex() != 2) {
             errorMessageLBL.setText("Go to results panel to save");
             errorDialog.setVisible(true);
@@ -2331,15 +2295,62 @@ public class MainFrame extends javax.swing.JFrame {
         Component modalToComponent = null;
         fC.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         if (fC.showSaveDialog(modalToComponent) == JFileChooser.APPROVE_OPTION) {
-
-            // save to file
         }
         Object root = TargetNodesTree.getModel().getRoot();
         traverseTree(fC, TargetNodesTree.getModel(), root);
-        //}
 
     }//GEN-LAST:event_saveAllBTNActionPerformed
 
+    // CHMA-GGEW-SOVL
+    /**
+     * This method is used to find the commands in the target nodes tree and for 
+     * each combination of base node, target node and command to create a new 
+     * file in the directory selected from the file chooser. In this file the 
+     * differences between the command printouts will be stored.
+     * 
+     * @param chooser is the the file chooser from which the directory to store 
+     *                the files is selected.
+     * @param model is the model of the Target nodes tree
+     * @param node is the current node of the tree that is being processed
+     */
+    private void traverseTree(JFileChooser chooser, TreeModel model, Object node) {
+        int cc;
+        cc = model.getChildCount(node);
+        for (int i = 0; i < cc; i++) {
+            Object child = model.getChild(node, i);
+            if (model.isLeaf(child)) {
+                for (int j = 0; j < BaseNodesCombo.getItemCount(); j++) {
+                    String base = BaseNodesCombo.getItemAt(j);
+                    String target = node.toString();
+                    String command = child.toString();
+                    cmp.nodeSelected(base, target, command, po1TextArea, po2TextArea);
+                    findDiffs();
+                    if (!diffs1.isEmpty()) {
+                        String refs[] = cmp.getCommandReferences(base, target, command);
+                        try {
+                            File f = new File(chooser.getSelectedFile(), refs[0].replace('\\', '_') + "__" + refs[1].replace('\\', '_') + "_" + command + ".txt");
+                            BufferedWriter writer = new BufferedWriter(new FileWriter(f));
+                            int[] lastLine = new int[]{-1, -1};
+                            int diffCount = 1;
+                            for (int k = 0; k < diffs1.size(); k++) {
+                                int tempLine[] = writeDiffToFile(writer, diffs1.get(k), diffs2.get(k), lastLine, diffCount, refs);
+                                if ((tempLine[0] != lastLine[0]) || (tempLine[1] != lastLine[1])){
+                                    diffCount++;
+                                }
+                                lastLine = tempLine;
+                            }
+                            writer.close();
+                        } catch (IOException ex) {
+                            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+                        }
+                    }
+                }
+            } else {
+                traverseTree(chooser, model, child);
+            }
+        }
+    }
+    
     private void prevDiffMNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prevDiffMNActionPerformed
         moveHighlight(false);
     }//GEN-LAST:event_prevDiffMNActionPerformed
@@ -2400,62 +2411,6 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_chooseDataFolderBTNActionPerformed
 
-    private void traverseTree(JFileChooser chooser, TreeModel model, Object object) {
-        int cc;
-        cc = model.getChildCount(object);
-        for (int i = 0; i < cc; i++) {
-            Object child = model.getChild(object, i);
-            if (model.isLeaf(child)) {
-                for (int j = 0; j < BaseNodesCombo.getItemCount(); j++) {
-                    String base = BaseNodesCombo.getItemAt(j);
-                    String target = object.toString();
-                    String command = child.toString();
-                    cmp.nodeSelected(base, target, command, po1TextArea, po2TextArea);
-                    findDiffs();
-                    if (!diffs1.isEmpty()) {
-                        String refs[] = cmp.getCommandReferences(base, target, command);
-
-                        // CHMA-GGEW-SOVL -- Code for saving the differences beween certain printouts
-                        try {
-                            File f = new File(chooser.getSelectedFile(), refs[0].replace('\\', '_') + "__" + refs[1].replace('\\', '_') + "_" + command + ".txt");
-                            BufferedWriter writer = new BufferedWriter(new FileWriter(f));
-                            //BufferedWriter writer = Files.newBufferedWriter(Paths.get(fC.getSelectedFile().getAbsolutePath()));
-                            int[] lastLine = new int[]{-1, -1};
-                            int diffCount = 1;
-                            for (int k = 0; k < diffs1.size(); k++) {
-//                                if (!((diffs1.get(k)[0] == diffs1.get(k)[1])&&(diffs2.get(k)[0] == diffs2.get(k)[1]))){
-                                int tempLine[] = writeDiffToFile(writer, diffs1.get(k), diffs2.get(k), lastLine, diffCount, refs);
-//                                    int tempLine2 = writeDiffToFile(writer, diffs2.get(k), lastLine2, po2TextArea, refs[1]);
-                                if ((tempLine[0] != lastLine[0]) || (tempLine[1] != lastLine[1])){
-                                    diffCount++;
-                                }
-                                lastLine = tempLine;
-                            }
-                            writer.close();
-                        } catch (IOException ex) {
-                            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-                        }
-                    }
-                }
-            } else {
-                System.out.println(child.toString());
-                traverseTree(chooser, model, child);
-            }
-        }
-    }
-
-    private void findDiffs() {
-        LinkedList<diff_match_patch.Diff> diffs = new LinkedList<diff_match_patch.Diff>();
-        diff_match_patch dmp = new diff_match_patch();
-        dmp.Diff_Timeout = 0;
-        diffs = dmp.diff_main(po1TextArea.getText(), po2TextArea.getText());
-        dmp.diff_cleanupSemantic(diffs);
-        diffs1 = diff_Fortext(diffs);
-        diffs = dmp.diff_main(po2TextArea.getText(), po1TextArea.getText());
-        dmp.diff_cleanupSemantic(diffs);
-        diffs2 = diff_Fortext(diffs);
-        cleanUpDiffs();
-    }
 
     private void analysisMNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_analysisMNActionPerformed
         performAnalysis();

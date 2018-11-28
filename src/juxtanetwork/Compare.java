@@ -339,7 +339,17 @@ public class Compare {
         }
     }
 
-    // CHMA-GGEW-SOVL -- Method for getting the base and target node paths
+    // CHMA-GGEW-SOVL
+    /**
+    * Method for getting the paths where the command file for both base and target 
+    * node is located.
+    *
+    * @param base is the name of the base node
+    * @param target is the name of the target node
+    * @param command is the name of the command that is processed
+    *
+    * @return the paths where the command file for base and target node is stored
+    */    
     public String[] getCommandReferences(String base, String target, String command) {
         Command comm = Structure.get(base).get(target).get(command);
         String[] paths = new String[2];
