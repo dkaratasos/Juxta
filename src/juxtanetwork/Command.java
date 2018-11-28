@@ -160,18 +160,21 @@ public class Command {
     public void getPOtexts() {
         StringBuilder po1 = new StringBuilder();
         StringBuilder po2 = new StringBuilder();
-        
+        this.printOutLines=0;//IXGKOAG
+        this.printOut2Lines=0;//IXGKOAG
         try {
         BufferedReader scannerPO1 = new BufferedReader(new InputStreamReader(new FileInputStream(this.BaseFile), "UTF8"));
         BufferedReader scannerPO2 = new BufferedReader(new InputStreamReader(new FileInputStream(this.TargetFile), "UTF8"));
         while (scannerPO1.ready()) {
             po1.append(scannerPO1.readLine() + "\n");
+            this.printOutLines++;//IXGKOAG
         }
         printOut=po1.toString();
         while (scannerPO2.ready()) {
             po2.append(scannerPO2.readLine() + "\n");
+            this.printOut2Lines++; //IXGKOAG
         }
-        printOut2=po2.toString();
+        printOut2=po2.toString();        
         } catch (Exception e) {
             System.out.println("Printout file not found for command: "+this.getName());
         }
@@ -300,6 +303,15 @@ public class Command {
         return this.printOut2;
     }
 
+     public int getPrintOutLines() { //Base file Lines
+        return this.printOutLines; //IXGKOAG
+    }
+    
+    public int getPrintOut2Lines() {  //target file Lines
+        return this.printOut2Lines;//IXGKOAG
+    }   
+    
+    
     /**
      * get the Start of Sorting point
      *
@@ -380,12 +392,16 @@ public class Command {
     //IXGKOAG 
     private File BaseFile;           // The BaseCommand file  
     private File TargetFile;         // The TargetCommand file 
+    private int printOutLines;         // The printout of command as read from the input file lines number
+    private int printOut2Lines;         // The printout of command as read from the input file lines number
     //
     private String name;             // The name of the command
     private String nodeName;         // The node the command is given
     private Byte bc;                 // The blade number the command is given
     private String printOut;         // The printout of command as read from the input file
     private String printOut2;         // The printout of command as read from the input file for target
+
+    
     private String startSorting;     // The start string for sorting the printout of command
     private String endSorting;       // The end string for sorting the printout of command
     private nodeType type;           // The type of the node the command is given (MSC or HLR)

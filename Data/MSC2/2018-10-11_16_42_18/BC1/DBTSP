@@ -1,5 +1,5 @@
 <DBTSP:TAB=AXEPARS;
-DATABASE TABLE
+BASE TABLE
 
 BLOCK   TAB             TABLE                           WRAPPED
 PARA    AXEPARS                                         YES
