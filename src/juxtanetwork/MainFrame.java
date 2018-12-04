@@ -2296,8 +2296,23 @@ public class MainFrame extends javax.swing.JFrame {
         fC.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         if (fC.showSaveDialog(modalToComponent) == JFileChooser.APPROVE_OPTION) {
         }
-        Object root = TargetNodesTree.getModel().getRoot();
-        traverseTree(fC, TargetNodesTree.getModel(), root);
+        
+        try {
+            
+             File f1 = new File(fC.getSelectedFile(), "File_Report.txt");
+             BufferedWriter writer1 = new BufferedWriter(new FileWriter(f1));
+         
+             Object root = TargetNodesTree.getModel().getRoot();
+             traverseTree(fC,TargetNodesTree.getModel(),root, writer1);
+             
+             writer1.close(); 
+         
+        } catch (IOException ex) {
+                            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+                        }
+
+//        Object root = TargetNodesTree.getModel().getRoot();
+//        traverseTree(fC, TargetNodesTree.getModel(), root);
 
     }//GEN-LAST:event_saveAllBTNActionPerformed
 
@@ -2313,7 +2328,8 @@ public class MainFrame extends javax.swing.JFrame {
      * @param model is the model of the Target nodes tree
      * @param node is the current node of the tree that is being processed
      */
-    private void traverseTree(JFileChooser chooser, TreeModel model, Object node) {
+    private void traverseTree(JFileChooser chooser, TreeModel model, Object node, BufferedWriter write)
+    {
         int cc;
         cc = model.getChildCount(node);
         for (int i = 0; i < cc; i++) {
@@ -2327,7 +2343,10 @@ public class MainFrame extends javax.swing.JFrame {
                     findDiffs();
                     if (!diffs1.isEmpty()) {
                         String refs[] = cmp.getCommandReferences(base, target, command);
+                        
                         try {
+                            write.write(refs[0].replace('\\', '_') + "__" + refs[1].replace('\\', '_') + "_" + command + " Differences found \n");
+                            
                             File f = new File(chooser.getSelectedFile(), refs[0].replace('\\', '_') + "__" + refs[1].replace('\\', '_') + "_" + command + ".txt");
                             BufferedWriter writer = new BufferedWriter(new FileWriter(f));
                             int[] lastLine = new int[]{-1, -1};
@@ -2343,10 +2362,20 @@ public class MainFrame extends javax.swing.JFrame {
                         } catch (IOException ex) {
                             java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
                         }
+                        
                     }
+                    else{
+                        try{
+                           String refs[] = cmp.getCommandReferences(base, target, command);
+                          write.write(refs[0].replace('\\', '_') + "__" + refs[1].replace('\\', '_') + "_" + command + " Differences not found\n");
+                        }
+                        catch (IOException ex) {
+                            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+                        }
+                    } 
                 }
             } else {
-                traverseTree(chooser, model, child);
+                traverseTree(chooser, model, child, write);
             }
         }
     }
