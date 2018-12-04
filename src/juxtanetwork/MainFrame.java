@@ -862,7 +862,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         mainTabbedPane.addTab("Compare", comparePanel);
 
-        diffSplitPane.setDividerLocation(200);
+        diffSplitPane.setDividerLocation(250);
         diffSplitPane.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
 
         po1ScrollPane.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -2432,7 +2432,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void concurendScrollButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_concurendScrollButtonActionPerformed
         this.concurendScroll = concurendScrollButton.isSelected();
-  /*   
+    
         System.out.println("concurendScroll is " + this.concurendScroll);
         System.out.println(po2ScrollPane.getVerticalScrollBar().getModel());
         System.out.println(po1ScrollPane.getVerticalScrollBar().getModel());
@@ -2445,7 +2445,7 @@ public class MainFrame extends javax.swing.JFrame {
             po2ScrollPane.getVerticalScrollBar().setValue(0);
 
         }
-*/
+
     }//GEN-LAST:event_concurendScrollButtonActionPerformed
 
 
