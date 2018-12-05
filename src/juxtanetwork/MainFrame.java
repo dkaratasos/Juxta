@@ -1629,14 +1629,14 @@ public class MainFrame extends javax.swing.JFrame {
             int line1po1 = po1TextArea.getLineOfOffset(diffs1[0]);
             int line1po2 = po2TextArea.getLineOfOffset(diffs2[0]);
             temps[0] = line1po1;
-            temps[0] = line1po2;
+            temps[1] = line1po2;
             if (!((diffs1[0] == diffs1[1]) && (diffs2[0] == diffs2[1]))){
                 if ((line1po1 != lastDiffLine[0]) || (line1po2 != lastDiffLine[1])) { 
                     writer.write("Difference: " + diffCount + "\n");
                     writer.write("-------------\n");
                     writer.write(printout[0] + "\n");
                     int line2po1 = po1TextArea.getLineOfOffset(diffs1[1]);
-                    int line2po2 = po1TextArea.getLineOfOffset(diffs2[1]);
+                    int line2po2 = po2TextArea.getLineOfOffset(diffs2[1]);
                     if (po1TextArea.getLineStartOffset(line2po1) == diffs1[1]) {
                         line2po1 -= 1;
                     }
@@ -1945,10 +1945,12 @@ public class MainFrame extends javax.swing.JFrame {
         LinkedList<diff_match_patch.Diff> diffs = new LinkedList<diff_match_patch.Diff>();
         diff_match_patch dmp = new diff_match_patch();
         dmp.Diff_Timeout = 0;
-        diffs = dmp.diff_main(po1TextArea.getText(), po2TextArea.getText());
+//      diffs = dmp.diff_main(po1TextArea.getText(), po2TextArea.getText());
+        diffs = dmp.diff_main(po1TextArea.getText().trim(), po2TextArea.getText().trim());
         dmp.diff_cleanupSemantic(diffs);
         diffs1 = diff_Fortext(diffs);
-        diffs = dmp.diff_main(po2TextArea.getText(), po1TextArea.getText());
+//      diffs = dmp.diff_main(po2TextArea.getText(), po1TextArea.getText());
+        diffs = dmp.diff_main(po2TextArea.getText().trim(), po1TextArea.getText().trim());
         dmp.diff_cleanupSemantic(diffs);
         diffs2 = diff_Fortext(diffs);
         cleanUpDiffs();
