@@ -864,6 +864,11 @@ public class MainFrame extends javax.swing.JFrame {
 
         diffSplitPane.setDividerLocation(250);
         diffSplitPane.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
+        diffSplitPane.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentResized(java.awt.event.ComponentEvent evt) {
+                diffSplitPaneComponentResized(evt);
+            }
+        });
 
         po1ScrollPane.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
@@ -2483,6 +2488,15 @@ public class MainFrame extends javax.swing.JFrame {
     private void po2ScrollPaneMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_po2ScrollPaneMouseReleased
 
     }//GEN-LAST:event_po2ScrollPaneMouseReleased
+
+    private void diffSplitPaneComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_diffSplitPaneComponentResized
+        int splitPaneHeight = diffSplitPane.getHeight();
+        diffSplitPane.setDividerLocation(splitPaneHeight/2);
+        
+        
+        
+        
+    }//GEN-LAST:event_diffSplitPaneComponentResized
 
     /**
      * @param args the command line arguments
