@@ -79,7 +79,7 @@ public class MainFrame extends javax.swing.JFrame {
     //IXGKOAG --  DEFINE and Initialize Compare Object
     Compare cmp;
     boolean concurendScroll = false;
-    BoundedRangeModel DefaultScrollmodel;
+
 
     //CHMA-GGEW-SOVL  -- Define Common Command List
     ArrayList<String> arrayCommList = new ArrayList<String>();
@@ -91,7 +91,6 @@ public class MainFrame extends javax.swing.JFrame {
 
         initComponents();
         initializations();
-        DefaultScrollmodel = this.po1ScrollPane.getVerticalScrollBar().getModel();
     }
 
     /**
@@ -864,6 +863,11 @@ public class MainFrame extends javax.swing.JFrame {
 
         diffSplitPane.setDividerLocation(250);
         diffSplitPane.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
+        diffSplitPane.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentResized(java.awt.event.ComponentEvent evt) {
+                diffSplitPaneComponentResized(evt);
+            }
+        });
 
         po1ScrollPane.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
@@ -1612,16 +1616,19 @@ public class MainFrame extends javax.swing.JFrame {
 
     // CHMA-GGEW-SOVL
     /**
-     * This method writes the line number and whole line of a difference for
-     * the two poTextAreas to file created from writer.
+     * This method writes the line number and whole line of a difference for the
+     * two poTextAreas to file created from writer.
      *
      * @param writer is the writer to the file where differences are written
      * @param diffs1 are the start and end of a difference for po1textArea
      * @param diffs2 are the start and end of a difference for po2textArea
-     * @param lastDiffLine are the last lines of potextAreas where a difference is found
-     * @param diffCount is the number of the current difference to be stored in the file
+     * @param lastDiffLine are the last lines of potextAreas where a difference
+     * is found
+     * @param diffCount is the number of the current difference to be stored in
+     * the file
      * @param printout is the name of the node where each printout is taken
-     * @return the new lines of the two potextAreas where the new difference is found 
+     * @return the new lines of the two potextAreas where the new difference is
+     * found
      */
     private int[] writeDiffToFile(BufferedWriter writer, int[] diffs1, int[] diffs2, int[] lastDiffLine, int diffCount, String[] printout) {
         int[] temps = new int[2];
@@ -1630,8 +1637,8 @@ public class MainFrame extends javax.swing.JFrame {
             int line1po2 = po2TextArea.getLineOfOffset(diffs2[0]);
             temps[0] = line1po1;
             temps[1] = line1po2;
-            if (!((diffs1[0] == diffs1[1]) && (diffs2[0] == diffs2[1]))){
-                if ((line1po1 != lastDiffLine[0]) || (line1po2 != lastDiffLine[1])) { 
+            if (!((diffs1[0] == diffs1[1]) && (diffs2[0] == diffs2[1]))) {
+                if ((line1po1 != lastDiffLine[0]) || (line1po2 != lastDiffLine[1])) {
                     writer.write("Difference: " + diffCount + "\n");
                     writer.write("-------------\n");
                     writer.write(printout[0] + "\n");
@@ -1827,7 +1834,6 @@ public class MainFrame extends javax.swing.JFrame {
     private void saveTLBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveTLBActionPerformed
 
         // CHMA-GGEW-SOVL -- Code for saving the differences beween certain printouts
-        
         DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) TargetNodesTree
                 .getLastSelectedPathComponent();
         if (mainTabbedPane.getSelectedIndex() != 2) {
@@ -1882,7 +1888,7 @@ public class MainFrame extends javax.swing.JFrame {
     private void doAnalysis() {
 
         findDiffs();
-        
+
         highliter.highlightremove(po1TextArea);
         highliter.highlightremove(po2TextArea);
         for (int i = diffs1.size() - 1; i >= 0; i--) {
@@ -1934,12 +1940,12 @@ public class MainFrame extends javax.swing.JFrame {
         TargetNodesTree.setModel(new javax.swing.tree.DefaultTreeModel(commsTreeModel));
         expandTreeAll();
     }
-    
+
     // CHMA-GGEW-SOVL
     /**
-     * Is for creating the list of differences in means of INSERT, DELETE 
-     * and store indices of start and end of the difference in diff1 and diff2 
-     * lists. 
+     * Is for creating the list of differences in means of INSERT, DELETE and
+     * store indices of start and end of the difference in diff1 and diff2
+     * lists.
      */
     private void findDiffs() {
         LinkedList<diff_match_patch.Diff> diffs = new LinkedList<diff_match_patch.Diff>();
@@ -2286,7 +2292,7 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_TargetNodesTreePropertyChange
 
     private void saveAllBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAllBTNActionPerformed
-           
+
         if (mainTabbedPane.getSelectedIndex() != 2) {
             errorMessageLBL.setText("Go to results panel to save");
             errorDialog.setVisible(true);
@@ -2298,20 +2304,20 @@ public class MainFrame extends javax.swing.JFrame {
         fC.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         if (fC.showSaveDialog(modalToComponent) == JFileChooser.APPROVE_OPTION) {
         }
-        
+
         try {
-            
-             File f1 = new File(fC.getSelectedFile(), "File_Report.txt");
-             BufferedWriter writer1 = new BufferedWriter(new FileWriter(f1));
-         
-             Object root = TargetNodesTree.getModel().getRoot();
-             traverseTree(fC,TargetNodesTree.getModel(),root, writer1);
-             
-             writer1.close(); 
-         
+
+            File f1 = new File(fC.getSelectedFile(), "File_Report.txt");
+            BufferedWriter writer1 = new BufferedWriter(new FileWriter(f1));
+
+            Object root = TargetNodesTree.getModel().getRoot();
+            traverseTree(fC, TargetNodesTree.getModel(), root, writer1);
+
+            writer1.close();
+
         } catch (IOException ex) {
-                            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-                        }
+            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
 
 //        Object root = TargetNodesTree.getModel().getRoot();
 //        traverseTree(fC, TargetNodesTree.getModel(), root);
@@ -2320,18 +2326,17 @@ public class MainFrame extends javax.swing.JFrame {
 
     // CHMA-GGEW-SOVL
     /**
-     * This method is used to find the commands in the target nodes tree and for 
-     * each combination of base node, target node and command to create a new 
-     * file in the directory selected from the file chooser. In this file the 
+     * This method is used to find the commands in the target nodes tree and for
+     * each combination of base node, target node and command to create a new
+     * file in the directory selected from the file chooser. In this file the
      * differences between the command printouts will be stored.
-     * 
-     * @param chooser is the the file chooser from which the directory to store 
-     *                the files is selected.
+     *
+     * @param chooser is the the file chooser from which the directory to store
+     * the files is selected.
      * @param model is the model of the Target nodes tree
      * @param node is the current node of the tree that is being processed
      */
-    private void traverseTree(JFileChooser chooser, TreeModel model, Object node, BufferedWriter write)
-    {
+    private void traverseTree(JFileChooser chooser, TreeModel model, Object node, BufferedWriter write) {
         int cc;
         cc = model.getChildCount(node);
         for (int i = 0; i < cc; i++) {
@@ -2345,17 +2350,17 @@ public class MainFrame extends javax.swing.JFrame {
                     findDiffs();
                     if (!diffs1.isEmpty()) {
                         String refs[] = cmp.getCommandReferences(base, target, command);
-                        
+
                         try {
                             write.write(refs[0].replace('\\', '_') + "__" + refs[1].replace('\\', '_') + "_" + command + " Differences found \n");
-                            
+
                             File f = new File(chooser.getSelectedFile(), refs[0].replace('\\', '_') + "__" + refs[1].replace('\\', '_') + "_" + command + ".txt");
                             BufferedWriter writer = new BufferedWriter(new FileWriter(f));
                             int[] lastLine = new int[]{-1, -1};
                             int diffCount = 1;
                             for (int k = 0; k < diffs1.size(); k++) {
                                 int tempLine[] = writeDiffToFile(writer, diffs1.get(k), diffs2.get(k), lastLine, diffCount, refs);
-                                if ((tempLine[0] != lastLine[0]) || (tempLine[1] != lastLine[1])){
+                                if ((tempLine[0] != lastLine[0]) || (tempLine[1] != lastLine[1])) {
                                     diffCount++;
                                 }
                                 lastLine = tempLine;
@@ -2364,24 +2369,22 @@ public class MainFrame extends javax.swing.JFrame {
                         } catch (IOException ex) {
                             java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
                         }
-                        
-                    }
-                    else{
-                        try{
-                           String refs[] = cmp.getCommandReferences(base, target, command);
-                          write.write(refs[0].replace('\\', '_') + "__" + refs[1].replace('\\', '_') + "_" + command + " Differences not found\n");
-                        }
-                        catch (IOException ex) {
+
+                    } else {
+                        try {
+                            String refs[] = cmp.getCommandReferences(base, target, command);
+                            write.write(refs[0].replace('\\', '_') + "__" + refs[1].replace('\\', '_') + "_" + command + " Differences not found\n");
+                        } catch (IOException ex) {
                             java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
                         }
-                    } 
+                    }
                 }
             } else {
                 traverseTree(chooser, model, child, write);
             }
         }
     }
-    
+
     private void prevDiffMNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prevDiffMNActionPerformed
         moveHighlight(false);
     }//GEN-LAST:event_prevDiffMNActionPerformed
@@ -2462,19 +2465,32 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_lastTimeCheckActionPerformed
 
     private void concurendScrollButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_concurendScrollButtonActionPerformed
+
         this.concurendScroll = concurendScrollButton.isSelected();
-    
         System.out.println("concurendScroll is " + this.concurendScroll);
         System.out.println(po2ScrollPane.getVerticalScrollBar().getModel());
         System.out.println(po1ScrollPane.getVerticalScrollBar().getModel());
 
         if (this.concurendScroll) {
+            //Resize Panel
+            int splitPaneHeight = diffSplitPane.getHeight();
+            diffSplitPane.setDividerLocation(splitPaneHeight / 2);
+            //Set to first line the print outs
+            po1ScrollPane.getVerticalScrollBar().setValue(0);
+            po2ScrollPane.getVerticalScrollBar().setValue(0);
+            //equilize models
             po2ScrollPane.getVerticalScrollBar().setModel(po1ScrollPane.getVerticalScrollBar().getModel());
             po1ScrollPane.getVerticalScrollBar().setModel(po2ScrollPane.getVerticalScrollBar().getModel());
         } else {
-            po1ScrollPane.getVerticalScrollBar().setValue(0);
-            po2ScrollPane.getVerticalScrollBar().setValue(0);
-
+            javax.swing.JScrollPane ScrollPanex1 = new javax.swing.JScrollPane();
+                 
+         BoundedRangeModel   DefaultScrollmodel1 =  ScrollPanex1.getVerticalScrollBar().getModel();
+            
+            javax.swing.JScrollPane ScrollPanex2 = new javax.swing.JScrollPane();
+          BoundedRangeModel  DefaultScrollmodel2 =  ScrollPanex2.getVerticalScrollBar().getModel();
+            
+            po2ScrollPane.getVerticalScrollBar().setModel(DefaultScrollmodel1);
+            po1ScrollPane.getVerticalScrollBar().setModel(DefaultScrollmodel2);
         }
 
     }//GEN-LAST:event_concurendScrollButtonActionPerformed
@@ -2483,6 +2499,11 @@ public class MainFrame extends javax.swing.JFrame {
     private void po2ScrollPaneMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_po2ScrollPaneMouseReleased
 
     }//GEN-LAST:event_po2ScrollPaneMouseReleased
+
+    private void diffSplitPaneComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_diffSplitPaneComponentResized
+        int splitPaneHeight = diffSplitPane.getHeight();
+        diffSplitPane.setDividerLocation(splitPaneHeight / 2);
+    }//GEN-LAST:event_diffSplitPaneComponentResized
 
     /**
      * @param args the command line arguments
