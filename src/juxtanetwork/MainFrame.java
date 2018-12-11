@@ -24,6 +24,9 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import javax.swing.tree.TreeModel;
 
+// CHMA-GGEW-SOVL
+import javax.swing.SwingWorker;
+
 //VAAG-CHRE
 import java.io.FileReader;
 import java.io.BufferedReader;
@@ -69,6 +72,12 @@ public class MainFrame extends javax.swing.JFrame {
     ArrayList<String> TimeStampTarget = new ArrayList<String>();
     HashMap<Integer, Integer> validated = new HashMap<Integer, Integer>();
     int currDiff = 0;
+    
+    // CHMA - GGEW - SOVL
+    int numOfFiles;
+    int filesDone;
+    int progress;
+    
     Color diffsColor = Color.ORANGE;
     Color searchColor = Color.YELLOW;
     Color searchFoundColor = Color.CYAN;
@@ -83,6 +92,85 @@ public class MainFrame extends javax.swing.JFrame {
 
     //CHMA-GGEW-SOVL  -- Define Common Command List
     ArrayList<String> arrayCommList = new ArrayList<String>();
+    
+    
+    // CHMA - GGEW - SOVL
+    /**
+     * This class handles the save all functionality actions. It runs in the 
+     * background with 100ms interval between each file saved to allow other 
+     * background tasks to run in parallel.
+     */
+   
+    private class SaveWorker extends SwingWorker {
+        
+        @Override
+        public Object doInBackground() {
+            numOfFiles = 0;
+            filesDone = 0;
+            JFileChooser fC = new JFileChooser();
+            Component modalToComponent = null;
+            fC.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            if (fC.showSaveDialog(modalToComponent) == JFileChooser.APPROVE_OPTION) {
+            }
+        
+            try {
+
+                //ggew
+                Object root = TargetNodesTree.getModel().getRoot();
+                numOfFiles = findNumOfFiles(0, root, TargetNodesTree.getModel());
+            
+                File f1 = new File(fC.getSelectedFile(), "File_Report.txt");
+                BufferedWriter writer1 = new BufferedWriter(new FileWriter(f1));
+
+                traverseTree(fC, TargetNodesTree.getModel(), root, writer1);
+
+                writer1.close();
+
+            } catch (IOException ex) {
+                java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            }
+            return null;
+        }
+    }
+
+    // CHMA - GGEW - SOVL
+    /**
+     * This class handles the progress bar in the gui regarding progress of save 
+     * all functionality. It runs in the background with 100ms interval to check
+     * the progress of the files saved.
+     */
+    private class ProgressWorker extends SwingWorker {
+        
+        @Override
+        public Object doInBackground() {
+            progress = 0;
+            while (progress < 100){
+                if (numOfFiles != 0) {
+                    if (!jProgressBar1.isVisible()){
+                        jProgressBar1.setVisible(true);
+                        jProgressBar1.setStringPainted(true);
+                    }
+                    progress = 100 * filesDone/numOfFiles;
+                }
+                jProgressBar1.setValue(progress);
+                try {
+                    Thread.sleep(10);
+                }
+                catch (InterruptedException ex){
+                    java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+                }
+            }
+            return null;
+        }
+
+        @Override
+        public void done() {
+            jProgressBar1.setVisible(false);
+            jProgressBar1.setStringPainted(false);
+            jProgressBar1.setValue(0);
+        }
+    }
+
 
     /**
      * Creates new form MainFrame
@@ -1250,6 +1338,9 @@ public class MainFrame extends javax.swing.JFrame {
 
         //IXGKOAG --  Initialize Compare Object
         this.cmp = new Compare(BaseNodesCombo, commsTreeModel);
+        
+        // CHMA - GGEW - SOVL
+        jProgressBar1.setVisible(false);
     }
 
     private void setRootOutFolder() {
@@ -2298,43 +2389,52 @@ public class MainFrame extends javax.swing.JFrame {
             errorDialog.setVisible(true);
             return;
         }
-
-        JFileChooser fC = new JFileChooser();
-        Component modalToComponent = null;
-        fC.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        if (fC.showSaveDialog(modalToComponent) == JFileChooser.APPROVE_OPTION) {
-        }
-
-        try {
-
-            File f1 = new File(fC.getSelectedFile(), "File_Report.txt");
-            BufferedWriter writer1 = new BufferedWriter(new FileWriter(f1));
-
-            Object root = TargetNodesTree.getModel().getRoot();
-            traverseTree(fC, TargetNodesTree.getModel(), root, writer1);
-
-            writer1.close();
-
-        } catch (IOException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-
-//        Object root = TargetNodesTree.getModel().getRoot();
-//        traverseTree(fC, TargetNodesTree.getModel(), root);
+        
+        // CHMA - GGEW - SOVL
+        SaveWorker sworker = new SaveWorker();
+        sworker.execute();       
+        ProgressWorker pworker = new ProgressWorker();
+        pworker.execute();
 
     }//GEN-LAST:event_saveAllBTNActionPerformed
 
-    // CHMA-GGEW-SOVL
+    // CHMA - GGEW - SOVL
+    /**
+     * This method is used to find the total number of files that are needed to 
+     * be saved when the differences between each target and base node per command
+     * are to be saved.
+     *
+     * @param num is the number of files that are found so far.
+     * @param node is the current node of the tree that is being processed
+     * @param model is the model of the Target nodes tree
+     */
+    private int findNumOfFiles(int num, Object node, TreeModel model){
+        int cc;
+        cc = model.getChildCount(node);
+        for (int i = 0; i < cc; i++) {
+            Object child = model.getChild(node, i);
+            if (model.isLeaf(child)) {
+                for (int j = 0; j < BaseNodesCombo.getItemCount(); j++) {
+                    num+=1;
+                }
+            } else {
+                num = findNumOfFiles(num, child, model);
+            }
+        }
+        return num;
+    }
+    
     /**
      * This method is used to find the commands in the target nodes tree and for
      * each combination of base node, target node and command to create a new
      * file in the directory selected from the file chooser. In this file the
      * differences between the command printouts will be stored.
      *
-     * @param chooser is the the file chooser from which the directory to store
-     * the files is selected.
+     * @param chooser is the file chooser from which the directory to store the
+     * files is selected.
      * @param model is the model of the Target nodes tree
      * @param node is the current node of the tree that is being processed
+     * @param write is the writer to the results file
      */
     private void traverseTree(JFileChooser chooser, TreeModel model, Object node, BufferedWriter write) {
         int cc;
@@ -2366,18 +2466,27 @@ public class MainFrame extends javax.swing.JFrame {
                                 lastLine = tempLine;
                             }
                             writer.close();
+                            Thread.sleep(100);
                         } catch (IOException ex) {
                             java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
                         }
-
+                        catch (InterruptedException ex) {
+                            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+                        }
                     } else {
                         try {
                             String refs[] = cmp.getCommandReferences(base, target, command);
                             write.write(refs[0].replace('\\', '_') + "__" + refs[1].replace('\\', '_') + "_" + command + " Differences not found\n");
+                            Thread.sleep(100);
                         } catch (IOException ex) {
                             java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
                         }
+                        catch (InterruptedException ex) {
+                            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+                        }
                     }
+                    //ggew
+                    filesDone++;
                 }
             } else {
                 traverseTree(chooser, model, child, write);

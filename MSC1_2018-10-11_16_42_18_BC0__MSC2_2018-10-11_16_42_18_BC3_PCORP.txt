@@ -1,0 +1,72 @@
+Difference: 1
+-------------
+MSC1\2018-10-11_16_42_18\BC0
+line 14:
+SWAEM0121        C  CODE  H'0265           24
+
+MSC2\2018-10-11_16_42_18\BC3
+lines 14-16:
+SWAEM0123        C  CODE  H'0C66           60
+SWAEM0123        C  CODE  H'1C86           28
+SWAEM0121        C  CODE  H'0264           20
+
+Difference: 2
+-------------
+MSC1\2018-10-11_16_42_18\BC0
+line 102:
+R01MCXJO2716     C  CODE  H'3F90           33
+
+MSC2\2018-10-11_16_42_18\BC3
+line 105:
+R01MCXJO2714     C  CODE  H'3F90           33
+
+Difference: 3
+-------------
+MSC1\2018-10-11_16_42_18\BC0
+line 112:
+RWAXC2213        C  CODE  H'0065           12
+
+MSC2\2018-10-11_16_42_18\BC3
+line 115:
+RWAXC2213        C  CODE  H'0065           19
+
+Difference: 4
+-------------
+MSC1\2018-10-11_16_42_18\BC0
+line 23083:
+IPA20160919      C  CODE  H'026E           20
+
+MSC2\2018-10-11_16_42_18\BC3
+line 23086:
+IPA20161004      C  CODE  H'026E           20
+
+Difference: 5
+-------------
+MSC1\2018-10-11_16_42_18\BC0
+line 23088:
+CPA20160114      C  CODE  H'0258           20
+
+MSC2\2018-10-11_16_42_18\BC3
+line 23091:
+CPA20160316      C  CODE  H'0258           20
+
+Difference: 6
+-------------
+MSC1\2018-10-11_16_42_18\BC0
+line 23091:
+EPA20161107      C  CODE  H'04BA           19
+
+MSC2\2018-10-11_16_42_18\BC3
+line 23094:
+EPA20161110      C  CODE  H'04BA           19
+
+Difference: 7
+-------------
+MSC1\2018-10-11_16_42_18\BC0
+line 23095:
+MCA20161109      C  CODE  H'0644           20
+
+MSC2\2018-10-11_16_42_18\BC3
+line 23098:
+MCA20170920      C  CODE  H'0644           20
+
