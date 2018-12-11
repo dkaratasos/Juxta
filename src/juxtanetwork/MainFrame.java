@@ -1233,10 +1233,20 @@ public class MainFrame extends javax.swing.JFrame {
 
         SaveMN.setIcon(new javax.swing.ImageIcon(getClass().getResource("/juxtanetwork/Save16.png"))); // NOI18N
         SaveMN.setText("Save");
+        SaveMN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveTLBActionPerformed(evt);
+            }
+        });
         fileMN.add(SaveMN);
 
         saveAllMN.setIcon(new javax.swing.ImageIcon(getClass().getResource("/juxtanetwork/save-all16.png"))); // NOI18N
         saveAllMN.setText("SaveAll");
+        saveAllMN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveAllBTNActionPerformed(evt);
+            }
+        });
         fileMN.add(saveAllMN);
 
         exitMN.setIcon(new javax.swing.ImageIcon(getClass().getResource("/juxtanetwork/exit16.png"))); // NOI18N
