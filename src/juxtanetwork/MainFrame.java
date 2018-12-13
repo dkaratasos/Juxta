@@ -2347,6 +2347,45 @@ public class MainFrame extends javax.swing.JFrame {
                 doAnalysis();
             }
         }
+        
+        // CHMA - GGEW - SOVL
+        
+        if (mainTabbedPane.getSelectedIndex() == 0) {
+            if (selectedNode != null) {
+                String info = null;
+                StringBuilder infoText = new StringBuilder();
+                if (selectedNode.isLeaf()){
+                    info = selectedNode.getParent().toString();
+                    infoText.append("Selected node is " + info + "\n");
+                    infoText.append("Selected blade is " + selectedNode.toString() + "\n\n");
+                }
+                else {
+                    if (selectedNode.getParent() == TargetNodesTree.getModel().getRoot()){
+                        infoTextArea.setText(infoText.toString());
+                        info = selectedNode.toString();
+                    } else {
+                        info = selectedNode.toString();
+                        infoText.append("Selected node is " + info + "\n\n");
+                    }
+                }  
+                infoText.append("NODE INFORMATION" + "\n");
+                infoText.append("------------------------------" + "\n\n");
+                try {
+                    BufferedReader scanner = new BufferedReader(new FileReader(new File(getPath(info) + System.getProperty("file.separator") + "info")));
+                    while (scanner.ready()) {
+                        infoText.append(scanner.readLine() + "\n");
+                    }
+                    infoTextArea.setText(infoText.toString());        
+                } catch (Exception ex) {
+//                    if (infoText.length() != 0) {
+//                        errorMessageLBL.setText("Info file not found for node: " + info);
+//                        errorDialog.setVisible(true);
+//                    }
+                    return;
+                    //System.out.println("Info file not found for node: " + info);
+                }
+            }
+        }
     }//GEN-LAST:event_TargetNodesTreeValueChanged
 
     private void applyChooseRefBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_applyChooseRefBTNActionPerformed
@@ -2517,7 +2556,7 @@ public class MainFrame extends javax.swing.JFrame {
                             java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
                         }
                     }
-                    //ggew
+                    // CHMA - GGEW - SOVL
                     filesDone++;
                 }
             } else {
