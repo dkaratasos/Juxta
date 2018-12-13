@@ -230,30 +230,6 @@ public class Compare {
                         Command CommandObject = new Command(command, f1, f2);
                         // Perform Some Tasks in Command Object
                         Commands.put(command, CommandObject);
-                        //==========================================================
-                        // IXGKOAG - MOD AFTER COMMENT FOR CONCURRENT SCROLLING
-                        CommandObject.getPOtexts();
-                        int diff = CommandObject.getPrintOutLines() - CommandObject.getPrintOut2Lines();
-
-                        if (diff > 0) {
-                            String po2 = CommandObject.getPrintOut2();
-                            while (diff > 0) {
-                                po2 = po2 + "\n";
-                                //po2.concat("\n");
-                                diff--;
-                            }
-                            CommandObject.setPrintOut2(po2);
-                        }
-                        if (diff < 0) {
-                            String po1 = CommandObject.getPrintOut();
-                            while (0 >= diff) {
-                                po1 = po1 + "\n";
-                                //po1.concat("\n"); 
-                                diff++;
-                            }
-                            CommandObject.setPrintOut(po1);
-                        }
-                        // END MOD  
 
                     }
                 }
@@ -329,7 +305,31 @@ public class Compare {
         }
         try {
             Command comm1 = Structure.get(base).get(target).get(comm);
-            // comm1.getPOtexts(); Moved to prepareHashStructure()
+            //==========================================================
+            // IXGKOAG - MOD AFTER COMMENT FOR CONCURRENT SCROLLING
+            comm1.getPOtexts();
+            int diff = comm1.getPrintOutLines() - comm1.getPrintOut2Lines();
+
+            if (diff > 0) {
+                String po2 = comm1.getPrintOut2();
+                while (diff > 0) {
+                    po2 = po2 + "\n";
+                    //po2.concat("\n");
+                    diff--;
+                }
+                comm1.setPrintOut2(po2);
+            }
+            if (diff < 0) {
+                String po1 = comm1.getPrintOut();
+                while (0 >= diff) {
+                    po1 = po1 + "\n";
+                    //po1.concat("\n"); 
+                    diff++;
+                }
+                comm1.setPrintOut(po1);
+            }
+            // END MOD  
+
             String po1 = comm1.getPrintOut();
             String po2 = comm1.getPrintOut2();
             po1TextArea.setText(po1);
@@ -341,15 +341,16 @@ public class Compare {
 
     // CHMA-GGEW-SOVL
     /**
-    * Method for getting the paths where the command file for both base and target 
-    * node is located.
-    *
-    * @param base is the name of the base node
-    * @param target is the name of the target node
-    * @param command is the name of the command that is processed
-    *
-    * @return the paths where the command file for base and target node is stored
-    */    
+     * Method for getting the paths where the command file for both base and
+     * target node is located.
+     *
+     * @param base is the name of the base node
+     * @param target is the name of the target node
+     * @param command is the name of the command that is processed
+     *
+     * @return the paths where the command file for base and target node is
+     * stored
+     */
     public String[] getCommandReferences(String base, String target, String command) {
         Command comm = Structure.get(base).get(target).get(command);
         String[] paths = new String[2];
