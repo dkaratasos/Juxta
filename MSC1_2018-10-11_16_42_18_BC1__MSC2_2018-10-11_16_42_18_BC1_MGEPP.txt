@@ -1,0 +1,20 @@
+Difference: 1
+-------------
+MSC1\2018-10-11_16_42_18\BC1
+line 19:
+CAPLTCHEMER-0          OPTIONAL
+
+MSC2\2018-10-11_16_42_18\BC1
+line 19:
+GGEW-0                 OPTIONAL
+
+Difference: 2
+-------------
+MSC1\2018-10-11_16_42_18\BC1
+line 19:
+CAPLTCHEMER-0          OPTIONAL
+
+MSC2\2018-10-11_16_42_18\BC1
+line 20:
+CAPLTCHEMER-0          OPTEONAL
+

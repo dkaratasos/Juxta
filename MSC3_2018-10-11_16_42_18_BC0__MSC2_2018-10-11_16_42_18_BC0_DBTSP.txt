@@ -1,0 +1,60 @@
+Difference: 1
+-------------
+MSC3\2018-10-11_16_42_18\BC0
+line 133:
+DASCCID         OMSRS                16359     1      SUPPLY  IMMED
+
+MSC2\2018-10-11_16_42_18\BC0
+line 133:
+DASCCID         OMSRS                16359     3      SUPPLY  IMMED
+
+Difference: 2
+-------------
+MSC3\2018-10-11_16_42_18\BC0
+line 14753:
+AMCRESFCSCC     AMCRESF              13435     0      FEATURE IMMED
+
+MSC2\2018-10-11_16_42_18\BC0
+line 14753:
+AMCRESFCSCC     AMCRESF              13435     1      FEATURE IMMED
+
+Difference: 3
+-------------
+MSC3\2018-10-11_16_42_18\BC0
+line 19413:
+INAPDEFAULTIST  AMCSSFC              12503     0      CUSTOM  IMMED
+
+MSC2\2018-10-11_16_42_18\BC0
+line 19413:
+INAPDEFAULTIST  AMCSSFC              12503  2067      CUSTOM  IMMED
+
+Difference: 4
+-------------
+MSC3\2018-10-11_16_42_18\BC0
+line 40233:
+CRSSM           AMCRESF               8339     0      FEATURE IMMED
+
+MSC2\2018-10-11_16_42_18\BC0
+line 40233:
+CRSSM           AMCRESF               8339     1      FEATURE IMMED
+
+Difference: 5
+-------------
+MSC3\2018-10-11_16_42_18\BC0
+line 44983:
+NBLAC           GSMMMSC               7389    24      CUSTOM  IMMED
+
+MSC2\2018-10-11_16_42_18\BC0
+line 44983:
+NBLAC           GSMMMSC               7389    28      CUSTOM  IMMED
+
+Difference: 6
+-------------
+MSC3\2018-10-11_16_42_18\BC0
+line 51223:
+OWNCNID         GSMMMSC               6141  1009      CUSTOM  IMMED
+
+MSC2\2018-10-11_16_42_18\BC0
+line 51223:
+OWNCNID         GSMMMSC               6141  1013      CUSTOM  IMMED
+
