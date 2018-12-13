@@ -1,6 +1,3 @@
-//IXGKOAG
-//1. Collect Select Commands from Command List 
-//2. 
 package juxtanetwork;
 
 import java.io.BufferedReader;
