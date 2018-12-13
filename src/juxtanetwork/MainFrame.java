@@ -92,7 +92,6 @@ public class MainFrame extends javax.swing.JFrame {
     Compare cmp;
     boolean concurendScroll = false;
 
-
     //CHMA-GGEW-SOVL  -- Define Common Command List
     ArrayList<String> arrayCommList = new ArrayList<String>();
     
@@ -2652,23 +2651,28 @@ public class MainFrame extends javax.swing.JFrame {
         System.out.println(po1ScrollPane.getVerticalScrollBar().getModel());
 
         if (this.concurendScroll) {
+            //change color of this button
+            this.concurendScrollButton.setForeground(diffsColor);
+            this.concurendScrollButton.setBackground(new java.awt.Color(0,102,0));
             //Resize Panel
             int splitPaneHeight = diffSplitPane.getHeight();
             diffSplitPane.setDividerLocation(splitPaneHeight / 2);
             //Set to first line the print outs
             po1ScrollPane.getVerticalScrollBar().setValue(0);
             po2ScrollPane.getVerticalScrollBar().setValue(0);
-            //equilize models
+            //equalize models
             po2ScrollPane.getVerticalScrollBar().setModel(po1ScrollPane.getVerticalScrollBar().getModel());
             po1ScrollPane.getVerticalScrollBar().setModel(po2ScrollPane.getVerticalScrollBar().getModel());
         } else {
+            //change color of this button
+            this.concurendScrollButton.setForeground(new java.awt.Color(0,0,0));
+            this.concurendScrollButton.setBackground(new java.awt.Color(212,208,200));
+            //create dummy JscrollBars
             javax.swing.JScrollPane ScrollPanex1 = new javax.swing.JScrollPane();
-                 
-         BoundedRangeModel   DefaultScrollmodel1 =  ScrollPanex1.getVerticalScrollBar().getModel();
-            
+            BoundedRangeModel DefaultScrollmodel1 = ScrollPanex1.getVerticalScrollBar().getModel();
             javax.swing.JScrollPane ScrollPanex2 = new javax.swing.JScrollPane();
-          BoundedRangeModel  DefaultScrollmodel2 =  ScrollPanex2.getVerticalScrollBar().getModel();
-            
+            BoundedRangeModel DefaultScrollmodel2 = ScrollPanex2.getVerticalScrollBar().getModel();
+            //Assign them Model to existing ones
             po2ScrollPane.getVerticalScrollBar().setModel(DefaultScrollmodel1);
             po1ScrollPane.getVerticalScrollBar().setModel(DefaultScrollmodel2);
         }
