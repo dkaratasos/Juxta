@@ -302,31 +302,7 @@ public class Compare {
         }
         try {
             Command comm1 = Structure.get(base).get(target).get(comm);
-            //==========================================================
-            // IXGKOAG - MOD AFTER COMMENT FOR CONCURRENT SCROLLING
             comm1.getPOtexts();
-            int diff = comm1.getPrintOutLines() - comm1.getPrintOut2Lines();
-
-            if (diff > 0) {
-                String po2 = comm1.getPrintOut2();
-                while (diff > 0) {
-                    po2 = po2 + "\n";
-                    //po2.concat("\n");
-                    diff--;
-                }
-                comm1.setPrintOut2(po2);
-            }
-            if (diff < 0) {
-                String po1 = comm1.getPrintOut();
-                while (0 >= diff) {
-                    po1 = po1 + "\n";
-                    //po1.concat("\n"); 
-                    diff++;
-                }
-                comm1.setPrintOut(po1);
-            }
-            // END MOD  
-
             String po1 = comm1.getPrintOut();
             String po2 = comm1.getPrintOut2();
             po1TextArea.setText(po1);
