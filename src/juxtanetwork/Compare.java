@@ -59,7 +59,7 @@ public class Compare {
         for (int i = 0; i < selectedIndex.length; i++) {
             selectedCommands.add(commList.getModel().getElementAt(selectedIndex[i]));
         }
-        System.out.println("Selected Commads : " + selectedCommands);
+//        System.out.println("Selected Commads : " + selectedCommands);
         prepareHashStructure();
     }
 
@@ -176,7 +176,6 @@ public class Compare {
         } else {
             path = LogsDirectory + fileSeperator + node + fileSeperator + time + fileSeperator;
         }
-        System.out.println("Current path: " + path);
         return path;
     }
 
@@ -283,7 +282,6 @@ public class Compare {
         if (selectedNode.equals("")) {
             return;
         }
-        System.out.println("Selected Base Node :" + selectedNode);
 
         //Clear tree view Model
         this.commsTreeModel.removeAllChildren();
@@ -299,7 +297,6 @@ public class Compare {
 
         //For each Node
         for (String CompareNode : TargetNodes.keySet()) {
-            System.out.println("Target Node :" + CompareNode);
             //Append TargetNode Element
             nodesTreeModel[currIndex1] = new DefaultMutableTreeNode(CompareNode);
             this.commsTreeModel.add(nodesTreeModel[currIndex1]);
@@ -337,6 +334,32 @@ public class Compare {
         } catch (Exception e) {
             System.out.println("No command selected");
         }
+    }
+    
+    public String[] nodeSelected(String base, String target, String comm) {
+//    String test = Structure.get(base).get(target).get(comm).getName();
+//        System.out.println("command name= "+test);
+        String[] pos = new String[2];
+        if (comm.isEmpty()) {
+            return pos;
+        }
+        if (target.isEmpty()) {
+            return pos;
+        }
+        if (base.isEmpty()) {
+            return pos;
+        }
+        try {
+            Command comm1 = Structure.get(base).get(target).get(comm);
+            // comm1.getPOtexts(); Moved to prepareHashStructure()
+            String po1 = comm1.getPrintOut();
+            String po2 = comm1.getPrintOut2();
+            pos[0] = po1;
+            pos[1] = po2;
+        } catch (Exception e) {
+            System.out.println("No command selected");
+        }
+        return pos;
     }
 
     // CHMA-GGEW-SOVL

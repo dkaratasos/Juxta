@@ -1624,6 +1624,14 @@ public class MainFrame extends javax.swing.JFrame {
      */
     private void getPrintouts() {
 
+        // CHMA - GGEW - SOVL
+        
+        if (saveAllIndic){
+            errorMessageLBL.setText("Cannot open new network while saving");
+            errorDialog.setVisible(true);
+            return;
+        }
+        
         fileChooser.setDialogTitle("Open Printouts Folder");
         fileChooser.setMultiSelectionEnabled(false);
         fileChooser.setFileSelectionMode(1);
@@ -1728,11 +1736,13 @@ public class MainFrame extends javax.swing.JFrame {
      * @return the new lines of the two potextAreas where the new difference is
      * found
      */
-    private int[] writeDiffToFile(BufferedWriter writer, int[] diffs1, int[] diffs2, int[] lastDiffLine, int diffCount, String[] printout) {
+    private int[] writeDiffToFile(BufferedWriter writer, int[] diffs1, int[] diffs2, int[] lastDiffLine, int diffCount, String[] printout, String[] pos) {
         int[] temps = new int[2];
         try {
-            int line1po1 = po1TextArea.getLineOfOffset(diffs1[0]);
-            int line1po2 = po2TextArea.getLineOfOffset(diffs2[0]);
+//            int line1po1 = po1TextArea.getLineOfOffset(diffs1[0]);
+//            int line1po2 = po2TextArea.getLineOfOffset(diffs2[0]);
+            int line1po1 = findLine(pos[0],diffs1[0]);
+            int line1po2 = findLine(pos[1],diffs2[0]);
             temps[0] = line1po1;
             temps[1] = line1po2;
             if (!((diffs1[0] == diffs1[1]) && (diffs2[0] == diffs2[1]))) {
@@ -1740,42 +1750,154 @@ public class MainFrame extends javax.swing.JFrame {
                     writer.write("Difference: " + diffCount + "\n");
                     writer.write("-------------\n");
                     writer.write(printout[0] + "\n");
-                    int line2po1 = po1TextArea.getLineOfOffset(diffs1[1]);
-                    int line2po2 = po2TextArea.getLineOfOffset(diffs2[1]);
-                    if (po1TextArea.getLineStartOffset(line2po1) == diffs1[1]) {
+//                    int line2po1 = po1TextArea.getLineOfOffset(diffs1[1]);
+//                    int line2po2 = po2TextArea.getLineOfOffset(diffs2[1]);
+                    int line2po1 = findLine(pos[0],diffs1[1]);
+                    int line2po2 = findLine(pos[1],diffs2[1]);
+//                    if (po1TextArea.getLineStartOffset(line2po1) == diffs1[1]) {
+                    if (getLineStart(pos[0],line2po1) == diffs1[1]) {
                         line2po1 -= 1;
                     }
-                    if (po2TextArea.getLineStartOffset(line2po2) == diffs2[1]) {
+//                    if (po2TextArea.getLineStartOffset(line2po2) == diffs2[1]) {
+                    if (getLineStart(pos[1],line2po2) == diffs2[1]) {
                         line2po2 -= 1;
                     }
-                    int actualLine1po1 = line1po1 + 1;
-                    int actualLine2po1 = line2po1 + 1;
+//                    int actualLine1po1 = line1po1 + 1;
+//                    int actualLine2po1 = line2po1 + 1;
                     if (line1po1 >= line2po1) {
-                        writer.write("line " + actualLine1po1 + ":\n");
-                        writer.write(po1TextArea.getText(po1TextArea.getLineStartOffset(line1po1), po1TextArea.getLineEndOffset(line1po1) - po1TextArea.getLineStartOffset(line1po1) - 1));
+//                        writer.write("line " + actualLine1po1 + ":\n");
+//                        writer.write(po1TextArea.getText(po1TextArea.getLineStartOffset(line1po1), po1TextArea.getLineEndOffset(line1po1) - po1TextArea.getLineStartOffset(line1po1) - 1));
+                        writer.write("line " + line1po1 + ":\n");
+                        writer.write(getLine(pos[0],line1po1) + "\n");
                     } else {
-                        writer.write("lines " + actualLine1po1 + "-" + actualLine2po1 + ":\n");
-                        writer.write(po1TextArea.getText(po1TextArea.getLineStartOffset(line1po1), po1TextArea.getLineEndOffset(line2po1) - po1TextArea.getLineStartOffset(line1po1) - 1));
+//                        writer.write("lines " + actualLine1po1 + "-" + actualLine2po1 + ":\n");
+//                        writer.write(po1TextArea.getText(po1TextArea.getLineStartOffset(line1po1), po1TextArea.getLineEndOffset(line2po1) - po1TextArea.getLineStartOffset(line1po1) - 1));
+                        writer.write("lines " + line1po1 + "-" + line2po1 + ":\n");
+                        writer.write(getLines(pos[0], line1po1, line2po1));
                     }
                     writer.write("\n\n");
                     writer.write(printout[1] + "\n");
-                    int actualLine1po2 = line1po2 + 1;
-                    int actualLine2po2 = line2po2 + 1;
+//                    int actualLine1po2 = line1po2 + 1;
+//                    int actualLine2po2 = line2po2 + 1;
                     if (line1po2 >= line2po2) {
-                        writer.write("line " + actualLine1po2 + ":\n");
-                        writer.write(po2TextArea.getText(po2TextArea.getLineStartOffset(line1po2), po2TextArea.getLineEndOffset(line1po2) - po2TextArea.getLineStartOffset(line1po2) - 1));
+//                        writer.write("line " + actualLine1po2 + ":\n");
+//                        writer.write(po2TextArea.getText(po2TextArea.getLineStartOffset(line1po2), po2TextArea.getLineEndOffset(line1po2) - po2TextArea.getLineStartOffset(line1po2) - 1));
+                        writer.write("line " + line1po2 + ":\n");
+                        writer.write(getLine(pos[1],line1po2) + "\n");
                     } else {
-                        writer.write("lines " + actualLine1po2 + "-" + actualLine2po2 + ":\n");
-                        writer.write(po2TextArea.getText(po2TextArea.getLineStartOffset(line1po2), po2TextArea.getLineEndOffset(line2po2) - po2TextArea.getLineStartOffset(line1po2) - 1));
+//                        writer.write("lines " + actualLine1po2 + "-" + actualLine2po2 + ":\n");
+//                        writer.write(po2TextArea.getText(po2TextArea.getLineStartOffset(line1po2), po2TextArea.getLineEndOffset(line2po2) - po2TextArea.getLineStartOffset(line1po2) - 1));
+                        writer.write("lines " + line1po2 + "-" + line2po2 + ":\n");
+                        writer.write(getLines(pos[1], line1po2, line2po2));
                     }
                     writer.write("\n\n");
                 }
             }
-        } catch (javax.swing.text.BadLocationException | IOException ex) {
+//        } catch (javax.swing.text.BadLocationException | IOException ex) {
+        } catch (IOException ex) {
             java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         return temps;
     }
+    
+    
+   private int findLine(String po, int index) {
+	int line = 1;
+	int charIndex = 0;
+	while (charIndex < index) {
+            if (po.charAt(charIndex) == '\n'){
+		line++;
+            }
+            charIndex++;
+	}
+	return line;
+    }
+
+    private String getLine(String po, int line) {
+	int lineIndex = 1;
+	int charIndex = 0;
+	String lineString = null;
+	while (lineIndex < line) { 
+            if (po.charAt(charIndex) == '\n'){
+                lineIndex++;
+                if (line == lineIndex) {
+                    charIndex++;
+                    if (po.indexOf('\n',charIndex) != -1){
+                        lineString = po.substring(charIndex,po.indexOf('\n',charIndex));
+                    }
+                    else {
+                        lineString = po.substring(charIndex,po.length());
+                    }
+                    return lineString;
+		}
+            }
+            charIndex++;
+	}
+        
+	return lineString;
+    } 
+    
+    private String getLines(String po, int line1, int line2) {
+	int lineIndex = 1;
+	int charIndex = 0;
+        int startIndex = -1;
+	String lineString = null;
+	while (lineIndex < line2) { 
+            if (po.charAt(charIndex) == '\n'){
+                lineIndex++;
+                if (line1 == lineIndex) {
+                    charIndex++;
+                    if (startIndex == -1) {
+                        startIndex = charIndex;
+                    }
+		}
+                if (line2 == lineIndex) {
+                    charIndex++;
+                    if (po.indexOf('\n',charIndex) != -1){    
+                        lineString = po.substring(startIndex,po.indexOf('\n',charIndex));
+                    }
+                    else {
+                        lineString = po.substring(startIndex,po.length());
+                    }
+                    return lineString;
+		}
+            }
+            charIndex++;
+	}
+	return lineString;
+    } 
+    
+    private int getLineStart(String po, int line) {
+	int lineIndex = 1;
+	int charIndex = 0;
+	while (lineIndex < line) {
+            if (po.charAt(charIndex) == '\n'){
+                lineIndex++;
+                if (line == lineIndex) {
+                    charIndex++;
+                    return charIndex;
+		}
+            }
+            charIndex++;
+	}
+	return charIndex;
+    } 
+    
+    private int getLineEnd(String po, int line) {
+	int lineIndex = 1;
+	int charIndex = 0;
+	while (lineIndex < line) {
+            if (po.charAt(charIndex) == '\n'){
+                lineIndex++;
+                if (line == lineIndex) {
+                    charIndex++;
+                    return po.indexOf('\n',charIndex);
+		}
+            }
+            charIndex++;
+	}
+	return charIndex;
+    } 
 
 
     private void OpenMNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OpenMNActionPerformed
@@ -1944,6 +2066,7 @@ public class MainFrame extends javax.swing.JFrame {
             errorDialog.setVisible(true);
             return;
         }
+        
         String command = selectedNode.toString();
         String target = selectedNode.getParent().toString();
         String base = BaseNodesCombo.getSelectedItem().toString();
@@ -1956,8 +2079,11 @@ public class MainFrame extends javax.swing.JFrame {
                 BufferedWriter writer = Files.newBufferedWriter(Paths.get(fC.getSelectedFile().getAbsolutePath() + ".txt"));
                 int[] lastLine = new int[]{-1, -1};
                 int diffCount = 1;
+                String[] pos = new String[2];
+                pos[0] = po1TextArea.getText().trim();
+                pos[1] = po2TextArea.getText().trim();
                 for (int i = 0; i < diffs1.size(); i++) {
-                    int tempLine[] = writeDiffToFile(writer, diffs1.get(i), diffs2.get(i), lastLine, diffCount, refs);
+                    int tempLine[] = writeDiffToFile(writer, diffs1.get(i), diffs2.get(i), lastLine, diffCount, refs, pos);
                     if ((tempLine[0] != lastLine[0]) || (tempLine[1] != lastLine[1])) {
                         diffCount++;
                     }
@@ -2029,6 +2155,14 @@ public class MainFrame extends javax.swing.JFrame {
             errorDialog.setVisible(true);
             return;
         }
+        
+        
+        // CHMA - GGEW - SOVL
+        if (saveAllIndic) {
+            errorMessageLBL.setText("Cannot perform another analysis while saving");
+            errorDialog.setVisible(true);
+            return;
+        }
 
         cmp.updateSelectedCommands(commList);
         cmp.prepareHashStructure();
@@ -2059,6 +2193,25 @@ public class MainFrame extends javax.swing.JFrame {
         dmp.diff_cleanupSemantic(diffs);
         diffs2 = diff_Fortext(diffs);
         cleanUpDiffs();
+    }
+    
+    
+    
+    // CHMA - GGEW - SOVL
+    
+    private ArrayList<ArrayList<int[]>> findDiffs(String po1, String po2) {  
+        ArrayList<ArrayList<int[]>> saveDiffs = new ArrayList<ArrayList<int[]>>(2);
+        LinkedList<diff_match_patch.Diff> diffs = new LinkedList<diff_match_patch.Diff>();
+        diff_match_patch dmp = new diff_match_patch();
+        dmp.Diff_Timeout = 0;
+        diffs = dmp.diff_main(po1.trim(), po2.trim());
+        dmp.diff_cleanupSemantic(diffs);
+        saveDiffs.add(diff_Fortext(diffs));
+        diffs = dmp.diff_main(po2.trim(), po1.trim());
+        dmp.diff_cleanupSemantic(diffs);
+        saveDiffs.add(diff_Fortext(diffs));
+        saveDiffs = cleanUpDiffs(saveDiffs);
+        return saveDiffs;
     }
 
     /**
@@ -2094,6 +2247,21 @@ public class MainFrame extends javax.swing.JFrame {
                 diffs2.remove(i);
             }
         }
+    }
+    
+    
+    private ArrayList<ArrayList<int[]>> cleanUpDiffs(ArrayList<ArrayList<int[]>> diffs) {
+
+        if (diffs.get(0).size() != diffs.get(1).size()) {
+            return diffs;
+        }
+        for (int i = diffs.get(0).size()- 1; i >= 0; i--) {
+            if ((diffs.get(0).get(i)[0] == diffs.get(0).get(i)[1]) && (diffs.get(1).get(i)[0] == diffs.get(1).get(i)[1])) {
+                diffs.get(0).remove(i);
+                diffs.get(1).remove(i);
+            }
+        }
+        return diffs;
     }
 
     /**
@@ -2439,7 +2607,7 @@ public class MainFrame extends javax.swing.JFrame {
         
         // CHMA - GGEW - SOVL 
         
-        if (saveAllIndic == true){
+        if (saveAllIndic){
             errorMessageLBL.setText("Already Saving");
             errorDialog.setVisible(true);
             return;
@@ -2512,20 +2680,19 @@ public class MainFrame extends javax.swing.JFrame {
                     String base = BaseNodesCombo.getItemAt(j);
                     String target = node.toString();
                     String command = child.toString();
-                    cmp.nodeSelected(base, target, command, po1TextArea, po2TextArea);
-                    findDiffs();
-                    if (!diffs1.isEmpty()) {
+                    String[] pos = cmp.nodeSelected(base, target, command);
+                    ArrayList<ArrayList<int[]>> diffs = findDiffs(pos[0],pos[1]);
+                    if (!diffs.get(0).isEmpty()) {
                         String refs[] = cmp.getCommandReferences(base, target, command);
 
                         try {
                             write.write(refs[0].replace('\\', '_') + "__" + refs[1].replace('\\', '_') + "_" + command + " Differences found \n");
-
                             File f = new File(chooser.getSelectedFile(), refs[0].replace('\\', '_') + "__" + refs[1].replace('\\', '_') + "_" + command + ".txt");
                             BufferedWriter writer = new BufferedWriter(new FileWriter(f));
                             int[] lastLine = new int[]{-1, -1};
                             int diffCount = 1;
-                            for (int k = 0; k < diffs1.size(); k++) {
-                                int tempLine[] = writeDiffToFile(writer, diffs1.get(k), diffs2.get(k), lastLine, diffCount, refs);
+                            for (int k = 0; k < diffs.get(0).size(); k++) {
+                                int tempLine[] = writeDiffToFile(writer, diffs.get(0).get(k), diffs.get(1).get(k), lastLine, diffCount, refs, pos);
                                 if ((tempLine[0] != lastLine[0]) || (tempLine[1] != lastLine[1])) {
                                     diffCount++;
                                 }
