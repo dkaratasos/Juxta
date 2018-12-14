@@ -2647,8 +2647,6 @@ public class MainFrame extends javax.swing.JFrame {
 
         this.concurendScroll = concurendScrollButton.isSelected();
         System.out.println("concurendScroll is " + this.concurendScroll);
-        System.out.println(po2ScrollPane.getVerticalScrollBar().getModel());
-        System.out.println(po1ScrollPane.getVerticalScrollBar().getModel());
 
         if (this.concurendScroll) {
             //change color of this button
@@ -2685,8 +2683,10 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_po2ScrollPaneMouseReleased
 
     private void diffSplitPaneComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_diffSplitPaneComponentResized
+        if(this.concurendScroll){
         int splitPaneHeight = diffSplitPane.getHeight();
         diffSplitPane.setDividerLocation(splitPaneHeight / 2);
+        }
     }//GEN-LAST:event_diffSplitPaneComponentResized
 
     /**
