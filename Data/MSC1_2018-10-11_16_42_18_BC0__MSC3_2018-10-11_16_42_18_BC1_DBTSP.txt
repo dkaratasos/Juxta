@@ -1,0 +1,73 @@
+Difference: 1
+-------------
+MSC1\2018-10-11_16_42_18\BC0
+line 23:
+SCLMDASTCCID    SCLMS                16381    12      SUPPLY  IMMED
+
+MSC3\2018-10-11_16_42_18\BC1
+line 23:
+SCLMDASTCCID    SCLMS                16381     0      SUPPLY  IMMED
+
+Difference: 2
+-------------
+MSC1\2018-10-11_16_42_18\BC0
+line 38:
+SRVCCEMERGBO    GSMMSSC              16378   10       CUSTOM  IMMED
+
+MSC3\2018-10-11_16_42_18\BC1
+line 38:
+SRVCCEMERGBO    GSMMSSC              16378   511      CUSTOM  IMMED
+
+Difference: 3
+-------------
+MSC1\2018-10-11_16_42_18\BC0
+line 528:
+IMSC3XC6ILNB    CONRMILS             16280    16      SUPPLY  IMMED
+
+MSC3\2018-10-11_16_42_18\BC1
+line 528:
+IMSC3XC6ILNB    CONRMILS             16280    11      SUPPLY  IMMED
+
+Difference: 4
+-------------
+MSC1\2018-10-11_16_42_18\BC0
+line 747:
+NAME            SETNAME         PARID      VALUE UNIT CLASS   DISTRIB
+
+MSC3\2018-10-11_16_42_18\BC1
+lines 747-751:
+NAME            SETNAME         PARID      VALUE UNIT CLASS   DISTRIB
+MBANNEXBP       CONRMILS             16236     0      SUPPLY  IMMED
+                                STATUS  FCVSET FCVALUE DCINFO FCODE
+                                UPDATED FALSE        0 UNDEF      0
+
+
+Difference: 5
+-------------
+MSC1\2018-10-11_16_42_18\BC0
+line 53477:
+END
+
+MSC3\2018-10-11_16_42_18\BC1
+lines 53482-53501:
+NAME            SETNAME         PARID      VALUE UNIT CLASS   DISTRIB
+FREQINDEX4      TSSTONESS             5689   128      SUPPLY  IMMED
+                                STATUS  FCVSET FCVALUE DCINFO FCODE
+                                UPDATED FALSE        0 UNDEF      0
+
+NAME            SETNAME         PARID      VALUE UNIT CLASS   DISTRIB
+FREQINDEX3      TSSTONESS             5688   128      SUPPLY  IMMED
+                                STATUS  FCVSET FCVALUE DCINFO FCODE
+                                UPDATED FALSE        0 UNDEF      0
+
+NAME            SETNAME         PARID      VALUE UNIT CLASS   DISTRIB
+FREQINDEX2      TSSTONESS             5687   128      SUPPLY  IMMED
+                                STATUS  FCVSET FCVALUE DCINFO FCODE
+                                UPDATED FALSE        0 UNDEF      0
+
+NAME            SETNAME         PARID      VALUE UNIT CLASS   DISTRIB
+FREQINDEX1      TSSTONESS             5686     8      SUPPLY  IMMED
+                                STATUS  FCVSET FCVALUE DCINFO FCODE
+                                UPDATED FALSE        0 UNDEF      0
+
+

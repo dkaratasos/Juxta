@@ -158,6 +158,11 @@ public class Command {
      * @return The pure final printout of the command, sorted if necessary
      */
     public void getPOtexts() {
+        //--IXGKOAG--Skip function if files already readen 
+        if (this.printOutLines>0 || this.printOut2Lines>0){
+        return;
+        }
+
         StringBuilder po1 = new StringBuilder();
         StringBuilder po2 = new StringBuilder();
         this.printOutLines=0;//IXGKOAG
@@ -174,7 +179,27 @@ public class Command {
             po2.append(scannerPO2.readLine() + "\n");
             this.printOut2Lines++; //IXGKOAG
         }
-        printOut2=po2.toString();        
+        printOut2=po2.toString();
+        //--IXGKOAG-- equalize PO length
+        int diff = this.getPrintOutLines() - this.getPrintOut2Lines();
+
+            if (diff > 0) {
+                String p2 = this.getPrintOut2();
+                while (diff > 0) {
+                    p2 = p2 + "\n";
+                    diff--;
+                }
+                this.setPrintOut2(p2);
+            }
+            if (diff < 0) {
+                String p1 = this.getPrintOut();
+                while (0 >= diff) {
+                    p1 = p1 + "\n";
+                    diff++;
+                }
+                this.setPrintOut(p1);
+            }
+         //================================================================IXGKOAG
         } catch (Exception e) {
             System.out.println("Printout file not found for command: "+this.getName());
         }

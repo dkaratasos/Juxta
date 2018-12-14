@@ -1,0 +1,32 @@
+Difference: 1
+-------------
+MSC1\2018-10-11_16_42_18\BC0
+line 14:
+SWAEM0121        C  CODE  H'0265           24
+
+MSC3\2018-10-11_16_42_18\BC2
+lines 14-16:
+SWAEM0123        C  CODE  H'0C66           60
+SWAEM0123        C  CODE  H'1C86           28
+SWAEM0121        C  CODE  H'0264           20
+
+Difference: 2
+-------------
+MSC1\2018-10-11_16_42_18\BC0
+line 102:
+R01MCXJO2716     C  CODE  H'3F90           33
+
+MSC3\2018-10-11_16_42_18\BC2
+line 105:
+R01MCXJO2714     C  CODE  H'3F90           33
+
+Difference: 3
+-------------
+MSC1\2018-10-11_16_42_18\BC0
+line 112:
+RWAXC2213        C  CODE  H'0065           12
+
+MSC3\2018-10-11_16_42_18\BC2
+line 115:
+RWAXC2213        C  CODE  H'0065           19
+
