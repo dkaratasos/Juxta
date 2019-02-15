@@ -23,8 +23,6 @@ import java.util.HashMap;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import javax.swing.tree.TreeModel;
-
-// CHMA-GGEW-SOVL
 import javax.swing.SwingWorker;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -32,6 +30,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.FileReader;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.prefs.Preferences;
 import javax.swing.BoundedRangeModel;
@@ -166,6 +165,37 @@ public class MainFrame extends javax.swing.JFrame {
             jProgressBar1.setValue(0);
         }
     }
+    
+    
+    // CHMA - GGEW - SOVL
+    /**
+     * This class implements FilenameFilter in order to select MSC files
+     * in data directory and show them in the information tab.
+     */
+    private class MSCFilter implements FilenameFilter {
+        
+        @Override
+        public boolean accept(File dir, String file) {
+            return file.startsWith("MSC");
+        }
+        
+    }
+    
+    // CHMA - GGEW - SOVL
+    /**
+     * This class implements FilenameFilter in order to select HLR files
+     * in data directory and show them in the information tab.
+     */
+    private class HLRFilter implements FilenameFilter {
+        
+        @Override
+        public boolean accept(File dir, String file) {
+            return file.startsWith("HLR");
+        }
+        
+    }
+    
+
 
 
     /**
@@ -1346,6 +1376,7 @@ public class MainFrame extends javax.swing.JFrame {
         this.cmp = new Compare(BaseNodesCombo, commsTreeModel);
         
         // CHMA - GGEW - SOVL
+        // progress bar handling
         jProgressBar1.setVisible(false);
         saveAllIndic = false;
     }
@@ -1389,7 +1420,8 @@ public class MainFrame extends javax.swing.JFrame {
      */
     private void createCommsList() {
 
-        //CHMA-GGEW-SOVL -- Insert common commands in the GUI list
+        //CHMA-GGEW-SOVL 
+        // Insert common commands in the GUI list
         commListModel.clear();
         for (String s : arrayCommList) {
             commListModel.addElement(s);
@@ -1475,7 +1507,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         return included;
     }
-
+    
     /**
      * Inner class MyRenderer is used to render specific icon for the different
      * types of nodes in the Nodes Tree and also specific Tooltips. The
@@ -1601,13 +1633,6 @@ public class MainFrame extends javax.swing.JFrame {
         resetValidatePOs();
 
         TargetNodesTree.updateUI();
-
-//        this.TargetNodesTree.setModel(null);
-//        String item = this.BaseNodesCombo.getSelectedItem().toString();
-//        cmp.updateTargetNodesTree(item);
-//        this.TargetNodesTree.setModel(new javax.swing.tree.DefaultTreeModel(commsTreeModel));
-//        expandTreeAll();
-//        this.TargetNodesTree.repaint();
     }
 
     private void resetValidatePOs() {
@@ -1739,8 +1764,6 @@ public class MainFrame extends javax.swing.JFrame {
     private int[] writeDiffToFile(BufferedWriter writer, int[] diffs1, int[] diffs2, int[] lastDiffLine, int diffCount, String[] printout, String[] pos) {
         int[] temps = new int[2];
         try {
-//            int line1po1 = po1TextArea.getLineOfOffset(diffs1[0]);
-//            int line1po2 = po2TextArea.getLineOfOffset(diffs2[0]);
             int line1po1 = findLine(pos[0],diffs1[0]);
             int line1po2 = findLine(pos[1],diffs2[0]);
             temps[0] = line1po1;
@@ -1750,58 +1773,40 @@ public class MainFrame extends javax.swing.JFrame {
                     writer.write("Difference: " + diffCount + "\n");
                     writer.write("-------------\n");
                     writer.write(printout[0] + "\n");
-//                    int line2po1 = po1TextArea.getLineOfOffset(diffs1[1]);
-//                    int line2po2 = po2TextArea.getLineOfOffset(diffs2[1]);
                     int line2po1 = findLine(pos[0],diffs1[1]);
                     int line2po2 = findLine(pos[1],diffs2[1]);
-//                    if (po1TextArea.getLineStartOffset(line2po1) == diffs1[1]) {
                     if (getLineStart(pos[0],line2po1) == diffs1[1]) {
                         line2po1 -= 1;
                     }
-//                    if (po2TextArea.getLineStartOffset(line2po2) == diffs2[1]) {
                     if (getLineStart(pos[1],line2po2) == diffs2[1]) {
                         line2po2 -= 1;
                     }
-//                    int actualLine1po1 = line1po1 + 1;
-//                    int actualLine2po1 = line2po1 + 1;
                     if (line1po1 >= line2po1) {
-//                        writer.write("line " + actualLine1po1 + ":\n");
-//                        writer.write(po1TextArea.getText(po1TextArea.getLineStartOffset(line1po1), po1TextArea.getLineEndOffset(line1po1) - po1TextArea.getLineStartOffset(line1po1) - 1));
                         writer.write("line " + line1po1 + ":\n");
                         writer.write(getLine(pos[0],line1po1) + "\n");
                     } else {
-//                        writer.write("lines " + actualLine1po1 + "-" + actualLine2po1 + ":\n");
-//                        writer.write(po1TextArea.getText(po1TextArea.getLineStartOffset(line1po1), po1TextArea.getLineEndOffset(line2po1) - po1TextArea.getLineStartOffset(line1po1) - 1));
                         writer.write("lines " + line1po1 + "-" + line2po1 + ":\n");
                         writer.write(getLines(pos[0], line1po1, line2po1));
                     }
                     writer.write("\n\n");
                     writer.write(printout[1] + "\n");
-//                    int actualLine1po2 = line1po2 + 1;
-//                    int actualLine2po2 = line2po2 + 1;
                     if (line1po2 >= line2po2) {
-//                        writer.write("line " + actualLine1po2 + ":\n");
-//                        writer.write(po2TextArea.getText(po2TextArea.getLineStartOffset(line1po2), po2TextArea.getLineEndOffset(line1po2) - po2TextArea.getLineStartOffset(line1po2) - 1));
                         writer.write("line " + line1po2 + ":\n");
                         writer.write(getLine(pos[1],line1po2) + "\n");
                     } else {
-//                        writer.write("lines " + actualLine1po2 + "-" + actualLine2po2 + ":\n");
-//                        writer.write(po2TextArea.getText(po2TextArea.getLineStartOffset(line1po2), po2TextArea.getLineEndOffset(line2po2) - po2TextArea.getLineStartOffset(line1po2) - 1));
                         writer.write("lines " + line1po2 + "-" + line2po2 + ":\n");
                         writer.write(getLines(pos[1], line1po2, line2po2));
                     }
                     writer.write("\n\n");
                 }
             }
-//        } catch (javax.swing.text.BadLocationException | IOException ex) {
         } catch (IOException ex) {
             java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         return temps;
     }
     
-    
-   private int findLine(String po, int index) {
+    private int findLine(String po, int index) {
 	int line = 1;
 	int charIndex = 0;
 	while (charIndex < index) {
@@ -1876,22 +1881,6 @@ public class MainFrame extends javax.swing.JFrame {
                 if (line == lineIndex) {
                     charIndex++;
                     return charIndex;
-		}
-            }
-            charIndex++;
-	}
-	return charIndex;
-    } 
-    
-    private int getLineEnd(String po, int line) {
-	int lineIndex = 1;
-	int charIndex = 0;
-	while (lineIndex < line) {
-            if (po.charAt(charIndex) == '\n'){
-                lineIndex++;
-                if (line == lineIndex) {
-                    charIndex++;
-                    return po.indexOf('\n',charIndex);
 		}
             }
             charIndex++;
@@ -2222,22 +2211,6 @@ public class MainFrame extends javax.swing.JFrame {
      * INSERT(end,end) for both texts
      */
     private void cleanUpDiffs() {
-//        for (int i = 0; i < diffs1.size(); i++) {
-//            if(i==diffs2.size()) break;
-//            System.out.println("diffs1: "+diffs1.get(i)[0]);
-//            System.out.println("diffs2: "+diffs2.get(i)[0]);
-//             if ((diffs1.get(i)[0] != diffs2.get(i)[0])) {
-//                diffs1.remove(i);
-//            }
-//        }
-//        for (int i = 0; i < diffs2.size(); i++) {
-//            if(i==diffs1.size()) break;
-//            System.out.println("diffs1: "+diffs1.get(i)[0]);
-//            System.out.println("diffs2: "+diffs2.get(i)[0]);
-//            if ((diffs2.get(i)[0] != diffs1.get(i)[0])) {
-//                diffs2.remove(i);
-//            }
-//        }
         if (diffs1.size() != diffs2.size()) {
             return;
         }
@@ -2516,41 +2489,115 @@ public class MainFrame extends javax.swing.JFrame {
         }
         
         // CHMA - GGEW - SOVL
+        // Information shown in the information tab
         
         if (mainTabbedPane.getSelectedIndex() == 0) {
             if (selectedNode != null) {
                 String info = null;
                 StringBuilder infoText = new StringBuilder();
                 if (selectedNode.isLeaf()){
-                    info = selectedNode.getParent().toString();
-                    infoText.append("Selected node is " + info + "\n");
-                    infoText.append("Selected blade is " + selectedNode.toString() + "\n\n");
-                }
-                else {
-                    if (selectedNode.getParent() == TargetNodesTree.getModel().getRoot()){
-                        infoTextArea.setText(infoText.toString());
-                        info = selectedNode.toString();
+                    String selectedNodeName = selectedNode.toString();
+                    File node = new File(getPath(selectedNode.getParent().toString()));
+                    File[] timestamps = node.listFiles();
+                    infoText.append("**************************************************\n");
+                    infoText.append("               NODE INFORMATION             \n");
+                    infoText.append("**************************************************\n\n");
+                    if (timestamps.length == 0) {
+                        infoText.append("No data for the selected node");
                     } else {
-                        info = selectedNode.toString();
-                        infoText.append("Selected node is " + info + "\n\n");
+                        infoText.append("Selected node: ");
+                        infoText.append(node.getName() + " - " + selectedNodeName + "\n");
+                        infoText.append("---------------------------------------------\n");
+                        infoText.append("Available timestaps and commands per timestamp:\n");
+                        for (File f: timestamps){
+                            if (f.isDirectory()){
+                                for (File f1 : f.listFiles()){
+                                    if (f1.isDirectory()) {
+                                        if (f1.getName().equals(selectedNodeName)){
+                                            infoText.append("-Timestamp: " + f.getName() + "\n");
+                                            for (File f2 : f1.listFiles()){
+                                                infoText.append("  -" + f2.getName() + "\n");
+                                            }
+                                            infoText.append("\n");
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
-                }  
-                infoText.append("NODE INFORMATION" + "\n");
-                infoText.append("------------------------------" + "\n\n");
-                try {
-                    BufferedReader scanner = new BufferedReader(new FileReader(new File(getPath(info) + System.getProperty("file.separator") + "info")));
-                    while (scanner.ready()) {
-                        infoText.append(scanner.readLine() + "\n");
+                    infoTextArea.setText(infoText.toString()); 
+                } else {
+                    if (selectedNode.getParent() == TargetNodesTree.getModel().getRoot()){
+                        File node = rootOutFolder;
+                        FilenameFilter Filter1;
+                        if (selectedNode.toString().startsWith("MSC")){
+                            Filter1 = new MSCFilter();
+                            infoText.append("******************************************\n");
+                            infoText.append("               ALL MSC NODES\n");
+                            infoText.append("******************************************\n\n");
+                        } else {
+                            Filter1 = new HLRFilter();
+                            infoText.append("******************************************\n");
+                            infoText.append("               ALL HLR NODES" + "\n");
+                            infoText.append("******************************************\n\n");
+                        }
+                        File[] nodes = node.listFiles(Filter1);
+                        if (nodes.length == 0) {
+                            infoText.append("No data for this type of node");
+                        } else {
+                            infoText.append("---------------------------------------------\n");
+                            for (File f : nodes){
+                                if (f.isDirectory()){
+                                    File[] timestamps = f.listFiles();
+                                    infoText.append("Node: ");
+                                    infoText.append(f.getName() + "\n");
+                                    infoText.append("---------------------------------------------\n");
+                                    infoText.append("Available timestaps, blades and commands per timestamp:\n");
+                                    for (File f1: timestamps){
+                                        if (f1.isDirectory()){
+                                            infoText.append("-Timestamp: " + f1.getName() + "\n");
+                                            for (File f2 : f1.listFiles()){
+                                                if (f2.isDirectory()) {
+                                                    infoText.append(f2.getName() + "\n");
+                                                    for (File f3 : f2.listFiles()){
+                                                        infoText.append("  -" + f3.getName() + "\n");
+                                                    }
+                                                }
+                                            }
+                                            infoText.append("\n");
+                                        }
+                                    }
+                                    infoText.append("---------------------------------------------\n");
+                                }
+                            }
+                        }
+                    } else {
+                        File node = new File(getPath(selectedNode.toString()));
+                        File[] timestamps = node.listFiles();
+                        infoText.append("**************************************************\n");
+                        infoText.append("               NODE INFORMATION             \n");
+                        infoText.append("**************************************************\n\n");
+                        infoText.append("Selected node: ");
+                        infoText.append(node.getName() + "\n");
+                        infoText.append("---------------------------------------------\n");
+                        infoText.append("Available timestaps, blades and commands per timestamp:\n");
+                        for (File f: timestamps){
+                            if (f.isDirectory()){
+                                infoText.append("-Timestamp: " + f.getName() + "\n");
+                                for (File f1 : f.listFiles()){
+                                    if (f1.isDirectory()) {
+                                        infoText.append(f1.getName() + "\n");
+                                        for (File f2 : f1.listFiles()){
+                                            infoText.append("  -" + f2.getName() + "\n");
+                                        }
+                                    }
+                                }
+                                infoText.append("\n");
+                            }
+                        }
                     }
-                    infoTextArea.setText(infoText.toString());        
-                } catch (Exception ex) {
-//                    if (infoText.length() != 0) {
-//                        errorMessageLBL.setText("Info file not found for node: " + info);
-//                        errorDialog.setVisible(true);
-//                    }
-                    return;
-                    //System.out.println("Info file not found for node: " + info);
-                }
+                    infoTextArea.setText(infoText.toString()); 
+                } 
             }
         }
     }//GEN-LAST:event_TargetNodesTreeValueChanged
@@ -2722,7 +2769,6 @@ public class MainFrame extends javax.swing.JFrame {
                             java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
                         }
                     }
-                    // CHMA - GGEW - SOVL
                     filesDone++;
                 }
             } else {
