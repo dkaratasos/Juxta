@@ -1058,7 +1058,11 @@
                                 <StringItem index="4" value="Item 5"/>
                               </StringArray>
                             </Property>
+                            <Property name="selectionMode" type="int" value="0"/>
                           </Properties>
+                          <Events>
+                            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="compList1MouseClicked"/>
+                          </Events>
                           <AuxValues>
                             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
                           </AuxValues>
@@ -1101,9 +1105,11 @@
                                 <StringItem index="4" value="Item 5"/>
                               </StringArray>
                             </Property>
+                            <Property name="selectionMode" type="int" value="0"/>
                           </Properties>
                           <Events>
                             <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="compList2FocusLost"/>
+                            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="compList2MouseClicked"/>
                           </Events>
                           <AuxValues>
                             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>

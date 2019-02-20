@@ -796,6 +796,12 @@ public class MainFrame extends javax.swing.JFrame {
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
+        compList1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        compList1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                compList1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(compList1);
 
         clear1BTN.setText("X");
@@ -819,9 +825,15 @@ public class MainFrame extends javax.swing.JFrame {
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
+        compList2.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         compList2.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 compList2FocusLost(evt);
+            }
+        });
+        compList2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                compList2MouseClicked(evt);
             }
         });
         jScrollPane2.setViewportView(compList2);
@@ -1363,6 +1375,7 @@ public class MainFrame extends javax.swing.JFrame {
         TargetNodesTree.setCellRenderer(new MyRenderer());    // Assign icons and tooltips per type of node in TargetNodesTree
         ToolTipManager.sharedInstance().registerComponent(TargetNodesTree); // Tooltips on Nodes Tree enabled
         managePrevNextBTN();
+        TargetNodesTree.getSelectionModel().setSelectionMode(javax.swing.tree.TreeSelectionModel.SINGLE_TREE_SELECTION);
 
         prevHiliteBTN.setEnabled(false);
         nextHiliteBTN.setEnabled(false);
@@ -1941,14 +1954,16 @@ public class MainFrame extends javax.swing.JFrame {
         refListModel.clear();
 
         arrayCommList = cmp.updateTargetNodes(compList2, TimeStampTarget);
+        compList1.setToolTipText(null);
         createCommsList();
     }//GEN-LAST:event_removeElem2BTNActionPerformed
 
     private void removeElem1BTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeElem1BTNActionPerformed
         compList1Model.removeElementAt(compList1.getSelectedIndex());
         refListModel.clear();
-
+        
         arrayCommList = cmp.updateBaseNodes(compList1, TimeStampBase);
+        compList1.setToolTipText(null);
         createCommsList();
     }//GEN-LAST:event_removeElem1BTNActionPerformed
 
@@ -1970,6 +1985,7 @@ public class MainFrame extends javax.swing.JFrame {
         compList2Model.clear();
         refListModel.clear();
         arrayCommList = cmp.updateTargetNodes(compList2, TimeStampTarget);
+        compList2.setToolTipText(null);
         createCommsList();
     }//GEN-LAST:event_clear2BTNActionPerformed
 
@@ -2017,6 +2033,7 @@ public class MainFrame extends javax.swing.JFrame {
         compList1Model.clear();
         refListModel.clear();
         arrayCommList = cmp.updateBaseNodes(compList1, TimeStampBase);
+        compList1.setToolTipText(null);
         createCommsList();
     }//GEN-LAST:event_clear1BTNActionPerformed
 
@@ -2902,6 +2919,22 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_diffSplitPaneComponentResized
 
+    
+    
+    // Code for showing Timestamp of selected node in compare lists
+    
+    private void compList1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_compList1MouseClicked
+        if (!compList1.isSelectionEmpty()){
+            compList1.setToolTipText(TimeStampBase.get(compList1.getSelectedIndex()));
+        }
+    }//GEN-LAST:event_compList1MouseClicked
+
+    private void compList2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_compList2MouseClicked
+        if (!compList2.isSelectionEmpty()){
+            compList2.setToolTipText(TimeStampTarget.get(compList2.getSelectedIndex()));
+        }
+    }//GEN-LAST:event_compList2MouseClicked
+  
     /**
      * @param args the command line arguments
      */
