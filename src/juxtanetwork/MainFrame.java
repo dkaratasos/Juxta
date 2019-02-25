@@ -25,6 +25,7 @@ import java.nio.file.Paths;
 import javax.swing.tree.TreeModel;
 import javax.swing.SwingWorker;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import java.io.FileFilter;
 
 //VAAG-CHRE
 import java.io.FileReader;
@@ -172,11 +173,26 @@ public class MainFrame extends javax.swing.JFrame {
      * This class implements FilenameFilter in order to select MSC files
      * in data directory and show them in the information tab.
      */
+    private class DirFilter implements FileFilter {
+        
+        @Override
+        public boolean accept(File f) {
+            return f.isDirectory();
+        }
+        
+    }
+    
+    
+    // CHMA - GGEW - SOVL
+    /**
+     * This class implements FilenameFilter in order to select MSC files
+     * in data directory and show them in the information tab.
+     */
     private class MSCFilter implements FilenameFilter {
         
         @Override
         public boolean accept(File dir, String file) {
-            return file.startsWith("MSC");
+            return (file.startsWith("MSC")) && (dir.isDirectory());
         }
         
     }
@@ -190,7 +206,7 @@ public class MainFrame extends javax.swing.JFrame {
         
         @Override
         public boolean accept(File dir, String file) {
-            return file.startsWith("HLR");
+            return (file.startsWith("HLR")) && (dir.isDirectory());
         }
         
     }
@@ -2510,115 +2526,128 @@ public class MainFrame extends javax.swing.JFrame {
         
         if (mainTabbedPane.getSelectedIndex() == 0) {
             if (selectedNode != null) {
-                String info = null;
                 StringBuilder infoText = new StringBuilder();
                 if (selectedNode.isLeaf()){
                     String selectedNodeName = selectedNode.toString();
                     File node = new File(getPath(selectedNode.getParent().toString()));
-                    File[] timestamps = node.listFiles();
                     infoText.append("**************************************************\n");
                     infoText.append("               NODE INFORMATION             \n");
                     infoText.append("**************************************************\n\n");
-                    if (timestamps.length == 0) {
-                        infoText.append("No data for the selected node");
-                    } else {
-                        infoText.append("Selected node: ");
-                        infoText.append(node.getName() + " - " + selectedNodeName + "\n");
-                        infoText.append("---------------------------------------------\n");
-                        infoText.append("Available timestaps and commands per timestamp:\n");
-                        for (File f: timestamps){
-                            if (f.isDirectory()){
-                                for (File f1 : f.listFiles()){
-                                    if (f1.isDirectory()) {
-                                        if (f1.getName().equals(selectedNodeName)){
-                                            infoText.append("-Timestamp: " + f.getName() + "\n");
-                                            for (File f2 : f1.listFiles()){
-                                                infoText.append("  -" + f2.getName() + "\n");
-                                            }
-                                            infoText.append("\n");
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    infoTextArea.setText(infoText.toString()); 
+                    infoText.append("Node: ");
+                    infoText.append(node.getName() + " - " + selectedNodeName + "\n");
+                    infoText.append("---------------------------------------------\n");
+                    infoText = TextAppender(infoText, node, selectedNodeName);
                 } else {
                     if (selectedNode.getParent() == TargetNodesTree.getModel().getRoot()){
-                        File node = rootOutFolder;
-                        FilenameFilter Filter1;
+                        File root = rootOutFolder;
+                        FilenameFilter nameFilter;
                         if (selectedNode.toString().startsWith("MSC")){
-                            Filter1 = new MSCFilter();
+                            nameFilter = new MSCFilter();
                             infoText.append("******************************************\n");
                             infoText.append("               ALL MSC NODES\n");
                             infoText.append("******************************************\n\n");
                         } else {
-                            Filter1 = new HLRFilter();
+                            nameFilter = new HLRFilter();
                             infoText.append("******************************************\n");
                             infoText.append("               ALL HLR NODES" + "\n");
                             infoText.append("******************************************\n\n");
                         }
-                        File[] nodes = node.listFiles(Filter1);
-                        if (nodes.length == 0) {
-                            infoText.append("No data for this type of node");
-                        } else {
-                            infoText.append("---------------------------------------------\n");
-                            for (File f : nodes){
-                                if (f.isDirectory()){
-                                    File[] timestamps = f.listFiles();
-                                    infoText.append("Node: ");
-                                    infoText.append(f.getName() + "\n");
-                                    infoText.append("---------------------------------------------\n");
-                                    infoText.append("Available timestaps, blades and commands per timestamp:\n");
-                                    for (File f1: timestamps){
-                                        if (f1.isDirectory()){
-                                            infoText.append("-Timestamp: " + f1.getName() + "\n");
-                                            for (File f2 : f1.listFiles()){
-                                                if (f2.isDirectory()) {
-                                                    infoText.append(f2.getName() + "\n");
-                                                    for (File f3 : f2.listFiles()){
-                                                        infoText.append("  -" + f3.getName() + "\n");
-                                                    }
-                                                }
-                                            }
-                                            infoText.append("\n");
-                                        }
-                                    }
-                                    infoText.append("---------------------------------------------\n");
-                                }
+                        File[] nodes = root.listFiles(nameFilter);
+                        if (nodes.length != 0) {
+                            for (File node : nodes){
+                                infoText.append("---------------------------------------------\n");
+                                infoText.append("Node: ");
+                                infoText.append(node.getName() + "\n");
+                                infoText.append("---------------------------------------------\n");
+                                infoText = TextAppender(infoText, node, null);
                             }
+                        } else {
+                            infoText.append("No available data for this type of node");
                         }
                     } else {
                         File node = new File(getPath(selectedNode.toString()));
-                        File[] timestamps = node.listFiles();
                         infoText.append("**************************************************\n");
                         infoText.append("               NODE INFORMATION             \n");
                         infoText.append("**************************************************\n\n");
-                        infoText.append("Selected node: ");
+                        infoText.append("Node: ");
                         infoText.append(node.getName() + "\n");
                         infoText.append("---------------------------------------------\n");
-                        infoText.append("Available timestaps, blades and commands per timestamp:\n");
-                        for (File f: timestamps){
-                            if (f.isDirectory()){
-                                infoText.append("-Timestamp: " + f.getName() + "\n");
-                                for (File f1 : f.listFiles()){
-                                    if (f1.isDirectory()) {
-                                        infoText.append(f1.getName() + "\n");
-                                        for (File f2 : f1.listFiles()){
-                                            infoText.append("  -" + f2.getName() + "\n");
-                                        }
-                                    }
-                                }
-                                infoText.append("\n");
-                            }
-                        }
+                        infoText = TextAppender(infoText, node, null);
                     }
-                    infoTextArea.setText(infoText.toString()); 
                 } 
+                infoTextArea.setText(infoText.toString()); 
             }
         }
     }//GEN-LAST:event_TargetNodesTreeValueChanged
 
+    
+    // CHMA - GGEW - SOVL
+    /**
+     * This method is used to append node information text via executing loops 
+     * in the Mainframe's TextArea.
+     *
+     * @param text is the StringBuilder containing the output so far.
+     * @param node is the file of current node of the tree that is being processed 
+     * @param selectedNodeName is the name of the selected node (valid only for blades)
+     */
+    
+    private StringBuilder TextAppender (StringBuilder text, File node, String selectedNodeName) {
+        FileFilter dirFilter = new DirFilter();
+        File[] timestamps = node.listFiles(dirFilter);
+        if (timestamps.length != 0){
+            if (selectedNodeName == null) {
+                text.append("Available timestaps, blades and commands per timestamp:\n");
+            } else {
+                text.append("Available timestaps and commands per timestamp:\n");
+            }
+            for (File stamp: timestamps){
+                if (selectedNodeName == null) {
+                    text.append("-Timestamp: " + stamp.getName() + "\n");
+                }
+                File[] blades = stamp.listFiles(dirFilter);
+                    if (blades.length != 0){
+                        boolean bladeFound = false;
+                        for (File blade : blades){
+                            if (selectedNodeName != null) {
+                                if (blade.getName().equals(selectedNodeName)){
+                                    bladeFound = true;
+                                    text.append("-Timestamp: " + stamp.getName() + "\n");
+                                    File[] commands = blade.listFiles();
+                                    if (commands.length != 0) {
+                                        for (File command : commands){
+                                            text.append("  -" + command.getName() + "\n");
+                                        }
+                                    } else {
+                                        text.append("No available data for this timestamp\n");
+                                    }
+                                }
+                            } else {
+                                text.append(blade.getName() + "\n");
+                                File[] commands = blade.listFiles();
+                                if (commands.length != 0){
+                                    for (File command : commands){
+                                        text.append("  -" + command.getName() + "\n");
+                                    }
+                                } else {
+                                    text.append("No available commands for this blade\n");
+                                }
+                            }
+                        }
+                        if ((!bladeFound) && (selectedNodeName != null)){
+                            text.append("No available data for this timestamp\n");
+                        }
+                    } else {
+                        text.append("No available data for this timestamp\n");
+                    }
+                    text.append("\n");
+                } 
+            } else {
+                text.append("No available data for this node\n");    
+            }
+        return text;
+    } 
+    
+    
     private void applyChooseRefBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_applyChooseRefBTNActionPerformed
         chooseRef(refChooseList.getSelectedValue());
 
