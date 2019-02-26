@@ -26,6 +26,7 @@ import javax.swing.tree.TreeModel;
 import javax.swing.SwingWorker;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.FileFilter;
+import java.awt.Point;
 
 //VAAG-CHRE
 import java.io.FileReader;
@@ -814,8 +815,8 @@ public class MainFrame extends javax.swing.JFrame {
         });
         compList1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         compList1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                compList1MouseClicked(evt);
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                compList1MouseEntered(evt);
             }
         });
         jScrollPane1.setViewportView(compList1);
@@ -848,8 +849,8 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
         compList2.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                compList2MouseClicked(evt);
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                compList2MouseEntered(evt);
             }
         });
         jScrollPane2.setViewportView(compList2);
@@ -1966,21 +1967,25 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_mainTabbedPaneStateChanged
 
     private void removeElem2BTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeElem2BTNActionPerformed
-        compList2Model.removeElementAt(compList2.getSelectedIndex());
-        refListModel.clear();
+        if (!compList2.isSelectionEmpty()){
+            compList2Model.removeElementAt(compList2.getSelectedIndex());
+            refListModel.clear();
 
-        arrayCommList = cmp.updateTargetNodes(compList2, TimeStampTarget);
-        compList1.setToolTipText(null);
-        createCommsList();
+            arrayCommList = cmp.updateTargetNodes(compList2, TimeStampTarget);
+            compList2.setToolTipText(null);
+            createCommsList();
+        }
     }//GEN-LAST:event_removeElem2BTNActionPerformed
 
     private void removeElem1BTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeElem1BTNActionPerformed
-        compList1Model.removeElementAt(compList1.getSelectedIndex());
-        refListModel.clear();
+        if (!compList1.isSelectionEmpty()){
+            compList1Model.removeElementAt(compList1.getSelectedIndex());
+            refListModel.clear();
         
-        arrayCommList = cmp.updateBaseNodes(compList1, TimeStampBase);
-        compList1.setToolTipText(null);
-        createCommsList();
+            arrayCommList = cmp.updateBaseNodes(compList1, TimeStampBase);
+            compList1.setToolTipText(null);
+            createCommsList();
+        }
     }//GEN-LAST:event_removeElem1BTNActionPerformed
 
     private void insertElem2BTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertElem2BTNActionPerformed
@@ -2948,21 +2953,29 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_diffSplitPaneComponentResized
 
-    
-    
-    // Code for showing Timestamp of selected node in compare lists
-    
-    private void compList1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_compList1MouseClicked
-        if (!compList1.isSelectionEmpty()){
-            compList1.setToolTipText(TimeStampBase.get(compList1.getSelectedIndex()));
-        }
-    }//GEN-LAST:event_compList1MouseClicked
+    private void compList1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_compList1MouseEntered
+        compList1.addMouseMotionListener(new java.awt.event.MouseAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent me) {
+                Point p = new Point(me.getX(),me.getY());
+                compList1.setSelectedIndex(compList1.locationToIndex(p));
+                if (!compList1.isSelectionEmpty()){
+                    compList1.setToolTipText(TimeStampBase.get(compList1.getSelectedIndex()));
+                }
+            }
+        });
+    }//GEN-LAST:event_compList1MouseEntered
 
-    private void compList2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_compList2MouseClicked
-        if (!compList2.isSelectionEmpty()){
-            compList2.setToolTipText(TimeStampTarget.get(compList2.getSelectedIndex()));
-        }
-    }//GEN-LAST:event_compList2MouseClicked
+    private void compList2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_compList2MouseEntered
+        compList2.addMouseMotionListener(new java.awt.event.MouseAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent me) {
+                Point p = new Point(me.getX(),me.getY());
+                compList2.setSelectedIndex(compList2.locationToIndex(p));
+                if (!compList2.isSelectionEmpty()){
+                    compList2.setToolTipText(TimeStampBase.get(compList2.getSelectedIndex()));
+                }
+            }
+        });
+    }//GEN-LAST:event_compList2MouseEntered
   
     /**
      * @param args the command line arguments
