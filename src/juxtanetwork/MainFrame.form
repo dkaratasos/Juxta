@@ -964,11 +964,6 @@
                                           </Group>
                                           <EmptySpace max="32767" attributes="0"/>
                                           <Group type="103" groupAlignment="0" attributes="0">
-                                              <Component id="referenceCompBTN" alignment="1" min="-2" max="-2" attributes="0"/>
-                                              <Component id="referenceCompWithBTN" alignment="1" min="-2" max="-2" attributes="0"/>
-                                          </Group>
-                                          <EmptySpace max="32767" attributes="0"/>
-                                          <Group type="103" groupAlignment="0" attributes="0">
                                               <Component id="clear1BTN" alignment="1" min="-2" max="-2" attributes="0"/>
                                               <Component id="clear2BTN" alignment="1" min="-2" max="-2" attributes="0"/>
                                           </Group>
@@ -1016,7 +1011,6 @@
                                           <Component id="clear1BTN" alignment="3" min="-2" max="-2" attributes="0"/>
                                           <Component id="insertElem1BTN" alignment="3" min="-2" max="-2" attributes="0"/>
                                           <Component id="removeElem1BTN" alignment="3" min="-2" max="-2" attributes="0"/>
-                                          <Component id="referenceCompBTN" alignment="3" min="-2" max="-2" attributes="0"/>
                                       </Group>
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Component id="jLabel2" min="-2" pref="20" max="-2" attributes="0"/>
@@ -1026,7 +1020,6 @@
                                       <Group type="103" groupAlignment="3" attributes="0">
                                           <Component id="clear2BTN" alignment="3" min="-2" max="-2" attributes="0"/>
                                           <Component id="insertElem2BTN" alignment="3" min="-2" max="-2" attributes="0"/>
-                                          <Component id="referenceCompWithBTN" alignment="3" min="-2" max="-2" attributes="0"/>
                                           <Component id="removeElem2BTN" alignment="3" min="-2" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
@@ -1135,15 +1128,6 @@
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="insertElem2BTNActionPerformed"/>
                       </Events>
                     </Component>
-                    <Component class="javax.swing.JButton" name="referenceCompWithBTN">
-                      <Properties>
-                        <Property name="text" type="java.lang.String" value="R"/>
-                        <Property name="toolTipText" type="java.lang.String" value="Load a reference to Compare with"/>
-                      </Properties>
-                      <Events>
-                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="referenceCompWithBTNActionPerformed"/>
-                      </Events>
-                    </Component>
                     <Container class="javax.swing.JScrollPane" name="mainScrollTab3">
                       <AuxValues>
                         <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
@@ -1207,15 +1191,6 @@
                       </Properties>
                       <Events>
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="removeElem2BTNActionPerformed"/>
-                      </Events>
-                    </Component>
-                    <Component class="javax.swing.JButton" name="referenceCompBTN">
-                      <Properties>
-                        <Property name="text" type="java.lang.String" value="R"/>
-                        <Property name="toolTipText" type="java.lang.String" value="Load a reference to Compare with"/>
-                      </Properties>
-                      <Events>
-                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="referenceCompBTNActionPerformed"/>
                       </Events>
                     </Component>
                   </SubComponents>

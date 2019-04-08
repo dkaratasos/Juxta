@@ -294,7 +294,6 @@ public class MainFrame extends javax.swing.JFrame {
         compList2 = new javax.swing.JList<>();
         clear2BTN = new javax.swing.JButton();
         insertElem2BTN = new javax.swing.JButton();
-        referenceCompWithBTN = new javax.swing.JButton();
         mainScrollTab3 = new javax.swing.JScrollPane();
         commList = new javax.swing.JList<>();
         jLabel1 = new javax.swing.JLabel();
@@ -302,7 +301,6 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         removeElem1BTN = new javax.swing.JButton();
         removeElem2BTN = new javax.swing.JButton();
-        referenceCompBTN = new javax.swing.JButton();
         resultsPanel = new javax.swing.JPanel();
         diffSplitPane = new javax.swing.JSplitPane();
         po1ScrollPane = new javax.swing.JScrollPane();
@@ -871,14 +869,6 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        referenceCompWithBTN.setText("R");
-        referenceCompWithBTN.setToolTipText("Load a reference to Compare with");
-        referenceCompWithBTN.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                referenceCompWithBTNActionPerformed(evt);
-            }
-        });
-
         commList.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "PCORP", "MGNDP", "DBTSP", "MGEPP", "Comm1", "Comm2", "Comm3" };
             public int getSize() { return strings.length; }
@@ -921,14 +911,6 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        referenceCompBTN.setText("R");
-        referenceCompBTN.setToolTipText("Load a reference to Compare with");
-        referenceCompBTN.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                referenceCompBTNActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout comparePanelLayout = new javax.swing.GroupLayout(comparePanel);
         comparePanel.setLayout(comparePanelLayout);
         comparePanelLayout.setHorizontalGroup(
@@ -945,10 +927,6 @@ public class MainFrame extends javax.swing.JFrame {
                             .addGroup(comparePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(removeElem1BTN)
                                 .addComponent(removeElem2BTN))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(comparePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(referenceCompBTN, javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(referenceCompWithBTN, javax.swing.GroupLayout.Alignment.TRAILING))
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(comparePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(clear1BTN, javax.swing.GroupLayout.Alignment.TRAILING)
@@ -985,8 +963,7 @@ public class MainFrame extends javax.swing.JFrame {
                         .addGroup(comparePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(clear1BTN)
                             .addComponent(insertElem1BTN)
-                            .addComponent(removeElem1BTN)
-                            .addComponent(referenceCompBTN))
+                            .addComponent(removeElem1BTN))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(2, 2, 2)
@@ -995,7 +972,6 @@ public class MainFrame extends javax.swing.JFrame {
                         .addGroup(comparePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(clear2BTN)
                             .addComponent(insertElem2BTN)
-                            .addComponent(referenceCompWithBTN)
                             .addComponent(removeElem2BTN)))
                     .addGroup(comparePanelLayout.createSequentialGroup()
                         .addComponent(mainScrollTab3, javax.swing.GroupLayout.DEFAULT_SIZE, 555, Short.MAX_VALUE)
@@ -2473,15 +2449,6 @@ public class MainFrame extends javax.swing.JFrame {
         cmp.updateSelectedCommands(commList);
     }//GEN-LAST:event_commListFocusLost
 
-    private void referenceCompBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_referenceCompBTNActionPerformed
-        cmp.updateBaseNodes(compList1, TimeStampBase);
-
-    }//GEN-LAST:event_referenceCompBTNActionPerformed
-
-
-    private void referenceCompWithBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_referenceCompWithBTNActionPerformed
-        cmp.updateTargetNodes(compList2, TimeStampTarget);
-    }//GEN-LAST:event_referenceCompWithBTNActionPerformed
 
     private void BaseNodesComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BaseNodesComboActionPerformed
         // TODO add your handling code here:
@@ -2497,7 +2464,12 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void BaseNodesComboItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_BaseNodesComboItemStateChanged
         resetValidatePOs();
-
+        
+        
+        TargetNodesTree.updateUI();
+        po1TextArea.setText("");
+        po2TextArea.setText("");
+                
         //IXGKOAG
 //        this.TargetNodesTree.setModel(null);
 //        String item = this.BaseNodesCombo.getSelectedItem().toString();
@@ -3101,8 +3073,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem prevDiffMN;
     private javax.swing.JButton prevHiliteBTN;
     private javax.swing.JList<String> refChooseList;
-    private javax.swing.JButton referenceCompBTN;
-    private javax.swing.JButton referenceCompWithBTN;
     private javax.swing.JButton removeElem1BTN;
     private javax.swing.JButton removeElem2BTN;
     private javax.swing.JPanel resultsPanel;
