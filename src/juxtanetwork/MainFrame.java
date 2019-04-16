@@ -1944,9 +1944,9 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void removeElem2BTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeElem2BTNActionPerformed
         if (!compList2.isSelectionEmpty()){
+            TimeStampTarget.remove(compList2.getSelectedIndex());
             compList2Model.removeElementAt(compList2.getSelectedIndex());
             refListModel.clear();
-
             arrayCommList = cmp.updateTargetNodes(compList2, TimeStampTarget);
             compList2.setToolTipText(null);
             createCommsList();
@@ -1955,9 +1955,9 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void removeElem1BTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeElem1BTNActionPerformed
         if (!compList1.isSelectionEmpty()){
+            TimeStampBase.remove(compList1.getSelectedIndex());
             compList1Model.removeElementAt(compList1.getSelectedIndex());
             refListModel.clear();
-        
             arrayCommList = cmp.updateBaseNodes(compList1, TimeStampBase);
             compList1.setToolTipText(null);
             createCommsList();
@@ -1980,6 +1980,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void clear2BTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clear2BTNActionPerformed
         compList2Model.clear();
+        TimeStampTarget.clear();
         refListModel.clear();
         arrayCommList = cmp.updateTargetNodes(compList2, TimeStampTarget);
         compList2.setToolTipText(null);
@@ -2028,6 +2029,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void clear1BTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clear1BTNActionPerformed
         compList1Model.clear();
+        TimeStampBase.clear();
         refListModel.clear();
         arrayCommList = cmp.updateBaseNodes(compList1, TimeStampBase);
         compList1.setToolTipText(null);
@@ -2943,7 +2945,7 @@ public class MainFrame extends javax.swing.JFrame {
                 Point p = new Point(me.getX(),me.getY());
                 compList2.setSelectedIndex(compList2.locationToIndex(p));
                 if (!compList2.isSelectionEmpty()){
-                    compList2.setToolTipText(TimeStampBase.get(compList2.getSelectedIndex()));
+                    compList2.setToolTipText(TimeStampTarget.get(compList2.getSelectedIndex()));
                 }
             }
         });

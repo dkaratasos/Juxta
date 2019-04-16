@@ -99,6 +99,9 @@ public class Compare {
 //            String basePath = getPath(baseNode, timeStampBase);
             String basePath = getPath(baseNode, TimeStampBase.get(iBase));
             File base = new File(basePath);
+            if (base.listFiles().length == 0) {
+                return commands;
+            }
             for (File f : base.listFiles()) {
                 int pos = f.getName().lastIndexOf(".");
                 if (pos > 0) {
@@ -118,6 +121,9 @@ public class Compare {
 //            String targetPath = getPath(targetNode, timeStampTarget);
             String targetPath = getPath(targetNode, TimeStampTarget.get(iTarget));
             File target = new File(targetPath);
+            if (target.listFiles().length == 0) {
+                return commands;
+            }
             for (File f : target.listFiles()) {
                 int pos = f.getName().lastIndexOf(".");
                 if (pos > 0) {
